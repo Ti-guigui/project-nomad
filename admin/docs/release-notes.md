@@ -1,4 +1,4 @@
-# Release Notes
+# Notes de version
 
 ## Version 1.35.0 - September 29, 2026
 

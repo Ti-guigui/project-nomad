@@ -40,7 +40,7 @@ sudo bash install_nomad.sh
 
 Project NOMAD est maintenant installé ! Ouvrez un navigateur à l'adresse `http://localhost:8080` (ou `http://IP_DE_L_APPAREIL:8080`) et commencez l'exploration.
 
-Pour un pas-à-pas complet (y compris l'installation d'Ubuntu), voir le [guide d'installation officiel](https://www.projectnomad.us/install) (en anglais). Pour Windows, voir le [guide WSL2](https://www.projectnomad.us/install/wsl2).
+Pour un pas-à-pas complet en français (clé USB bootable, installation d'Ubuntu, installation de NOMAD, accès depuis les autres appareils, dépannage), voir le **[guide d'installation](docs/guide-installation.md)**. Pour Windows, voir le [guide WSL2](https://www.projectnomad.us/install/wsl2).
 
 ### Installation avancée
 Pour mieux contrôler l'installation, copiez le [modèle Docker Compose](install/management_compose.yaml) dans un fichier `docker-compose.yml` et personnalisez-le (pensez à remplacer les valeurs d'exemple par les vôtres). Lancez ensuite `docker compose up -d` pour démarrer le Centre de commande et ses dépendances. Cette méthode est réservée aux utilisateurs avancés : elle demande de connaître Docker et de configurer les choses à la main.
@@ -150,7 +150,7 @@ Ce dépôt est autonome : les catalogues de contenus, l'image Docker et les cart
 2. **Générer les cartes France et outre-mer** — lancez le workflow « Générer les cartes France et outre-mer » avec la version indiquée dans `collections/maps.json` (`2026-10`). Il extrait les 25 cartes depuis Protomaps et les publie dans la release `cartes-fr`. Détails dans [cartes-fr/README.md](cartes-fr/README.md).
 3. **Mettre à jour depuis le projet d'origine** (facultatif) — le bouton **Sync fork** de GitHub récupère les nouveautés de Crosstalk-Solutions. Attention : les fichiers traduits entreront souvent en conflit ; il faudra les fusionner à la main.
 
-Les mises à jour automatiques intégrées au Centre de commande vérifient les releases de ce fork : tant qu'aucune release n'y est publiée, aucune mise à jour automatique n'est proposée. Pour mettre à jour, utilisez le script `update_nomad.sh` ci-dessous, qui récupère la dernière image `latest`.
+Les mises à jour intégrées au Centre de commande vérifient les releases de ce fork. Chaque construction de l'image publie aussi la release `v<version>` (version lue dans `package.json`) si elle n'existe pas encore ; les releases qui ne sont pas des versions, comme `cartes-fr`, sont ignorées. Après une synchronisation avec le projet d'origine, la construction de l'image publie donc la nouvelle version, et les installations la voient apparaître dans **Paramètres → Rechercher des mises à jour**. La mise à jour récupère l'image `latest` de ce fork. Le script `update_nomad.sh` ci-dessous fait la même chose en ligne de commande.
 
 ## Contribuer
 Les contributions au projet d'origine se font sur [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) ; voir [CONTRIBUTING.md](CONTRIBUTING.md) (en anglais).

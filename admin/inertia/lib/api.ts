@@ -18,6 +18,7 @@ import { BenchmarkType, RunBenchmarkResponse, SubmitBenchmarkResponse, UpdateBui
 import type { CreateMapMarkerPayload, MapMarkerResponse, UpdateMapMarkerPayload } from '../../types/maps'
 import type { ChatSource } from '../../types/chat'
 import { chatStreamErrorMessage } from './chat_stream.js'
+import { traduireMessageServeur } from './traduction_serveur.js'
 
 type OllamaChatRequestWithImages = OllamaChatRequest & { images?: File[] }
 
@@ -39,6 +40,16 @@ function serializeChatRequest(chatRequest: OllamaChatRequestWithImages): {
   return { body: formData }
 }
 
+function traduireCorpsReponse(data: unknown) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return
+  const corps = data as Record<string, unknown>
+  for (const champ of ['message', 'error'] as const) {
+    if (typeof corps[champ] === 'string') {
+      corps[champ] = traduireMessageServeur(corps[champ] as string)
+    }
+  }
+}
+
 class API {
   private client: AxiosInstance
 
@@ -49,6 +60,18 @@ class API {
         'Content-Type': 'application/json',
       },
     })
+    // Version française : traduit les champs `message` et `error` des réponses du serveur
+    // (succès comme erreurs) avant qu'ils n'arrivent aux pages.
+    this.client.interceptors.response.use(
+      (response) => {
+        traduireCorpsReponse(response.data)
+        return response
+      },
+      (error) => {
+        if (error instanceof AxiosError) traduireCorpsReponse(error.response?.data)
+        return Promise.reject(error)
+      }
+    )
   }
 
   async affectService(service_name: string, action: 'start' | 'stop' | 'restart') {
@@ -348,7 +371,9 @@ class API {
         })
         const responseBody = await response.json().catch(() => null)
         if (!response.ok) {
-          throw new Error(responseBody?.message ?? `Erreur HTTP : ${response.status}`)
+          throw new Error(
+            responseBody?.message ? traduireMessageServeur(responseBody.message) : `Erreur HTTP : ${response.status}`
+          )
         }
         return responseBody as NomadChatResponse
       }
@@ -376,7 +401,9 @@ class API {
 
     if (!response.ok || !response.body) {
       const errorBody = await response.json().catch(() => null)
-      throw new Error(errorBody?.message ?? `Erreur HTTP : ${response.status}`)
+      throw new Error(
+        errorBody?.message ? traduireMessageServeur(errorBody.message) : `Erreur HTTP : ${response.status}`
+      )
     }
 
     const reader = response.body.getReader()
