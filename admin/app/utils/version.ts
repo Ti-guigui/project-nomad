@@ -47,3 +47,30 @@ export function parseMajorVersion(tag: string): number {
   const major = parseInt(normalized.split('.')[0], 10)
   return isNaN(major) ? 0 : major
 }
+
+/** A version tag such as "1.35.0", "v1.35.0" or "1.36.0-rc.1". */
+const RELEASE_VERSION_TAG = /^v?\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?$/
+
+/**
+ * Pick the newest version among GitHub releases, ignoring drafts and releases whose
+ * tag is not a version (e.g. a "cartes-fr" release that only hosts map files).
+ * Prereleases are only considered when `includePreReleases` is true.
+ * @returns The newest version without its "v" prefix, or null if none qualifies.
+ */
+export function pickLatestReleaseVersion(
+  releases: Array<{ tag_name?: string; draft?: boolean; prerelease?: boolean }>,
+  includePreReleases = false
+): string | null {
+  let latest: string | null = null
+  for (const release of releases) {
+    if (!release?.tag_name || release.draft) continue
+    if (release.prerelease && !includePreReleases) continue
+    const tag = release.tag_name.trim()
+    if (!RELEASE_VERSION_TAG.test(tag)) continue
+    const version = tag.replace(/^v/, '')
+    if (latest === null || isNewerVersion(version, latest, includePreReleases)) {
+      latest = version
+    }
+  }
+  return latest
+}

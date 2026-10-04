@@ -4,6 +4,8 @@ name: Construire l'image Docker (version française)
 # ghcr.io/<propriétaire>/project-nomad:latest, l'image utilisée par
 # install/management_compose.yaml. Se lance à chaque modification de
 # l'application sur main, ou manuellement depuis l'onglet « Actions ».
+# Publie ensuite la release « v<version> » si elle n'existe pas encore : c'est
+# elle que NOMAD consulte pour savoir si une mise à jour est disponible.
 on:
   push:
     branches: [main]
@@ -17,7 +19,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - name: Récupérer le code
@@ -43,3 +45,16 @@ jobs:
           build-args: |
             VERSION=${{ steps.image.outputs.version }}
             VCS_REF=${{ github.sha }}
+      - name: Publier la release de version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.image.outputs.version }}
+        run: |
+          if gh release view "v${VERSION}" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "La release v${VERSION} existe déjà."
+          else
+            gh release create "v${VERSION}" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" --latest \
+              --title "Project NOMAD ${VERSION} (version française)" \
+              --notes "Image Docker : ${{ steps.image.outputs.nom }}:${VERSION}-fr (également publiée sous :latest)."
+          fi
