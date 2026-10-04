@@ -90,7 +90,7 @@ export default function ModelsPage(props: {
         router.reload()
       }
     } catch (error: any) {
-      setRemoteOllamaError(error?.message || 'Failed to clear remote Ollama.')
+      setRemoteOllamaError(error?.message || "Impossible d'effacer la configuration de l'Ollama distant.")
     } finally {
       setRemoteOllamaSaving(false)
     }

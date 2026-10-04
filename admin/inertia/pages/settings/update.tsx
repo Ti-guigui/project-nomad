@@ -130,7 +130,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
       }
     } catch (err: any) {
       setIsUpdating(false)
-      setError(err.response?.data?.error || err.message || 'Failed to start update')
+      setError(err.response?.data?.error || err.message || 'Impossible de lancer la mise à jour')
     }
   }
 
@@ -143,7 +143,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
       setLogs(response.logs)
       setShowLogs(true)
     } catch (err) {
-      setError('Failed to fetch update logs')
+      setError('Impossible de récupérer les journaux de mise à jour')
     }
   }
 
