@@ -44,40 +44,40 @@ export default function AppUrlModal({ open, service, onClose, onSaved, showError
     const result = await api.setServiceCustomUrl(service.service_name, trimmed ? trimmed : null)
     setSubmitting(false)
     if (!result?.success) {
-      showError('Failed to save custom URL.')
+      showError("Impossible d'enregistrer l'URL personnalisée.")
       return
     }
     onSaved()
   }
 
-  const appName = service?.friendly_name || service?.service_name || 'this app'
+  const appName = service?.friendly_name || service?.service_name || 'cette application'
 
   return (
     <StyledModal
-      title="Set Custom URL"
+      title="Définir une URL personnalisée"
       open={open}
       onCancel={onClose}
       onClose={onClose}
-      cancelText="Cancel"
+      cancelText="Annuler"
       onConfirm={handleSave}
       confirmVariant="primary"
-      confirmText="Save"
+      confirmText="Enregistrer"
       confirmIcon="IconCheck"
       confirmLoading={submitting}
       confirmDisabled={isInvalid}
     >
       <div className="space-y-4 text-sm">
         <p className="text-text-muted">
-          Set where <span className="font-medium text-text-primary">{appName}</span> opens from — useful
-          if you reach it through a reverse proxy or local DNS. Leave this empty to use the default
-          address ({service?.ui_location ? `host + port ${service.ui_location}` : 'host + port'}).
+          Choisissez l'adresse à laquelle <span className="font-medium text-text-primary">{appName}</span> s'ouvre — utile
+          si vous y accédez via un proxy inverse ou un DNS local. Laissez vide pour utiliser l'adresse
+          par défaut ({service?.ui_location ? `hôte + port ${service.ui_location}` : 'hôte + port'}).
         </p>
 
         <div>
           <div className="flex items-end gap-2">
             <Input
               name="customUrl"
-              label="Custom URL"
+              label="URL personnalisée"
               placeholder="http://jellyfin.myhomelab.net"
               maxLength={255}
               value={value}
@@ -87,23 +87,23 @@ export default function AppUrlModal({ open, service, onClose, onSaved, showError
             />
             {value.length > 0 && (
               <StyledButton size="sm" variant="ghost" icon="IconX" onClick={() => setValue('')} className="mb-1.5">
-                Clear
+                Effacer
               </StyledButton>
             )}
           </div>
           {isInvalid ? (
             <p className="mt-1.5 text-xs text-red-500">
-              Enter a valid http(s) address (e.g. https://jellyfin.myhomelab.net). A bare host like
-              "jellyfin.lan" becomes http://jellyfin.lan.
+              Saisissez une adresse http(s) valide (ex. https://jellyfin.myhomelab.net). Un simple nom
+              d'hôte comme « jellyfin.lan » devient http://jellyfin.lan.
             </p>
           ) : (
             <>
               <p className="mt-1.5 text-xs text-text-muted">
-                No scheme? We'll default to <span className="font-mono">http://</span>.</p>
+                Pas de protocole ? <span className="font-mono">http://</span> sera utilisé par défaut.</p>
               <p className="mt-1.5 text-xs text-text-muted">
-                Opens as:{' '}
+                S'ouvrira à :{' '}
                 <span className="font-mono break-all text-text-primary">{previewLink}</span>
-                {usingDefault ? ' (default)' : ''}
+                {usingDefault ? ' (par défaut)' : ''}
               </p>
             </>
           )}

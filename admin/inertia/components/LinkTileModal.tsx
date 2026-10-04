@@ -77,8 +77,8 @@ export default function LinkTileModal({
     if (!result?.success) {
       showError(
         isEdit
-          ? 'Failed to save this link.'
-          : 'Failed to add this link. A link with that name may already exist.'
+          ? "Impossible d'enregistrer ce lien."
+          : "Impossible d'ajouter ce lien. Un lien portant ce nom existe peut-être déjà."
       )
       return
     }
@@ -87,28 +87,28 @@ export default function LinkTileModal({
 
   return (
     <StyledModal
-      title={isEdit ? 'Edit Link' : 'Add a Link'}
+      title={isEdit ? 'Modifier le lien' : 'Ajouter un lien'}
       open={open}
       onCancel={onClose}
       onClose={onClose}
-      cancelText="Cancel"
+      cancelText="Annuler"
       onConfirm={handleSave}
       confirmVariant="primary"
-      confirmText={isEdit ? 'Save' : 'Add Link'}
+      confirmText={isEdit ? 'Enregistrer' : 'Ajouter le lien'}
       confirmIcon="IconCheck"
       confirmLoading={submitting}
       confirmDisabled={!canSave}
     >
       <div className="space-y-4 text-sm">
         <p className="text-text-muted">
-          Add a shortcut to something you already run, on this machine or anywhere else on your
-          network. NOMAD does not manage it, it just puts a button on your dashboard.
+          Ajoutez un raccourci vers un service que vous utilisez déjà, sur cette machine ou ailleurs
+          sur votre réseau. NOMAD ne le gère pas : il ajoute simplement un bouton à votre tableau de bord.
         </p>
 
         <Input
           name="linkName"
-          label="Name"
-          placeholder="Living room NAS"
+          label="Nom"
+          placeholder="NAS du salon"
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={60}
@@ -125,13 +125,13 @@ export default function LinkTileModal({
           />
           {urlInvalid ? (
             <p className="mt-1.5 text-xs text-red-500">
-              Enter a valid URL, for example 192.168.1.50:8080 or https://nas.local.
+              Saisissez une URL valide, par exemple 192.168.1.50:8080 ou https://nas.local.
             </p>
           ) : (
             <p className="mt-1.5 text-xs text-text-muted">
-              Opens as:{' '}
+              S'ouvrira à :{' '}
               <span className="font-mono break-all text-text-primary">
-                {normalized || 'not set yet'}
+                {normalized || 'pas encore défini'}
               </span>
             </p>
           )}
@@ -139,8 +139,8 @@ export default function LinkTileModal({
 
         <Input
           name="linkDescription"
-          label="Description (optional)"
-          placeholder="Photos and backups"
+          label="Description (facultatif)"
+          placeholder="Photos et sauvegardes"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           maxLength={200}
@@ -148,7 +148,7 @@ export default function LinkTileModal({
 
         <div>
           <p className="mb-1.5 flex items-center gap-2 font-medium text-text-primary">
-            Icon
+            Icône
             <span className="text-text-secondary">
               <DynamicIcon icon={icon as DynamicIconName} className="!size-5" />
             </span>
@@ -157,7 +157,7 @@ export default function LinkTileModal({
         </div>
 
         <div>
-          <p className="mb-1.5 font-medium text-text-primary">Color</p>
+          <p className="mb-1.5 font-medium text-text-primary">Couleur</p>
           <div className="flex items-center gap-2">
             {LINK_TILE_COLORS.map((option) => (
               <button
@@ -176,8 +176,8 @@ export default function LinkTileModal({
             ))}
           </div>
           <p className="mt-1.5 text-xs text-text-muted">
-            Links stay outlined rather than filled whichever color you pick, so they
-            are distinguishable from apps NOMAD manages.
+            Quelle que soit la couleur choisie, les liens restent en contour plutôt que remplis,
+            pour les distinguer des applications gérées par NOMAD.
           </p>
         </div>
       </div>

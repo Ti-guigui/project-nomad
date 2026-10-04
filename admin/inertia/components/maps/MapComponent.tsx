@@ -43,7 +43,35 @@ type MapLocationParams = {
 }
 
 const SAVED_MAP_VIEW_KEY = 'nomad:map-view'
-const DEFAULT_MAP_VIEW = { longitude: -101, latitude: 40, zoom: 3.5 }
+// Version française : vue par défaut centrée sur la France métropolitaine.
+const DEFAULT_MAP_VIEW = { longitude: 2.5, latitude: 46.5, zoom: 5 }
+
+// Infobulles des contrôles MapLibre en français.
+const MAP_LOCALE_FR = {
+  'AttributionControl.ToggleAttribution': 'Afficher/masquer les crédits',
+  'AttributionControl.MapFeedback': 'Signaler une erreur sur la carte',
+  'FullscreenControl.Enter': 'Passer en plein écran',
+  'FullscreenControl.Exit': 'Quitter le plein écran',
+  'GeolocateControl.FindMyLocation': 'Me localiser',
+  'GeolocateControl.LocationNotAvailable': 'Position indisponible',
+  'LogoControl.Title': 'Logo MapLibre',
+  'Map.Title': 'Carte',
+  'Marker.Title': 'Repère',
+  'NavigationControl.ResetBearing': 'Réorienter vers le nord',
+  'NavigationControl.ZoomIn': 'Zoom avant',
+  'NavigationControl.ZoomOut': 'Zoom arrière',
+  'Popup.Close': 'Fermer',
+  'ScaleControl.Feet': 'ft',
+  'ScaleControl.Meters': 'm',
+  'ScaleControl.Kilometers': 'km',
+  'ScaleControl.Miles': 'mi',
+  'ScaleControl.NauticalMiles': 'nmi',
+  'TerrainControl.Enable': 'Activer le relief',
+  'TerrainControl.Disable': 'Désactiver le relief',
+  'CooperativeGesturesHandler.WindowsHelpText': 'Utilisez Ctrl + molette pour zoomer',
+  'CooperativeGesturesHandler.MacHelpText': 'Utilisez ⌘ + molette pour zoomer',
+  'CooperativeGesturesHandler.MobileHelpText': 'Utilisez deux doigts pour déplacer la carte',
+}
 
 type SavedMapView = { longitude: number; latitude: number; zoom: number }
 
@@ -97,7 +125,7 @@ const getMapLocationParams = (): MapLocationParams | null => {
 }
 
 // Restore the last map position/zoom from localStorage so a refresh of /maps doesn't snap back
-// to the default US-wide view. Bounds-checked so a corrupt or out-of-range value falls through
+// to the default France-wide view. Bounds-checked so a corrupt or out-of-range value falls through
 // to the default instead of throwing.
 const getSavedMapView = (): SavedMapView | null => {
   try {
@@ -188,7 +216,7 @@ export default function MapComponent({
 
   const confirmDiscardMarkerChanges = useCallback(() => {
     if (!hasUnsavedMarkerChanges) return true
-    return window.confirm('Discard unsaved marker changes?')
+    return window.confirm('Abandonner les modifications non enregistrées du repère ?')
   }, [hasUnsavedMarkerChanges])
 
   useEffect(() => {
@@ -368,6 +396,7 @@ export default function MapComponent({
           cursor={isDraggingMap ? 'grabbing' : 'crosshair'}
           mapStyle={`${window.location.protocol}//${window.location.hostname}:${window.location.port}/api/maps/styles`}
           mapLib={maplibregl}
+          locale={MAP_LOCALE_FR}
           initialViewState={initialViewState}
           onMoveEnd={(e) => {
             // Persist the view so a refresh restores where the user was, not the default.

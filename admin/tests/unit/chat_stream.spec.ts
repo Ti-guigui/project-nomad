@@ -13,7 +13,7 @@ test('chat stream preserves an actionable server error message', () => {
   )
   assert.equal(
     chatStreamErrorMessage({ error: true }),
-    'The model encountered an error. Please try again.'
+    'Le modèle a rencontré une erreur. Veuillez réessayer.'
   )
   assert.equal(chatStreamErrorMessage({ done: true }), null)
 })

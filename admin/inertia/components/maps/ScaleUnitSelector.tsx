@@ -28,7 +28,7 @@ export default function ScaleUnitSelector({
             cursor: 'pointer',
           }}
         >
-          Metric
+          Métrique
         </button>
 
         {/* Imperial */}
@@ -44,7 +44,7 @@ export default function ScaleUnitSelector({
             cursor: 'pointer',
           }}
         >
-          Imperial
+          Impérial
         </button>
 
         {/* Nautical */}
@@ -60,7 +60,7 @@ export default function ScaleUnitSelector({
             cursor: 'pointer',
           }}
         >
-          Nautical
+          Nautique
         </button>
 
       </div>

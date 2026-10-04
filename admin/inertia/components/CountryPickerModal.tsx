@@ -80,7 +80,11 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
       if (!buckets[country.continent]) buckets[country.continent] = []
       buckets[country.continent].push(country)
     }
-    return Object.entries(buckets).sort(([a], [b]) => a.localeCompare(b))
+    // La rubrique « France & Outre-mer » passe en tête, les continents suivent par ordre alphabétique.
+    const rank = (name: string) => (name.startsWith('France') ? 0 : 1)
+    return Object.entries(buckets).sort(
+      ([a], [b]) => rank(a) - rank(b) || a.localeCompare(b, 'fr')
+    )
   }, [countries, search])
 
   const selectedCountries = useMemo(
@@ -147,12 +151,12 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
           maxzoom,
         })
         if (requestId !== preflightRequestIdRef.current) return
-        if (!res) throw new Error('Preflight returned no data')
+        if (!res) throw new Error("L'estimation n'a renvoyé aucune donnée")
         setPreflight(res)
       } catch (err: any) {
         if (requestId !== preflightRequestIdRef.current) return
         console.error('Preflight failed:', err)
-        setErrorMessage(err?.message ?? 'Estimate failed')
+        setErrorMessage(err?.message ?? "Échec de l'estimation")
       } finally {
         if (requestId === preflightRequestIdRef.current) setLoading(false)
       }
@@ -163,11 +167,11 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
 
   async function startDownload() {
     if (selected.size === 0) {
-      setErrorMessage('Pick at least one country before downloading.')
+      setErrorMessage('Choisissez au moins un pays avant de télécharger.')
       return
     }
     if (loading || !preflight) {
-      setErrorMessage('Still estimating size — hold on a moment.')
+      setErrorMessage('Estimation de la taille en cours — un instant.')
       return
     }
     try {
@@ -181,7 +185,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
       onDownloadStart?.()
     } catch (err: any) {
       console.error('Extract dispatch failed:', err)
-      setErrorMessage(err?.message ?? 'Download failed')
+      setErrorMessage(err?.message ?? 'Échec du téléchargement')
     } finally {
       setDownloading(false)
     }
@@ -190,11 +194,11 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
   return (
     <StyledModal
       {...modalProps}
-      title="Download map by country or region"
+      title="Télécharger une carte par pays ou par région"
       open={true}
-      confirmText="Start Download"
+      confirmText="Lancer le téléchargement"
       confirmIcon="IconDownload"
-      cancelText="Cancel"
+      cancelText="Annuler"
       confirmVariant="primary"
       confirmLoading={loading || downloading}
       cancelLoading={loading || downloading}
@@ -209,7 +213,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder={`Search ${countries.length} countries...`}
+              placeholder={`Rechercher parmi ${countries.length} pays et territoires…`}
               className="w-full pl-9 pr-3 py-2 rounded-md border border-border-default bg-surface-primary text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-desert-green"
             />
           </div>
@@ -219,7 +223,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
               onClick={clearAll}
               className="text-sm text-text-muted hover:text-text-primary px-3 cursor-pointer"
             >
-              Clear all
+              Tout effacer
             </button>
           )}
         </div>
@@ -227,7 +231,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
         {groups.length > 0 && (
           <div>
             <p className="text-xs uppercase tracking-wide text-text-muted mb-2">
-              Quick picks
+              Sélections rapides
             </p>
             <div className="flex flex-wrap gap-2">
               {groups.map((group) => {
@@ -263,7 +267,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
             </div>
           ) : grouped.length === 0 ? (
             <p className="text-text-muted text-sm p-6 text-center">
-              No countries match "{search}".
+              Aucun pays ne correspond à « {search} ».
             </p>
           ) : (
             grouped.map(([continent, list]) => (
@@ -301,9 +305,9 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
                           {isInstalled && (
                             <span
                               className="text-[10px] uppercase tracking-wide font-semibold px-1.5 py-0.5 rounded bg-desert-green/15 text-desert-green border border-desert-green/30"
-                              title="Already downloaded — re-select to update with a different zoom"
+                              title="Déjà téléchargé — sélectionnez-le de nouveau pour le mettre à jour avec un autre zoom"
                             >
-                              Installed
+                              Installé
                             </span>
                           )}
                           <span className="text-xs font-mono text-text-muted">
@@ -322,7 +326,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
         {selectedCountries.length > 0 && (
           <div>
             <p className="text-xs uppercase tracking-wide text-text-muted mb-2">
-              {selectedCountries.length} selected
+              {selectedCountries.length} sélectionné(s)
             </p>
             <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto">
               {selectedCountries.map((country) => (
@@ -335,7 +339,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
                     type="button"
                     onClick={() => toggleCountry(country.code)}
                     className="hover:bg-white/20 rounded cursor-pointer"
-                    aria-label={`Remove ${country.name}`}
+                    aria-label={`Retirer ${country.name}`}
                   >
                     <IconX className="w-3 h-3" />
                   </button>
@@ -347,7 +351,7 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
 
         <div>
           <label className="block text-sm text-text-primary font-medium mb-2">
-            Max zoom level: <span className="font-mono">{maxzoom}</span>
+            Niveau de zoom maximal : <span className="font-mono">{maxzoom}</span>
           </label>
           <input
             type="range"
@@ -360,12 +364,12 @@ const CountryPickerModal: React.FC<CountryPickerModalProps> = ({
             disabled={downloading}
           />
           <div className="flex justify-between text-xs text-text-muted mt-1 font-mono">
-            <span>z{EXTRACT_MIN_ZOOM} (world)</span>
-            <span>z{EXTRACT_MAX_ZOOM} (street)</span>
+            <span>z{EXTRACT_MIN_ZOOM} (monde)</span>
+            <span>z{EXTRACT_MAX_ZOOM} (rue)</span>
           </div>
           <p className="text-xs text-text-muted mt-2">
-            Lower zoom = smaller file, less detail. Zoom 15 shows individual streets;
-            zoom 10 shows city-level detail.
+            Zoom plus faible = fichier plus petit, moins de détails. Le zoom 15 montre chaque rue ;
+            le zoom 10 montre le niveau de la ville.
           </p>
         </div>
 
@@ -395,20 +399,20 @@ function PreflightStatus({ errorMessage, loading, preflight, hasSelection }: Pre
     return <p className="text-desert-red">{errorMessage}</p>
   }
   if (loading) {
-    return <p className="text-text-muted">Estimating size…</p>
+    return <p className="text-text-muted">Estimation de la taille…</p>
   }
   if (preflight) {
     return (
       <p className="text-text-primary">
-        {preflight.tiles.toLocaleString()} tiles, ~{formatBytes(preflight.bytes, 1)}{' '}
-        <span className="text-text-muted">(source build {preflight.source.date})</span>
+        {preflight.tiles.toLocaleString('fr-FR')} tuiles, ~{formatBytes(preflight.bytes, 1)}{' '}
+        <span className="text-text-muted">(carte source du {preflight.source.date})</span>
       </p>
     )
   }
   if (!hasSelection) {
-    return <p className="text-text-muted">Pick at least one country to estimate size.</p>
+    return <p className="text-text-muted">Choisissez au moins un pays pour estimer la taille.</p>
   }
-  return <p className="text-text-muted">Estimating size…</p>
+  return <p className="text-text-muted">Estimation de la taille…</p>
 }
 
 export default CountryPickerModal

@@ -24,11 +24,11 @@ export default function DebugInfoModal({ open, onClose }: DebugInfoModalProps) {
         const browserLine = `Browser: ${navigator.userAgent}`
         setDebugText(text + '\n' + browserLine)
       } else {
-        setDebugText('Failed to load debug info. Please try again.')
+        setDebugText('Impossible de charger les infos de débogage. Veuillez réessayer.')
       }
       setLoading(false)
     }).catch(() => {
-      setDebugText('Failed to load debug info. Please try again.')
+      setDebugText('Impossible de charger les infos de débogage. Veuillez réessayer.')
       setLoading(false)
     })
   }, [open])
@@ -52,14 +52,14 @@ export default function DebugInfoModal({ open, onClose }: DebugInfoModalProps) {
     <StyledModal
       open={open}
       onClose={onClose}
-      title="Debug Info"
+      title="Infos de débogage"
       icon={<IconBug className="size-8 text-desert-green" />}
-      cancelText="Close"
+      cancelText="Fermer"
       onCancel={onClose}
     >
       <p className="text-sm text-gray-500 mb-3 text-left">
-        This is non-sensitive system info you can share when reporting issues.
-        No passwords, IPs, or API keys are included.
+        Ces informations système ne sont pas sensibles : vous pouvez les partager pour signaler un problème.
+        Aucun mot de passe, adresse IP ni clé d'API n'y figure.
       </p>
 
       <textarea
@@ -79,23 +79,23 @@ export default function DebugInfoModal({ open, onClose }: DebugInfoModalProps) {
           {copied ? (
             <>
               <IconCheck className="size-4" />
-              Copied!
+              Copié !
             </>
           ) : (
             <>
               <IconCopy className="size-4" />
-              Copy to Clipboard
+              Copier dans le presse-papiers
             </>
           )}
         </button>
 
         <a
-          href="https://github.com/Crosstalk-Solutions/project-nomad/issues"
+          href="https://github.com/Ti-guigui/project-nomad/issues"
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-desert-green hover:underline"
         >
-          Open a GitHub Issue
+          Ouvrir une issue GitHub
         </a>
       </div>
     </StyledModal>

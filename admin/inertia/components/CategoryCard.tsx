@@ -76,7 +76,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
               <span className="text-lime-400 text-sm ml-1">
                 {badgeTier.name}
                 {badgeStatus === 'downloading' &&
-                  (category.downloadingTierIndexing ? ' (indexing)' : ' (downloading)')}
+                  (category.downloadingTierIndexing ? ' (indexation)' : ' (téléchargement)')}
               </span>
             </div>
           ) : (
@@ -89,9 +89,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
 
       <div className="mt-4 pt-4 border-t border-white/20">
         <p className="text-sm text-gray-300 mb-2">
-          {category.tiers.length} tiers available
+          {category.tiers.length} niveaux disponibles
           {!highlightedTierSlug && (
-            <span className="text-gray-400"> - Click to choose</span>
+            <span className="text-gray-400"> - Cliquez pour choisir</span>
           )}
         </p>
         <div className="flex flex-wrap gap-2">

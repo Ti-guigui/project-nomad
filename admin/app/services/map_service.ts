@@ -35,6 +35,7 @@ import {
   buildPmtilesExtractArgs,
 } from '../../constants/map_regions.js'
 import { CountriesService } from './countries_service.js'
+import { localizeStyleLayers } from '../utils/map_label_language.js'
 import { execFile } from 'child_process'
 import { createHash, randomBytes } from 'crypto'
 import { tmpdir } from 'os'
@@ -602,8 +603,9 @@ export class MapService implements IMapService {
     sprites: string,
     glyphs: string
   ): Promise<BaseStylesFile> {
-    const layersTemplates = template.layers.filter((layer) => layer.source)
-    const withoutSources = template.layers.filter((layer) => !layer.source)
+    const localizedLayers = localizeStyleLayers(template.layers)
+    const layersTemplates = localizedLayers.filter((layer) => layer.source)
+    const withoutSources = localizedLayers.filter((layer) => !layer.source)
 
     template.sources = {} // Clear existing sources
     template.layers = [...withoutSources] // Start with layers that don't depend on sources

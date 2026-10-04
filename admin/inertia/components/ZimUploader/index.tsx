@@ -41,7 +41,7 @@ export default function ZimUploader({ onUploadComplete, existingFilenames }: Zim
           const body = JSON.parse(responseText)
           if (body?.message) return new Error(body.message)
         } catch {}
-        return new Error('Upload failed')
+        return new Error("Échec de l'envoi")
       },
     })
   )
@@ -50,7 +50,7 @@ export default function ZimUploader({ onUploadComplete, existingFilenames }: Zim
     const handleFileAdded = (file: { id: string; name: string }) => {
       if (existingFilenamesRef.current.includes(file.name)) {
         uppy.removeFile(file.id)
-        uppy.info('A ZIM file with that name already exists', 'error', 6000)
+        uppy.info('Un fichier ZIM portant ce nom existe déjà', 'error', 6000)
         return
       }
 
@@ -59,7 +59,7 @@ export default function ZimUploader({ onUploadComplete, existingFilenames }: Zim
         const alreadyQueued = uppy.getFiles().some((f) => f.id !== file.id && isWikipedia(f.name))
         if (alreadyQueued) {
           uppy.removeFile(file.id)
-          uppy.info('Only one Wikipedia file can be uploaded at a time', 'error', 6000)
+          uppy.info('Un seul fichier Wikipédia peut être envoyé à la fois', 'error', 6000)
         }
       }
     }
@@ -89,7 +89,7 @@ export default function ZimUploader({ onUploadComplete, existingFilenames }: Zim
       uppy={uppy}
       width="100%"
       height={300}
-      note="ZIM files only. Large files (up to 20 GB) are supported. For best results, upload from the same machine or over a stable LAN connection. Larger files should be copied directly to the storage volume"
+      note="Fichiers ZIM uniquement. Les gros fichiers (jusqu'à 20 Go) sont acceptés. Pour de meilleurs résultats, envoyez-les depuis la même machine ou via une connexion locale stable. Les fichiers plus gros doivent être copiés directement sur le volume de stockage"
     />
   )
 }

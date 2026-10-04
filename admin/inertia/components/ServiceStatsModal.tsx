@@ -71,29 +71,29 @@ export default function ServiceStatsModal({
 
   return (
     <StyledModal
-      title={`Stats — ${friendlyName}`}
+      title={`Statistiques — ${friendlyName}`}
       open={open}
       onCancel={onClose}
-      cancelText="Close"
+      cancelText="Fermer"
     >
       <div className="space-y-4 text-sm">
         {!running ? (
           <p className="text-text-muted text-center py-6">
-            This app is not running. Start it to see live resource usage.
+            Cette application n'est pas démarrée. Démarrez-la pour voir sa consommation en direct.
           </p>
         ) : !stats ? (
           <p className="text-text-muted text-center py-6">
-            {loading ? 'Loading…' : 'No stats available.'}
+            {loading ? 'Chargement…' : 'Aucune statistique disponible.'}
           </p>
         ) : (
           <>
-            <Bar label="CPU" percent={stats.cpuPercent} value={`${stats.cpuPercent.toFixed(1)}%`} />
+            <Bar label="Processeur" percent={stats.cpuPercent} value={`${stats.cpuPercent.toFixed(1)}%`} />
             <Bar
-              label="Memory"
+              label="Mémoire"
               percent={stats.memPercent}
               value={`${formatBytes(stats.memUsageBytes)} / ${formatBytes(stats.memLimitBytes)} (${stats.memPercent.toFixed(1)}%)`}
             />
-            <p className="text-xs text-text-muted">Updates every 2 seconds.</p>
+            <p className="text-xs text-text-muted">Mise à jour toutes les 2 secondes.</p>
           </>
         )}
       </div>

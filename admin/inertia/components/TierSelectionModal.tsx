@@ -216,7 +216,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                 {/* Content */}
                 <div className="p-6">
                   <p className="text-text-secondary mb-6">
-                    Select a tier based on your storage capacity and needs. Higher tiers include all content from lower tiers.
+                    Choisissez un niveau selon votre espace de stockage et vos besoins. Les niveaux supérieurs incluent tout le contenu des niveaux inférieurs.
                   </p>
 
                   <div className="space-y-4">
@@ -249,7 +249,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                                 </h3>
                                 {includedTierName && (
                                   <span className="text-xs text-text-muted">
-                                    (includes {includedTierName})
+                                    (inclut {includedTierName})
                                   </span>
                                 )}
                               </div>
@@ -260,11 +260,11 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                                 <p className="text-xs text-text-muted mb-2 font-medium">
                                   {includedTierName ? (
                                     <>
-                                      {ownResourceCount} additional {ownResourceCount === 1 ? 'resource' : 'resources'}
-                                      <span className="text-text-muted"> (plus everything in {includedTierName})</span>
+                                      {ownResourceCount} {ownResourceCount === 1 ? 'ressource supplémentaire' : 'ressources supplémentaires'}
+                                      <span className="text-text-muted"> (en plus de tout le niveau {includedTierName})</span>
                                     </>
                                   ) : (
-                                    <>{ownResourceCount} {ownResourceCount === 1 ? 'resource' : 'resources'} included</>
+                                    <>{ownResourceCount} {ownResourceCount === 1 ? 'ressource incluse' : 'ressources incluses'}</>
                                   )}
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -313,20 +313,20 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                         <div className="flex-1">
                           <p className="text-text-primary">
                             <span className="font-medium">+~{formatBytes(embedEstimate.totalBytes, 1)}</span>
-                            {' '}of additional storage if these are indexed for the AI Assistant
+                            {' '}d'espace supplémentaire si ces fichiers sont indexés pour l'assistant IA
                             {embedEstimate.hasUnknown && (
-                              <span className="text-text-muted"> (estimate excludes some files we have no prior data for)</span>
+                              <span className="text-text-muted"> (l'estimation exclut certains fichiers pour lesquels nous n'avons pas de données)</span>
                             )}
                             .
                           </p>
                           <p className="text-text-muted text-xs mt-1">
                             {ingestPolicy === 'Always' ? (
                               <>
-                                Your <strong>Auto-index</strong> setting is <strong>Always</strong>, so these files will be indexed automatically once downloaded. You can change this in the Knowledge Base settings.
+                                Votre réglage d'<strong>indexation automatique</strong> est sur <strong>Toujours</strong> : ces fichiers seront indexés automatiquement une fois téléchargés. Vous pouvez le changer dans les réglages de la base de connaissances.
                               </>
                             ) : (
                               <>
-                                Your <strong>Auto-index</strong> setting is <strong>Manual</strong>, so these files will sit unindexed until you opt in from the Knowledge Base settings.
+                                Votre réglage d'<strong>indexation automatique</strong> est sur <strong>Manuel</strong> : ces fichiers resteront non indexés jusqu'à ce que vous l'activiez dans les réglages de la base de connaissances.
                               </>
                             )}
                           </p>
@@ -339,7 +339,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                   <div className="mt-4 flex items-start gap-2 text-sm text-text-muted bg-blue-50 p-3 rounded">
                     <IconInfoCircle size={18} className="text-blue-500 flex-shrink-0 mt-0.5" />
                     <p>
-                      You can change your selection at any time. Click Submit to confirm your choice.
+                      Vous pouvez modifier votre sélection à tout moment. Cliquez sur Valider pour confirmer votre choix.
                     </p>
                   </div>
                 </div>
@@ -352,7 +352,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                     onClick={handleSubmit}
                     disabled={!localSelectedSlug || (embedEstimateRequest.length > 0 && isEstimating)}
                   >
-                    Submit
+                    Valider
                   </StyledButton>
                 </div>
               </Dialog.Panel>

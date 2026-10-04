@@ -14,11 +14,11 @@ export default function ThemeToggle({ compact = false }: ThemeToggleProps) {
       onClick={toggleTheme}
       className="flex items-center gap-1.5 rounded-md px-2 py-1 text-sm transition-colors
                  text-desert-stone hover:text-desert-green-darker cursor-pointer"
-      aria-label={isDark ? 'Switch to Day Ops' : 'Switch to Night Ops'}
-      title={isDark ? 'Switch to Day Ops' : 'Switch to Night Ops'}
+      aria-label={isDark ? 'Passer en mode jour' : 'Passer en mode nuit'}
+      title={isDark ? 'Passer en mode jour' : 'Passer en mode nuit'}
     >
       {isDark ? <IconSun className="size-4" /> : <IconMoon className="size-4" />}
-      {!compact && <span>{isDark ? 'Day Ops' : 'Night Ops'}</span>}
+      {!compact && <span>{isDark ? 'Mode jour' : 'Mode nuit'}</span>}
     </button>
   )
 }

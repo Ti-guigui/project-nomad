@@ -6,11 +6,11 @@ import type { MapMarkerResponse } from '../../types/maps'
 
 export const PIN_COLORS = [
   { id: 'orange', label: 'Orange', hex: '#a84a12' },
-  { id: 'red', label: 'Red', hex: '#994444' },
-  { id: 'green', label: 'Green', hex: '#424420' },
-  { id: 'blue', label: 'Blue', hex: '#2563eb' },
-  { id: 'purple', label: 'Purple', hex: '#7c3aed' },
-  { id: 'yellow', label: 'Yellow', hex: '#ca8a04' },
+  { id: 'red', label: 'Rouge', hex: '#994444' },
+  { id: 'green', label: 'Vert', hex: '#424420' },
+  { id: 'blue', label: 'Bleu', hex: '#2563eb' },
+  { id: 'purple', label: 'Violet', hex: '#7c3aed' },
+  { id: 'yellow', label: 'Jaune', hex: '#ca8a04' },
 ] as const
 
 export type PinColorId = (typeof PIN_COLORS)[number]['id']

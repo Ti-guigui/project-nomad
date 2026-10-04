@@ -11,10 +11,10 @@ import { useContentAutoUpdateStatus } from '~/hooks/useContentAutoUpdateStatus'
 import { formatBytes } from '~/lib/util'
 
 const COOLOFF_OPTIONS = [
-  { value: 24, label: '24 hours (1 day)' },
-  { value: 48, label: '48 hours (2 days)' },
-  { value: 72, label: '72 hours (3 days)' },
-  { value: 168, label: '7 days' },
+  { value: 24, label: '24 heures (1 jour)' },
+  { value: 48, label: '48 heures (2 jours)' },
+  { value: 72, label: '72 heures (3 jours)' },
+  { value: 168, label: '7 jours' },
 ]
 
 const BYTES_PER_GB = 1024 * 1024 * 1024
@@ -54,19 +54,19 @@ export default function ContentAutoUpdateSection() {
       addNotification({
         type: 'success',
         message: value
-          ? 'Automatic content updates enabled.'
-          : 'Automatic content updates disabled.',
+          ? 'Mises à jour automatiques des contenus activées.'
+          : 'Mises à jour automatiques des contenus désactivées.',
       })
     },
     onError: () => {
-      addNotification({ type: 'error', message: 'Failed to update content auto-update setting.' })
+      addNotification({ type: 'error', message: 'Impossible de modifier le réglage de mise à jour automatique des contenus.' })
     },
   })
 
   const handleSaveSchedule = async () => {
     const parsedGb = Number(capGb)
     if (!Number.isFinite(parsedGb) || parsedGb < 0) {
-      addNotification({ type: 'error', message: 'Data cap must be 0 or a positive number of GB.' })
+      addNotification({ type: 'error', message: 'Le plafond de données doit être 0 ou un nombre positif de Go.' })
       return
     }
     const capBytes = Math.round(parsedGb * BYTES_PER_GB)
@@ -76,23 +76,23 @@ export default function ContentAutoUpdateSection() {
       await api.updateSetting('contentAutoUpdate.cooloffHours', String(cooloff))
       await api.updateSetting('contentAutoUpdate.maxBytesPerWindow', String(capBytes))
       queryClient.invalidateQueries({ queryKey: ['content-auto-update-status'] })
-      addNotification({ type: 'success', message: 'Content update schedule saved.' })
+      addNotification({ type: 'success', message: 'Planification des mises à jour des contenus enregistrée.' })
     } catch {
-      addNotification({ type: 'error', message: 'Failed to save content update schedule.' })
+      addNotification({ type: 'error', message: "Impossible d'enregistrer la planification des mises à jour des contenus." })
     }
   }
 
   return (
     <>
-      <StyledSectionHeader title="Automatic Content Updates" className="mt-8" />
+      <StyledSectionHeader title="Mises à jour automatiques des contenus" className="mt-8" />
       <div className="bg-surface-primary rounded-lg border shadow-md overflow-hidden mt-6 p-6">
         {autoDisabled && (
           <Alert
             type="warning"
-            title="Automatic Content Updates Disabled"
+            title="Mises à jour automatiques des contenus désactivées"
             message={
               status?.autoDisabledReason ||
-              'Automatic content updates were disabled after repeated failures.'
+              'Les mises à jour automatiques des contenus ont été désactivées après plusieurs échecs.'
             }
             variant="bordered"
             className="mb-4"
@@ -103,37 +103,37 @@ export default function ContentAutoUpdateSection() {
           checked={enabled}
           onChange={(value) => toggleMutation.mutate(value)}
           disabled={toggleMutation.isPending || isLoading}
-          label="Enable Automatic Content Updates"
-          description="Automatically download newer versions of your installed Information Library content (ZIM files) and maps during your chosen window. Content downloads can be very large, so set a per-window data cap to limit how much is pulled at once. We recommend allowing at least 0.5 GB per update window to ensure most updates can be pulled in a timely manner, but you can set a lower cap if you have very limited bandwidth and don't mind some updates being skipped (they will still appear in the UI and can be updated manually). If an update repeatedly fails to download within the window, it will be automatically disabled and require manual intervention to re-enable."
+          label="Activer les mises à jour automatiques des contenus"
+          description="Télécharge automatiquement les nouvelles versions des contenus installés de la Bibliothèque d'information (fichiers ZIM) et des cartes pendant le créneau choisi. Ces téléchargements peuvent être très volumineux : fixez un plafond de données par créneau pour limiter ce qui est récupéré d'un coup. Nous conseillons au moins 0,5 Go par créneau pour que la plupart des mises à jour passent rapidement, mais vous pouvez fixer un plafond plus bas si votre bande passante est très limitée et que vous acceptez que certaines mises à jour soient reportées (elles restent visibles et peuvent être faites à la main). Si une mise à jour échoue plusieurs fois dans le créneau, elle est automatiquement désactivée et devra être réactivée manuellement."
         />
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Input
             name="contentWindowStart"
-            label="Window Start"
+            label="Début du créneau"
             type="time"
             value={windowStart}
             onChange={(e) => setWindowStart(e.target.value)}
             disabled={!enabled}
-            helpText="Local server time"
+            helpText="Heure locale du serveur"
           />
           <Input
             name="contentWindowEnd"
-            label="Window End"
+            label="Fin du créneau"
             type="time"
             value={windowEnd}
             onChange={(e) => setWindowEnd(e.target.value)}
             disabled={!enabled}
-            helpText="Local server time"
+            helpText="Heure locale du serveur"
           />
           <div>
             <label
               htmlFor="contentCooloff"
               className="block text-base/6 font-medium text-text-primary"
             >
-              Cool-off Period
+              Délai de carence
             </label>
-            <p className="mt-1 text-sm text-text-muted">Delay after a new version appears</p>
+            <p className="mt-1 text-sm text-text-muted">Délai après l'apparition d'une nouvelle version</p>
             <select
               id="contentCooloff"
               value={cooloff}
@@ -150,42 +150,42 @@ export default function ContentAutoUpdateSection() {
           </div>
           <Input
             name="contentDataCap"
-            label="Data Cap (GB)"
+            label="Plafond de données (Go)"
             type="number"
             min="0"
             step="1"
             value={capGb}
             onChange={(e) => setCapGb(e.target.value)}
             disabled={!enabled}
-            helpText="Per window. 0 = unlimited"
+            helpText="Par créneau. 0 = illimité"
           />
         </div>
 
         <div className="mt-4 flex justify-end">
           <StyledButton variant="primary" size="sm" onClick={handleSaveSchedule} disabled={!enabled}>
-            Save Schedule
+            Enregistrer la planification
           </StyledButton>
         </div>
 
         {enabled && status && (
           <div className="mt-6 pt-4 border-t border-desert-stone-light text-sm">
             <p className="text-desert-stone mb-3">
-              <span className="font-medium">Update window: </span>
+              <span className="font-medium">Créneau de mise à jour : </span>
               {status.windowStart}–{status.windowEnd} (
-              {status.withinWindow ? 'currently inside' : 'currently outside'}); cool-off{' '}
-              {status.cooloffHours}h; data cap{' '}
-              {status.maxBytesPerWindow > 0 ? formatBytes(status.maxBytesPerWindow) : 'unlimited'}
+              {status.withinWindow ? 'actuellement dedans' : 'actuellement hors créneau'}) ; carence{' '}
+              {status.cooloffHours} h ; plafond{' '}
+              {status.maxBytesPerWindow > 0 ? formatBytes(status.maxBytesPerWindow) : 'illimité'}
               {status.maxBytesPerWindow > 0 && (
-                <> ({formatBytes(status.windowBytesUsed)} used this window)</>
+                <> ({formatBytes(status.windowBytesUsed)} utilisés dans ce créneau)</>
               )}
               .
               {status.lastResult && (
                 <>
                   {' '}
-                  <span className="font-medium">Last run: </span>
+                  <span className="font-medium">Dernière exécution : </span>
                   {status.lastResult}
                   {status.lastAttemptAt
-                    ? ` (${new Date(status.lastAttemptAt).toLocaleString()})`
+                    ? ` (${new Date(status.lastAttemptAt).toLocaleString('fr-FR')})`
                     : ''}
                 </>
               )}
@@ -193,14 +193,14 @@ export default function ContentAutoUpdateSection() {
 
             {status.lastError && (
               <p className="text-desert-red mb-3">
-                <span className="font-medium">Last error: </span>
+                <span className="font-medium">Dernière erreur : </span>
                 {status.lastError}
               </p>
             )}
 
             {status.resources.length === 0 ? (
               <p className="text-desert-stone-dark">
-                All installed content is up to date. New versions will appear here when detected.
+                Tous les contenus installés sont à jour. Les nouvelles versions apparaîtront ici dès leur détection.
               </p>
             ) : (
               <ul className="space-y-2">
@@ -220,7 +220,7 @@ export default function ContentAutoUpdateSection() {
                         {resource.current_version}
                         {resource.available_update_version
                           ? ` → ${resource.available_update_version}`
-                          : ' (up to date)'}
+                          : ' (à jour)'}
                         {resource.size_bytes ? ` · ${formatBytes(resource.size_bytes)}` : ''}
                       </p>
                       {resource.auto_disabled_reason && (
@@ -235,7 +235,7 @@ export default function ContentAutoUpdateSection() {
                             : 'text-desert-stone'
                         }`}
                     >
-                      {resource.exceeds_cap ? 'Skipped — exceeds data cap, update manually' : resource.reason}
+                      {resource.exceeds_cap ? 'Ignorée — dépasse le plafond de données, à mettre à jour manuellement' : resource.reason}
                     </span>
                   </li>
                 ))}

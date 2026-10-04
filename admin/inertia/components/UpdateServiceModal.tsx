@@ -36,7 +36,7 @@ export default function UpdateServiceModal({
                 setVersions(result.versions)
             }
         } catch (error) {
-            showError('Failed to load available versions')
+            showError('Impossible de charger les versions disponibles')
         } finally {
             setLoadingVersions(false)
         }
@@ -50,23 +50,23 @@ export default function UpdateServiceModal({
 
     return (
         <StyledModal
-            title="Update Service"
+            title="Mettre à jour le service"
             onConfirm={() => onUpdate(selectedVersion)}
             onCancel={onCancel}
             open={true}
-            confirmText="Update"
-            cancelText="Cancel"
+            confirmText="Mettre à jour"
+            cancelText="Annuler"
             confirmVariant="primary"
             icon={<IconArrowUp className="h-12 w-12 text-desert-green" />}
         >
             <div className="space-y-4">
                 <p className="text-text-primary">
-                    Update <strong>{record.friendly_name || record.service_name}</strong> from{' '}
-                    <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">{currentTag}</code> to{' '}
-                    <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">{selectedVersion}</code>?
+                    Mettre à jour <strong>{record.friendly_name || record.service_name}</strong> de{' '}
+                    <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">{currentTag}</code> vers{' '}
+                    <code className="bg-surface-secondary px-1.5 py-0.5 rounded text-sm">{selectedVersion}</code> ?
                 </p>
                 <p className="text-sm text-text-muted">
-                    Your data and configuration will be preserved during the update.
+                    Vos données et votre configuration seront conservées pendant la mise à jour.
                     {versions.find((v) => v.tag === selectedVersion)?.releaseUrl && (
                         <>
                             {' '}
@@ -76,7 +76,7 @@ export default function UpdateServiceModal({
                                 rel="noopener noreferrer"
                                 className="text-desert-green hover:underline"
                             >
-                                View release notes
+                                Voir les notes de version
                             </a>
                         </>
                     )}
@@ -88,16 +88,16 @@ export default function UpdateServiceModal({
                         onClick={handleToggleAdvanced}
                         className="text-sm text-desert-green hover:underline font-medium"
                     >
-                        {showAdvanced ? 'Hide' : 'Show'} available versions
+                        {showAdvanced ? 'Masquer' : 'Afficher'} les versions disponibles
                     </button>
 
                     {showAdvanced && (
                         <>
                             <div className="mt-3 max-h-48 overflow-y-auto border rounded-lg divide-y">
                                 {loadingVersions ? (
-                                    <div className="p-4 text-center text-text-muted text-sm">Loading versions...</div>
+                                    <div className="p-4 text-center text-text-muted text-sm">Chargement des versions…</div>
                                 ) : versions.length === 0 ? (
-                                    <div className="p-4 text-center text-text-muted text-sm">No other versions available</div>
+                                    <div className="p-4 text-center text-text-muted text-sm">Aucune autre version disponible</div>
                                 ) : (
                                     versions.map((v) => (
                                         <label
@@ -115,7 +115,7 @@ export default function UpdateServiceModal({
                                             <span className="text-sm font-medium text-text-primary">{v.tag}</span>
                                             {v.isLatest && (
                                                 <span className="text-xs bg-desert-green/10 text-desert-green px-2 py-0.5 rounded-full">
-                                                    Latest
+                                                    Dernière
                                                 </span>
                                             )}
                                             {v.releaseUrl && (
@@ -126,7 +126,7 @@ export default function UpdateServiceModal({
                                                     className="ml-auto text-xs text-desert-green hover:underline"
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
-                                                    Release notes
+                                                    Notes de version
                                                 </a>
                                             )}
                                         </label>
@@ -134,7 +134,7 @@ export default function UpdateServiceModal({
                                 )}
                             </div>
                             <p className="mt-2 text-sm text-text-muted">
-                                It's not recommended to upgrade to a new major version (e.g. 1.8.2 &rarr; 2.0.0) unless you have verified compatibility with your current configuration. Always review the release notes and test in a staging environment if possible.
+                                Il est déconseillé de passer à une nouvelle version majeure (ex. 1.8.2 &rarr; 2.0.0) sans avoir vérifié la compatibilité avec votre configuration actuelle. Lisez toujours les notes de version et testez d'abord dans un environnement de test si possible.
                             </p>
                         </>
                     )}

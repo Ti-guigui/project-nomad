@@ -18,40 +18,40 @@ export default function AppAutoUpdateSection() {
       queryClient.invalidateQueries({ queryKey: ['app-auto-update-status'] })
       addNotification({
         type: 'success',
-        message: value ? 'App automatic updates enabled.' : 'App automatic updates disabled.',
+        message: value ? 'Mises à jour automatiques des applications activées.' : 'Mises à jour automatiques des applications désactivées.',
       })
     },
     onError: () => {
-      addNotification({ type: 'error', message: 'Failed to update app auto-update setting.' })
+      addNotification({ type: 'error', message: 'Impossible de modifier le réglage de mise à jour automatique des applications.' })
     },
   })
 
   return (
     <>
-      <StyledSectionHeader title="Automatic App Updates" className="mt-8" />
+      <StyledSectionHeader title="Mises à jour automatiques des applications" className="mt-8" />
       <div className="bg-surface-primary rounded-lg border shadow-md overflow-hidden mt-6 p-6">
         <Switch
           checked={enabled}
           onChange={(value) => toggleMutation.mutate(value)}
           disabled={toggleMutation.isPending || isLoading}
-          label="Enable Automatic App Updates"
-          description="Automatically install minor and patch updates for apps you've opted in (toggle each app in Supply Depot). Major versions always require a manual update. Uses the same update window and cool-off period as the core schedule above."
+          label="Activer les mises à jour automatiques des applications"
+          description="Installe automatiquement les versions mineures et correctives des applications choisies (interrupteur sur chaque application dans le Dépôt d'applications). Les versions majeures demandent toujours une mise à jour manuelle. Utilise le même créneau et le même délai de carence que le logiciel ci-dessus."
         />
 
         {enabled && status && (
           <div className="mt-6 pt-4 border-t border-desert-stone-light text-sm">
             <p className="text-desert-stone mb-3">
-              <span className="font-medium">Update window: </span>
+              <span className="font-medium">Créneau de mise à jour : </span>
               {status.windowStart}–{status.windowEnd} (
-              {status.withinWindow ? 'currently inside' : 'currently outside'}); cool-off{' '}
-              {status.cooloffHours}h.
+              {status.withinWindow ? 'actuellement dedans' : 'actuellement hors créneau'}) ; carence{' '}
+              {status.cooloffHours} h.
               {status.lastResult && (
                 <>
                   {' '}
-                  <span className="font-medium">Last run: </span>
+                  <span className="font-medium">Dernière exécution : </span>
                   {status.lastResult}
                   {status.lastAttemptAt
-                    ? ` (${new Date(status.lastAttemptAt).toLocaleString()})`
+                    ? ` (${new Date(status.lastAttemptAt).toLocaleString('fr-FR')})`
                     : ''}
                 </>
               )}
@@ -59,7 +59,7 @@ export default function AppAutoUpdateSection() {
 
             {status.apps.length === 0 ? (
               <p className="text-desert-stone-dark">
-                No apps are opted in yet. Enable auto-update on individual apps from the Supply Depot.
+                Aucune application n'est encore choisie. Activez la mise à jour automatique sur chaque application depuis le Dépôt d'applications.
               </p>
             ) : (
               <ul className="space-y-2">
@@ -76,7 +76,7 @@ export default function AppAutoUpdateSection() {
                         {app.current_version}
                         {app.available_update_version
                           ? ` → ${app.available_update_version}`
-                          : ' (up to date)'}
+                          : ' (à jour)'}
                       </p>
                       {app.auto_disabled_reason && (
                         <p className="text-desert-red mt-0.5">{app.auto_disabled_reason}</p>
