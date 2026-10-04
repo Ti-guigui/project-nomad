@@ -302,20 +302,20 @@ export class BenchmarkService {
       : await this.getLatestResult()
 
     if (!result) {
-      throw new Error('No benchmark result found to submit')
+      throw new Error("Aucun résultat de banc d'essai à envoyer")
     }
 
     // Only allow full benchmarks with AI data to be submitted to repository
     if (result.benchmark_type !== 'full') {
-      throw new Error('Only full benchmarks can be shared with the community. Run a Full Benchmark to share your results.')
+      throw new Error("Seuls les bancs d'essai complets peuvent être partagés avec la communauté. Lancez un banc d'essai complet pour partager vos résultats.")
     }
 
     if (!result.ai_tokens_per_second || result.ai_tokens_per_second <= 0) {
-      throw new Error('Benchmark must include AI performance data. Ensure AI Assistant is installed and run a Full Benchmark.')
+      throw new Error("Le banc d'essai doit contenir des données de performance de l'IA. Vérifiez que l'assistant IA est installé et lancez un banc d'essai complet.")
     }
 
     if (result.submitted_to_repository) {
-      throw new Error('Benchmark result has already been submitted')
+      throw new Error("Ce résultat de banc d'essai a déjà été envoyé")
     }
 
     // Remote inference cannot be attributed to this machine.
@@ -512,7 +512,7 @@ export class BenchmarkService {
    * Detect system hardware information
    */
   async getHardwareInfo(): Promise<HardwareInfo> {
-    this._updateStatus('detecting_hardware', 'Detecting system hardware...')
+    this._updateStatus('detecting_hardware', 'Détection du matériel…')
 
     try {
       const [cpu, mem, diskLayout, graphics] = await Promise.all([
@@ -650,7 +650,7 @@ export class BenchmarkService {
       }
     } catch (error: any) {
       logger.error(`Error detecting hardware: ${error.message}`)
-      throw new Error(`Failed to detect hardware: ${error.message}`)
+      throw new Error(`Impossible de détecter le matériel : ${error.message}`)
     }
   }
 
@@ -659,7 +659,7 @@ export class BenchmarkService {
    */
   private async _runBenchmark(type: BenchmarkType, includeAI: boolean): Promise<BenchmarkResult> {
     if (this.currentStatus !== 'idle') {
-      throw new Error('A benchmark is already running')
+      throw new Error("Un banc d'essai est déjà en cours")
     }
 
     this.currentBenchmarkId = randomUUID()
@@ -671,7 +671,7 @@ export class BenchmarkService {
     this.telemetry = new BenchmarkTelemetrySampler(this.currentBenchmarkId)
     this.telemetry.start()
 
-    this._updateStatus('starting', 'Starting benchmark...')
+    this._updateStatus('starting', "Démarrage du banc d'essai…")
 
     try {
       // Fail fast: if this run will download the (large) AI model, make sure there's
@@ -706,15 +706,15 @@ export class BenchmarkService {
           if (aiScores.ai_tokens_per_second !== undefined && aiScores.ai_tokens_per_second !== null) {
             this._emitPartialResult({
               status: 'running_ai',
-              label: 'AI',
+              label: 'IA',
               value: Math.round(aiScores.ai_tokens_per_second),
-              unit: 'tok/s',
+              unit: 'jetons/s',
             })
           }
         } catch (error: any) {
           // For AI-only benchmarks, failing is fatal - don't save useless results with all zeros
           if (type === 'ai') {
-            throw new Error(`AI benchmark failed: ${error.message}. Make sure AI Assistant is installed and running.`)
+            throw new Error(`Échec du test de l'IA : ${error.message}. Vérifiez que l'assistant IA est installé et démarré.`)
           }
           // For full benchmarks, AI is optional - continue without it
           logger.warn(`AI benchmark skipped: ${error.message}`)
@@ -727,7 +727,7 @@ export class BenchmarkService {
       const sysbenchDigest = systemRaws ? await this._resolveSysbenchDigest() : null
 
       // Calculate NOMAD scores (v1 legacy + v2 uncapped)
-      this._updateStatus('calculating_score', 'Calculating NOMAD score...')
+      this._updateStatus('calculating_score', 'Calcul du score NOMAD…')
       const nomadScore = this._calculateNomadScore(systemScores, aiScores)
 
       // v2 requires a complete run of every channel (system raws + AI). Only a
@@ -793,13 +793,13 @@ export class BenchmarkService {
         os_version: env.os_version,
       })
 
-      this._updateStatus('completed', 'Benchmark completed successfully')
+      this._updateStatus('completed', "Banc d'essai terminé")
       this.currentStatus = 'idle'
       this.currentBenchmarkId = null
 
       return result
     } catch (error: any) {
-      this._updateStatus('error', `Benchmark failed: ${error.message}`)
+      this._updateStatus('error', `Échec du banc d'essai : ${error.message}`)
       this.currentStatus = 'idle'
       this.currentBenchmarkId = null
       throw error
@@ -825,39 +825,39 @@ export class BenchmarkService {
     await this._ensureSysbenchImage()
 
     // Run CPU benchmarks: single-thread then all-thread.
-    this._updateStatus('running_cpu', 'Running CPU benchmark (single-thread)...')
+    this._updateStatus('running_cpu', 'Test du processeur (mono-thread)…')
     const cpuSingle = await this._runSysbenchCpu(1)
 
-    this._updateStatus('running_cpu', `Running CPU benchmark (${multiThreads}-thread)...`)
+    this._updateStatus('running_cpu', `Test du processeur (${multiThreads} threads)…`)
     const cpuMulti = await this._runSysbenchCpu(multiThreads)
 
     // Run memory benchmark
-    this._updateStatus('running_memory', 'Running memory benchmark...')
+    this._updateStatus('running_memory', 'Test de la mémoire…')
     const memoryResult = await this._runSysbenchMemory()
     this._emitPartialResult({
       status: 'running_memory',
-      label: 'Memory',
+      label: 'Mémoire',
       value: Math.round(memoryResult.operations_per_second),
       unit: 'ops/s',
     })
 
     // Run disk benchmarks
-    this._updateStatus('running_disk_read', 'Running disk read benchmark...')
+    this._updateStatus('running_disk_read', 'Test de lecture disque…')
     const diskReadResult = await this._runSysbenchDiskRead()
     this._emitPartialResult({
       status: 'running_disk_read',
-      label: 'Read',
+      label: 'Lecture',
       value: Math.round(diskReadResult.read_mb_per_sec),
-      unit: 'MB/s',
+      unit: 'Mo/s',
     })
 
-    this._updateStatus('running_disk_write', 'Running disk write benchmark...')
+    this._updateStatus('running_disk_write', "Test d'écriture disque…")
     const diskWriteResult = await this._runSysbenchDiskWrite()
     this._emitPartialResult({
       status: 'running_disk_write',
-      label: 'Write',
+      label: 'Écriture',
       value: Math.round(diskWriteResult.write_mb_per_sec),
-      unit: 'MB/s',
+      unit: 'Mo/s',
     })
 
     // Legacy v1 sub-scores (0-1), normalized against the v1 references. cpu_score
@@ -955,11 +955,11 @@ export class BenchmarkService {
       // Live GPU-util overlay poller. Side-effect-only: it feeds telemetry frames
       // and is cleared in the finally below so it never outlives the AI stage.
 
-      this._updateStatus('running_ai', 'Running AI benchmark...')
+      this._updateStatus('running_ai', "Test de l'IA…")
 
       const ollamaAPIURL = await this.dockerService.getServiceURL(SERVICE_NAMES.OLLAMA)
       if (!ollamaAPIURL) {
-        throw new Error('AI Assistant service location could not be determined. Ensure AI Assistant is installed and running.')
+        throw new Error("Impossible de localiser le service de l'assistant IA. Vérifiez qu'il est installé et démarré.")
       }
 
       // Check if Ollama is available
@@ -967,7 +967,7 @@ export class BenchmarkService {
         await axios.get(`${ollamaAPIURL}/api/tags`, { timeout: 5000 })
       } catch (error: any) {
         const errorCode = error.code || error.response?.status || 'unknown'
-        throw new Error(`Ollama is not running or not accessible (${errorCode}). Ensure AI Assistant is installed and running.`)
+        throw new Error(`Ollama n'est pas démarré ou pas accessible (${errorCode}). Vérifiez que l'assistant IA est installé et démarré.`)
       }
 
       // Record the Ollama version for forensics (null-tolerant — never fail the run on this)
@@ -1001,7 +1001,7 @@ export class BenchmarkService {
       const ollamaService = new (await import('./ollama_service.js')).OllamaService()
       const modelResponse = await ollamaService.downloadModel(AI_BENCHMARK_MODEL)
       if (!modelResponse.success) {
-        throw new Error(`Model does not exist and failed to download: ${modelResponse.message}`)
+        throw new Error(`Le modèle n'existe pas et n'a pas pu être téléchargé : ${modelResponse.message}`)
       }
 
       // Evict any other models resident in VRAM/RAM before benchmarking. With an 8B
@@ -1024,7 +1024,7 @@ export class BenchmarkService {
       // reproducibility guarantee did not actually apply indistinguishable from
       // a clean one after the fact. Matches _unloadResidentModels, the sibling
       // best-effort helper, which already warns on every swallowed error.
-      this._updateStatus('running_ai', 'Warming up AI model...')
+      this._updateStatus('running_ai', 'Préchauffage du modèle IA…')
       await this._runSingleAIInference(ollamaAPIURL).catch((error) => {
         logger.warn(
           `[BenchmarkService] AI warm-up failed (${error?.message ?? error}); the first timed run may be cold.`
@@ -1040,7 +1040,7 @@ export class BenchmarkService {
       // inference.
       const runs: { tps: number; ttft: number }[] = []
       for (let i = 0; i < AI_BENCHMARK_RUNS; i++) {
-        this._updateStatus('running_ai', `Running AI benchmark (${i + 1}/${AI_BENCHMARK_RUNS})...`)
+        this._updateStatus('running_ai', `Test de l'IA (${i + 1}/${AI_BENCHMARK_RUNS})…`)
         runs.push(await this._runSingleAIInference(ollamaAPIURL))
       }
 
@@ -1060,7 +1060,7 @@ export class BenchmarkService {
         ai_ollama_version: ollamaVersion,
       }
     } catch (error: any) {
-      throw new Error(`AI benchmark failed: ${error.message}`)
+      throw new Error(`Échec du test de l'IA : ${error.message}`)
     } finally {
       if (gpuPollTimer) {
         clearInterval(gpuPollTimer)
@@ -1360,7 +1360,7 @@ export class BenchmarkService {
     try {
       await this.dockerService.docker.getImage(SYSBENCH_IMAGE).inspect()
     } catch {
-      this._updateStatus('starting', `Pulling sysbench image...`)
+      this._updateStatus('starting', `Téléchargement de l'image sysbench…`)
       await this.dockerService.pullImage(SYSBENCH_IMAGE)
     }
   }
@@ -1779,18 +1779,18 @@ export class BenchmarkService {
    */
   private _getStageLabel(status: BenchmarkStatus): string {
     const labelMap: Record<BenchmarkStatus, string> = {
-      idle: 'Idle',
-      starting: 'Starting',
-      detecting_hardware: 'Detecting Hardware',
-      running_cpu: 'CPU Benchmark',
-      running_memory: 'Memory Benchmark',
-      running_disk_read: 'Disk Read Test',
-      running_disk_write: 'Disk Write Test',
-      downloading_ai_model: 'Downloading AI Model',
-      running_ai: 'AI Inference Test',
-      calculating_score: 'Calculating Score',
-      completed: 'Complete',
-      error: 'Error',
+      idle: 'En attente',
+      starting: 'Démarrage',
+      detecting_hardware: 'Détection du matériel',
+      running_cpu: 'Test du processeur',
+      running_memory: 'Test de la mémoire',
+      running_disk_read: 'Lecture disque',
+      running_disk_write: 'Écriture disque',
+      downloading_ai_model: 'Téléchargement du modèle IA',
+      running_ai: "Test d'inférence IA",
+      calculating_score: 'Calcul du score',
+      completed: 'Terminé',
+      error: 'Erreur',
     }
     return labelMap[status] || status
   }

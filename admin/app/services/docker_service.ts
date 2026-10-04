@@ -380,7 +380,7 @@ export class DockerService {
       this._broadcast(
         serviceName,
         'reinstall-starting',
-        `Starting force reinstall for ${serviceName}...`
+        `Réinstallation forcée de ${serviceName}…`
       )
 
       // Step 1: Try to stop and remove the container if it exists
@@ -422,7 +422,7 @@ export class DockerService {
           this._broadcast(
             serviceName,
             'no-container',
-            `No existing container found, proceeding with installation...`
+            `Aucun conteneur existant, poursuite de l'installation…`
           )
         }
       } catch (error: any) {
@@ -460,7 +460,7 @@ export class DockerService {
         this._broadcast(
           serviceName,
           'volume-cleanup-warning',
-          'Warning during volume cleanup. Check server logs for details.'
+          'Avertissement pendant le nettoyage des volumes. Consultez les journaux du serveur.'
         )
       }
 
@@ -648,14 +648,14 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'checking-dependencies',
-          `Checking dependencies for service ${service.service_name}...`
+          `Vérification des dépendances du service ${service.service_name}…`
         )
         for (const dependency of dependencies) {
           if (!dependency.installed) {
             this._broadcast(
               service.service_name,
               'dependency-not-installed',
-              `Dependency service ${dependency.service_name} is not installed. Installing it first...`
+              `Le service requis ${dependency.service_name} n'est pas installé. Installation préalable…`
             )
             await this._createContainer(
               dependency,
@@ -665,7 +665,7 @@ export class DockerService {
             this._broadcast(
               service.service_name,
               'dependency-installed',
-              `Dependency service ${dependency.service_name} is already installed.`
+              `Le service requis ${dependency.service_name} est déjà installé.`
             )
           }
         }
@@ -676,14 +676,14 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'image-exists',
-          `Docker image ${service.container_image} already exists locally. Skipping pull...`
+          `L'image Docker ${service.container_image} existe déjà localement. Téléchargement ignoré…`
         )
       } else {
         // Start pulling the Docker image and wait for it to complete
         this._broadcast(
           service.service_name,
           'pulling',
-          `Pulling Docker image ${service.container_image}...`
+          `Téléchargement de l'image Docker ${service.container_image}…`
         )
         await this.pullImage(service.container_image)
       }
@@ -693,7 +693,7 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'preinstall-complete',
-          `Pre-install actions for Kiwix Serve completed successfully.`
+          `Préparation de Kiwix Serve terminée.`
         )
       }
 
@@ -702,7 +702,7 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'preinstall-complete',
-          `Pre-install actions for Calibre-Web completed successfully.`
+          `Préparation de Calibre-Web terminée.`
         )
       }
 
@@ -711,7 +711,7 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'preinstall-complete',
-          `Pre-install actions for Vaultwarden completed successfully.`
+          `Préparation de Vaultwarden terminée.`
         )
       }
 
@@ -720,7 +720,7 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'preinstall-complete',
-          `Pre-install actions for Jellyfin completed successfully.`
+          `Préparation de Jellyfin terminée.`
         )
       }
 
@@ -729,7 +729,7 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'preinstall-complete',
-          `Pre-install actions for MeshCore Web completed successfully.`
+          `Préparation de MeshCore Web terminée.`
         )
       }
 
@@ -745,7 +745,7 @@ export class DockerService {
           this._broadcast(
             service.service_name,
             'gpu-config',
-            `NVIDIA container runtime detected. Configuring container with GPU support...`
+            `Environnement NVIDIA pour conteneurs détecté. Configuration du conteneur avec la carte graphique…`
           )
 
           // Add GPU support for NVIDIA
@@ -769,7 +769,7 @@ export class DockerService {
             this._broadcast(
               service.service_name,
               'gpu-config',
-              `AMD GPU detected. Using ROCm image with /dev/kfd and /dev/dri passthrough...`
+              `Carte graphique AMD détectée. Utilisation de l'image ROCm avec accès à /dev/kfd et /dev/dri…`
             )
 
             finalImage = 'ollama/ollama:rocm'
@@ -782,7 +782,7 @@ export class DockerService {
               this._broadcast(
                 service.service_name,
                 'pulling',
-                `Pulling Docker image ${finalImage}...`
+                `Téléchargement de l'image Docker ${finalImage}…`
               )
               await this.pullImage(finalImage)
             }
@@ -800,7 +800,7 @@ export class DockerService {
             this._broadcast(
               service.service_name,
               'gpu-config',
-              `AMD GPU detected but acceleration is disabled via ai.amdGpuAcceleration. Using CPU-only configuration.`
+              `Carte graphique AMD détectée, mais l'accélération est désactivée (ai.amdGpuAcceleration). Configuration sur processeur uniquement.`
             )
             logger.info('[DockerService] AMD GPU acceleration disabled by KV opt-out; using CPU-only configuration.')
           }
@@ -808,13 +808,13 @@ export class DockerService {
           this._broadcast(
             service.service_name,
             'gpu-config',
-            `NVIDIA GPU detected but NVIDIA Container Toolkit is not installed. Using CPU-only configuration. Install the toolkit and reinstall AI Assistant for GPU acceleration: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html`
+            `Carte graphique NVIDIA détectée, mais le NVIDIA Container Toolkit n'est pas installé. Configuration sur processeur uniquement. Installez le toolkit puis réinstallez l'assistant IA pour l'accélération : https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html`
           )
         } else {
           this._broadcast(
             service.service_name,
             'gpu-config',
-            `No GPU detected. Using CPU-only configuration...`
+            `Aucune carte graphique détectée. Configuration sur processeur uniquement…`
           )
         }
       }
@@ -862,7 +862,7 @@ export class DockerService {
       this._broadcast(
         service.service_name,
         'creating',
-        `Creating Docker container for service ${service.service_name}...`
+        `Création du conteneur Docker du service ${service.service_name}…`
       )
       // Built once and reused, so the AMD fallback below cannot drift from the
       // real payload as this config grows.
@@ -901,7 +901,7 @@ export class DockerService {
       this._broadcast(
         service.service_name,
         'starting',
-        `Starting Docker container for service ${service.service_name}...`
+        `Démarrage du conteneur Docker du service ${service.service_name}…`
       )
       try {
         await container.start()
@@ -929,9 +929,9 @@ export class DockerService {
         this._broadcast(
           service.service_name,
           'gpu-config',
-          `AMD GPU detected, but this system has no usable ROCm device (/dev/kfd is missing, ` +
-            `which means the amdgpu/ROCm kernel driver is not loaded or does not support this GPU). ` +
-            `Installing CPU-only instead so the AI Assistant still works.`
+          `Carte graphique AMD détectée, mais aucun périphérique ROCm utilisable (/dev/kfd est absent : ` +
+            `le pilote noyau amdgpu/ROCm n'est pas chargé ou ne prend pas en charge cette carte). ` +
+            `Installation sur processeur uniquement pour que l'assistant IA fonctionne quand même.`
         )
 
         // The created container carries the rejected device config, so it cannot be
@@ -964,7 +964,7 @@ export class DockerService {
       this._broadcast(
         service.service_name,
         'finalizing',
-        `Finalizing installation of service ${service.service_name}...`
+        `Finalisation de l'installation du service ${service.service_name}…`
       )
       service.installed = true
       service.installation_status = 'idle'
@@ -993,14 +993,14 @@ export class DockerService {
       this._broadcast(
         service.service_name,
         'completed',
-        `Service ${service.service_name} installation completed successfully.`
+        `Installation du service ${service.service_name} terminée.`
       )
     } catch (error: any) {
       const friendly = this._humanizeDockerError(error, service.service_name)
       this._broadcast(
         service.service_name,
         'error',
-        `Error installing service ${service.service_name}: ${friendly}`
+        `Erreur lors de l'installation du service ${service.service_name} : ${friendly}`
       )
       // Mark install as failed and cleanup
       await this._cleanupFailedInstallation(service.service_name)
@@ -1055,12 +1055,12 @@ export class DockerService {
     this._broadcast(
       SERVICE_NAMES.KIWIX,
       'preinstall',
-      `Running pre-install actions for Kiwix Serve...`
+      `Préparation de Kiwix Serve…`
     )
     this._broadcast(
       SERVICE_NAMES.KIWIX,
       'preinstall',
-      `Downloading Wikipedia ZIM file from ${WIKIPEDIA_ZIM_URL}. This may take some time...`
+      `Téléchargement du fichier ZIM Wikipédia depuis ${WIKIPEDIA_ZIM_URL}. Cela peut prendre un moment…`
     )
 
     try {
@@ -1078,7 +1078,7 @@ export class DockerService {
       this._broadcast(
         SERVICE_NAMES.KIWIX,
         'preinstall',
-        `Downloaded Wikipedia ZIM file to ${filepath}`
+        `Fichier ZIM Wikipédia téléchargé dans ${filepath}`
       )
 
       // Generate the initial kiwix library XML before the container is created
@@ -1089,7 +1089,7 @@ export class DockerService {
       this._broadcast(
         SERVICE_NAMES.KIWIX,
         'preinstall-error',
-        `Failed to download Wikipedia ZIM file: ${error.message}`
+        `Échec du téléchargement du fichier ZIM Wikipédia : ${error.message}`
       )
       throw new Error(`Pre-install action failed: ${error.message}`)
     }
@@ -1115,7 +1115,7 @@ export class DockerService {
     this._broadcast(
       SERVICE_NAMES.CALIBREWEB,
       'preinstall',
-      `Running pre-install actions for Calibre-Web...`
+      `Préparation de Calibre-Web…`
     )
 
     try {
@@ -1130,14 +1130,14 @@ export class DockerService {
         this._broadcast(
           SERVICE_NAMES.CALIBREWEB,
           'preinstall',
-          `Existing Calibre library found in books folder — leaving it as-is.`
+          `Bibliothèque Calibre existante trouvée dans le dossier books — conservée telle quelle.`
         )
       } else {
         await copyFile(assetPath, metadataPath)
         this._broadcast(
           SERVICE_NAMES.CALIBREWEB,
           'preinstall',
-          `Seeded an empty Calibre library into the books folder.`
+          `Bibliothèque Calibre vide créée dans le dossier books.`
         )
       }
 
@@ -1149,7 +1149,7 @@ export class DockerService {
       this._broadcast(
         SERVICE_NAMES.CALIBREWEB,
         'preinstall-error',
-        `Failed to prepare the Calibre library: ${error.message}`
+        `Impossible de préparer la bibliothèque Calibre : ${error.message}`
       )
       throw new Error(`Pre-install action failed: ${error.message}`)
     }
@@ -1211,7 +1211,7 @@ export class DockerService {
     this._broadcast(
       SERVICE_NAMES.VAULTWARDEN,
       'preinstall',
-      `Running pre-install actions for Vaultwarden...`
+      `Préparation de Vaultwarden…`
     )
 
     try {
@@ -1219,13 +1219,13 @@ export class DockerService {
       this._broadcast(
         SERVICE_NAMES.VAULTWARDEN,
         'preinstall',
-        `Vaultwarden HTTPS certificate is ready.`
+        `Certificat HTTPS de Vaultwarden prêt.`
       )
     } catch (error: any) {
       this._broadcast(
         SERVICE_NAMES.VAULTWARDEN,
         'preinstall-error',
-        `Failed to prepare the Vaultwarden certificate: ${error.message}`
+        `Impossible de préparer le certificat de Vaultwarden : ${error.message}`
       )
       throw new Error(`Pre-install action failed: ${error.message}`)
     }
@@ -1247,7 +1247,7 @@ export class DockerService {
     this._broadcast(
       SERVICE_NAMES.MESHCORE_WEB,
       'preinstall',
-      `Running pre-install actions for MeshCore Web...`
+      `Préparation de MeshCore Web…`
     )
 
     try {
@@ -1276,13 +1276,13 @@ export class DockerService {
       this._broadcast(
         SERVICE_NAMES.MESHCORE_WEB,
         'preinstall',
-        `MeshCore Web HTTPS certificate and config are ready.`
+        `Certificat HTTPS et configuration de MeshCore Web prêts.`
       )
     } catch (error: any) {
       this._broadcast(
         SERVICE_NAMES.MESHCORE_WEB,
         'preinstall-error',
-        `Failed to prepare MeshCore Web: ${error.message}`
+        `Impossible de préparer MeshCore Web : ${error.message}`
       )
       throw new Error(`Pre-install action failed: ${error.message}`)
     }
@@ -1302,7 +1302,7 @@ export class DockerService {
     this._broadcast(
       SERVICE_NAMES.JELLYFIN,
       'preinstall',
-      `Running pre-install actions for Jellyfin...`
+      `Préparation de Jellyfin…`
     )
 
     try {
@@ -1313,13 +1313,13 @@ export class DockerService {
       this._broadcast(
         SERVICE_NAMES.JELLYFIN,
         'preinstall',
-        `Prepared media folders: ${JELLYFIN_MEDIA_SUBFOLDERS.join(', ')}.`
+        `Dossiers multimédias préparés : ${JELLYFIN_MEDIA_SUBFOLDERS.join(', ')}.`
       )
     } catch (error: any) {
       this._broadcast(
         SERVICE_NAMES.JELLYFIN,
         'preinstall-error',
-        `Failed to prepare the Jellyfin media folders: ${error.message}`
+        `Impossible de préparer les dossiers multimédias de Jellyfin : ${error.message}`
       )
       throw new Error(`Pre-install action failed: ${error.message}`)
     }
@@ -1786,7 +1786,7 @@ export class DockerService {
           this._broadcast(
             serviceName,
             'update-gpu-config',
-            `NVIDIA container runtime detected. Configuring updated container with GPU support...`
+            `Environnement NVIDIA pour conteneurs détecté. Configuration du conteneur mis à jour avec la carte graphique…`
           )
           updatedDeviceRequests = [
             { Driver: 'nvidia', Count: -1, Capabilities: [['gpu']] },
@@ -1798,7 +1798,7 @@ export class DockerService {
             this._broadcast(
               serviceName,
               'update-gpu-config',
-              `AMD GPU detected. Using ROCm image with /dev/kfd and /dev/dri passthrough...`
+              `Carte graphique AMD détectée. Utilisation de l'image ROCm avec accès à /dev/kfd et /dev/dri…`
             )
             runtimeImage = 'ollama/ollama:rocm'
             updatedAmdDevices = await this._discoverAMDDevices()
@@ -1807,14 +1807,14 @@ export class DockerService {
             this._broadcast(
               serviceName,
               'update-gpu-config',
-              `AMD GPU detected but acceleration is disabled via ai.amdGpuAcceleration. Using CPU-only configuration.`
+              `Carte graphique AMD détectée, mais l'accélération est désactivée (ai.amdGpuAcceleration). Configuration sur processeur uniquement.`
             )
           }
         } else if (gpuResult.toolkitMissing) {
           this._broadcast(
             serviceName,
             'update-gpu-config',
-            `NVIDIA GPU detected but NVIDIA Container Toolkit is not installed. Using CPU-only configuration. Install the toolkit and reinstall AI Assistant for GPU acceleration: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html`
+            `Carte graphique NVIDIA détectée, mais le NVIDIA Container Toolkit n'est pas installé. Configuration sur processeur uniquement. Installez le toolkit puis réinstallez l'assistant IA pour l'accélération : https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html`
           )
         } else {
           this._broadcast(serviceName, 'update-gpu-config', `No GPU detected. Using CPU-only configuration.`)
@@ -1948,7 +1948,7 @@ export class DockerService {
         this._broadcast(serviceName, 'update-rollback', `Failed to create new container: ${createError.message}. Rolling back...`)
         await rollbackToOld()
         this.activeInstallations.delete(serviceName)
-        return { success: false, message: `Failed to create updated container: ${createError.message}` }
+        return { success: false, message: `Impossible de créer le conteneur mis à jour : ${createError.message}` }
       }
 
       // Step 5: Start new container. If the start itself throws (bad device/GPU config,
@@ -1961,7 +1961,7 @@ export class DockerService {
         this._broadcast(
           serviceName,
           'update-rollback',
-          `Updated container failed to start: ${startError.message}. Rolling back to previous version...`
+          `Le conteneur mis à jour n'a pas démarré : ${startError.message}. Retour à la version précédente…`
         )
         try {
           await newContainer.remove({ force: true })
@@ -2002,7 +2002,7 @@ export class DockerService {
         this._broadcast(
           serviceName,
           'update-complete',
-          `Successfully updated ${serviceName} to ${targetVersion}`
+          `${serviceName} mis à jour en version ${targetVersion}`
         )
         return { success: true, message: `Service ${serviceName} updated to ${targetVersion}` }
       } else {
@@ -2010,7 +2010,7 @@ export class DockerService {
         this._broadcast(
           serviceName,
           'update-rollback',
-          `New container failed health check. Rolling back to previous version...`
+          `Le nouveau conteneur a échoué au contrôle de santé. Retour à la version précédente…`
         )
 
         try {
@@ -2033,10 +2033,10 @@ export class DockerService {
       this._broadcast(
         serviceName,
         'update-rollback',
-        'Update failed. Check server logs for details.'
+        'Échec de la mise à jour. Consultez les journaux du serveur.'
       )
       logger.error({ err: error }, `[DockerService] Update failed for ${serviceName}`)
-      return { success: false, message: 'Update failed. Check server logs for details.' }
+      return { success: false, message: 'Échec de la mise à jour. Consultez les journaux du serveur.' }
     } finally {
       // Always clear the in-progress flag we set above, on every exit path (success, rollback,
       // not-found, or thrown error). The success path already persisted the new image/version on

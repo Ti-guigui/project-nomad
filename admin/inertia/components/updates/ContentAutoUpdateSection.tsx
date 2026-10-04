@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotifications } from '~/context/NotificationContext'
 import { useContentAutoUpdateStatus } from '~/hooks/useContentAutoUpdateStatus'
 import { formatBytes } from '~/lib/util'
+import { traduireMessageServeur } from '~/lib/traduction_serveur'
 
 const COOLOFF_OPTIONS = [
   { value: 24, label: '24 heures (1 jour)' },
@@ -91,7 +92,7 @@ export default function ContentAutoUpdateSection() {
             type="warning"
             title="Mises à jour automatiques des contenus désactivées"
             message={
-              status?.autoDisabledReason ||
+              traduireMessageServeur(status?.autoDisabledReason) ||
               'Les mises à jour automatiques des contenus ont été désactivées après plusieurs échecs.'
             }
             variant="bordered"
@@ -183,7 +184,7 @@ export default function ContentAutoUpdateSection() {
                 <>
                   {' '}
                   <span className="font-medium">Dernière exécution : </span>
-                  {status.lastResult}
+                  {traduireMessageServeur(status.lastResult)}
                   {status.lastAttemptAt
                     ? ` (${new Date(status.lastAttemptAt).toLocaleString('fr-FR')})`
                     : ''}
@@ -194,7 +195,7 @@ export default function ContentAutoUpdateSection() {
             {status.lastError && (
               <p className="text-desert-red mb-3">
                 <span className="font-medium">Dernière erreur : </span>
-                {status.lastError}
+                {traduireMessageServeur(status.lastError)}
               </p>
             )}
 
@@ -224,7 +225,7 @@ export default function ContentAutoUpdateSection() {
                         {resource.size_bytes ? ` · ${formatBytes(resource.size_bytes)}` : ''}
                       </p>
                       {resource.auto_disabled_reason && (
-                        <p className="text-desert-red mt-0.5">{resource.auto_disabled_reason}</p>
+                        <p className="text-desert-red mt-0.5">{traduireMessageServeur(resource.auto_disabled_reason)}</p>
                       )}
                     </div>
                     <span
@@ -235,7 +236,7 @@ export default function ContentAutoUpdateSection() {
                             : 'text-desert-stone'
                         }`}
                     >
-                      {resource.exceeds_cap ? 'Ignorée — dépasse le plafond de données, à mettre à jour manuellement' : resource.reason}
+                      {resource.exceeds_cap ? 'Ignorée — dépasse le plafond de données, à mettre à jour manuellement' : traduireMessageServeur(resource.reason)}
                     </span>
                   </li>
                 ))}

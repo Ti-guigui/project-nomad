@@ -24,7 +24,7 @@ export default class BenchmarkController {
     if (status.status !== 'idle') {
       return response.status(409).send({
         success: false,
-        error: 'A benchmark is already running',
+        error: "Un banc d'essai est déjà en cours",
         current_benchmark_id: status.benchmarkId,
       })
     }
@@ -87,7 +87,7 @@ export default class BenchmarkController {
     if (status.status !== 'idle') {
       return response.status(409).send({
         success: false,
-        error: 'A benchmark is already running',
+        error: "Un banc d'essai est déjà en cours",
       })
     }
 
@@ -113,7 +113,7 @@ export default class BenchmarkController {
     if (status.status !== 'idle') {
       return response.status(409).send({
         success: false,
-        error: 'A benchmark is already running',
+        error: "Un banc d'essai est déjà en cours",
       })
     }
 

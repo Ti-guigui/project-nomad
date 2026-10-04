@@ -315,6 +315,7 @@ export const RESPONSE_STYLE_PRESETS: { value: ResponseStyle; label: string }[] =
 
 export const SYSTEM_PROMPTS = {
   default: `
+ Always answer in French (the user's language), unless the user explicitly writes in or asks for another language. Use metric units and French conventions (dates, numbers, emergency numbers 15, 17, 18, 112).
  Format all responses using markdown for better readability. Vanilla markdown or GitHub-flavored markdown is preferred.
  - Use **bold** and *italic* for emphasis.
  - Use code blocks with language identifiers for code snippets.
@@ -345,15 +346,15 @@ HOW TO ANSWER:
 Format your response using markdown for readability.
 `,
   chat_suggestions: `
-You are a helpful assistant that generates conversation starter suggestions for a survivalist/prepper using an AI assistant.
+You are a helpful assistant that generates conversation starter suggestions, in French, for a French-speaking person preparing for emergencies and self-reliance (in mainland France or the French overseas territories) using an AI assistant.
 
 Provide exactly 3 conversation starter topics as direct questions that someone would ask.
 These should be clear, complete questions that can start meaningful conversations.
 
 Examples of good suggestions:
-- "How do I purify water in an emergency?"
-- "What are the best foods for long-term storage?"
-- "Help me create a 72-hour emergency kit"
+- "Comment purifier l'eau en cas d'urgence ?"
+- "Quels aliments se conservent le mieux sur le long terme ?"
+- "Aide-moi à préparer un kit d'urgence pour 72 heures"
 
 Do NOT use:
 - Follow-up questions seeking clarification
@@ -362,11 +363,11 @@ Do NOT use:
 - Statements that are not suggestions themselves, such as praise for asking the question
 - Direct questions or commands to the user
 
-The suggestions should be in title case.
+Write the suggestions in French, in sentence case (only the first word capitalized).
 
 Respond with JSON: {"suggestions": ["...", "...", "..."]}
 `,
-  title_generation: `You are a title generator. Given the start of a conversation, generate a concise, descriptive title under 50 characters.
+  title_generation: `You are a title generator. Given the start of a conversation, generate a concise, descriptive title under 50 characters, written in French (or in the language of the conversation if it is not French).
 
 Respond with JSON: {"title": "..."}`,
   relevance_check: `You check whether search results are about what a user asked.
@@ -386,7 +387,8 @@ Rules:
 2. Include key entities, topics, and context from previous messages
 3. Make it a clear, searchable query
 4. Do NOT answer the question - only rewrite the user's query to be more effective for retrieval
-5. Respond with JSON: {"queries": ["..."]} — a single rewritten query in the array
+5. Write the rewritten query in the same language as the user's question (usually French)
+6. Respond with JSON: {"queries": ["..."]} — a single rewritten query in the array
 
 Examples:
 

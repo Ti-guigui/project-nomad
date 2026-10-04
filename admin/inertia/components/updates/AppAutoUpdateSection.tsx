@@ -4,6 +4,7 @@ import api from '~/lib/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotifications } from '~/context/NotificationContext'
 import { useAppAutoUpdateStatus } from '~/hooks/useAppAutoUpdateStatus'
+import { traduireMessageServeur } from '~/lib/traduction_serveur'
 
 export default function AppAutoUpdateSection() {
   const { addNotification } = useNotifications()
@@ -49,7 +50,7 @@ export default function AppAutoUpdateSection() {
                 <>
                   {' '}
                   <span className="font-medium">Dernière exécution : </span>
-                  {status.lastResult}
+                  {traduireMessageServeur(status.lastResult)}
                   {status.lastAttemptAt
                     ? ` (${new Date(status.lastAttemptAt).toLocaleString('fr-FR')})`
                     : ''}
@@ -79,7 +80,7 @@ export default function AppAutoUpdateSection() {
                           : ' (à jour)'}
                       </p>
                       {app.auto_disabled_reason && (
-                        <p className="text-desert-red mt-0.5">{app.auto_disabled_reason}</p>
+                        <p className="text-desert-red mt-0.5">{traduireMessageServeur(app.auto_disabled_reason)}</p>
                       )}
                     </div>
                     <span
@@ -87,7 +88,7 @@ export default function AppAutoUpdateSection() {
                         app.eligible ? 'text-desert-green' : 'text-desert-stone'
                       }`}
                     >
-                      {app.reason}
+                      {traduireMessageServeur(app.reason)}
                     </span>
                   </li>
                 ))}

@@ -207,7 +207,7 @@ export default function ZimPage() {
               },
               {
                 accessor: 'summary',
-                title: 'Summary',
+                title: 'Résumé',
                 render: (record) => (
                   <span className="text-text-secondary text-sm line-clamp-2">
                     {record.summary || '—'}

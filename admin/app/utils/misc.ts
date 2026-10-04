@@ -1,7 +1,16 @@
 export function formatSpeed(bytesPerSecond: number): string {
-  if (bytesPerSecond < 1024) return `${bytesPerSecond.toFixed(0)} B/s`
-  if (bytesPerSecond < 1024 * 1024) return `${(bytesPerSecond / 1024).toFixed(1)} KB/s`
-  return `${(bytesPerSecond / (1024 * 1024)).toFixed(1)} MB/s`
+  if (bytesPerSecond < 1024) return `${bytesPerSecond.toFixed(0)} o/s`
+  if (bytesPerSecond < 1024 * 1024) return `${(bytesPerSecond / 1024).toFixed(1)} Ko/s`
+  return `${(bytesPerSecond / (1024 * 1024)).toFixed(1)} Mo/s`
+}
+
+/**
+ * Met une majuscule au premier caractère seulement (usage français), sans toucher au reste.
+ * Les suggestions de discussion en français ne prennent pas de majuscule à chaque mot.
+ */
+export function toSentenceCase(str: string): string {
+  const trimmed = str.trim()
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1)
 }
 
 export function toTitleCase(str: string): string {

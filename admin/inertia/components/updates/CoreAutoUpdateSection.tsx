@@ -8,6 +8,7 @@ import Switch from '~/components/inputs/Switch'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotifications } from '~/context/NotificationContext'
 import { useAutoUpdateStatus } from '~/hooks/useAutoUpdateStatus'
+import { traduireMessageServeur } from '~/lib/traduction_serveur'
 
 const COOLOFF_OPTIONS = [
   { value: 24, label: '24 heures (1 jour)' },
@@ -82,7 +83,7 @@ export default function CoreAutoUpdateSection() {
           <Alert
             type="warning"
             title="Mises à jour automatiques du logiciel désactivées"
-            message={status?.autoDisabledReason || 'Les mises à jour automatiques du logiciel ont été désactivées après plusieurs échecs.'}
+            message={traduireMessageServeur(status?.autoDisabledReason) || 'Les mises à jour automatiques du logiciel ont été désactivées après plusieurs échecs.'}
             variant="bordered"
             className="mb-4"
           />
@@ -165,7 +166,7 @@ export default function CoreAutoUpdateSection() {
             {status.lastResult && (
               <p className="text-desert-stone">
                 <span className="font-medium">Dernière vérification : </span>
-                {status.lastResult}
+                {traduireMessageServeur(status.lastResult)}
                 {status.lastAttemptAt
                   ? ` (${new Date(status.lastAttemptAt).toLocaleString('fr-FR')})`
                   : ''}
@@ -174,7 +175,7 @@ export default function CoreAutoUpdateSection() {
             {status.lastError && (
               <p className="text-desert-red">
                 <span className="font-medium">Dernière erreur : </span>
-                {status.lastError}
+                {traduireMessageServeur(status.lastError)}
               </p>
             )}
           </div>
