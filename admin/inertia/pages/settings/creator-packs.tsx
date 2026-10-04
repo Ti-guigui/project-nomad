@@ -27,7 +27,7 @@ export default function CreatorPacksPage() {
             </>
           ) : (
             <p className="text-text-muted mt-4">
-              Creator Packs aren&apos;t available on this build.
+              Les packs de créateurs ne sont pas disponibles dans cette version.
             </p>
           )}
         </main>

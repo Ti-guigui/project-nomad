@@ -28,3 +28,26 @@ test('renvoie tel quel un message inconnu, et une chaîne vide pour null', () =>
   assert.equal(traduireMessageServeur('Something unexpected'), 'Something unexpected')
   assert.equal(traduireMessageServeur(null), '')
 })
+
+test("traduit les réponses de l'API, y compris celles avec des valeurs variables", () => {
+  assert.equal(traduireMessageServeur('Service nomad_kiwix_server started successfully'), 'Service nomad_kiwix_server démarré')
+  assert.equal(
+    traduireMessageServeur('Failed to stop service nomad_ollama. Check server logs for details.'),
+    "Échec de l'arrêt du service nomad_ollama. Consultez les journaux du serveur."
+  )
+  assert.equal(
+    traduireMessageServeur('Service nomad_ollama not found or not installed'),
+    'Service nomad_ollama introuvable ou non installé'
+  )
+  assert.equal(traduireMessageServeur('Model "llama3.2" deleted.'), 'Modèle « llama3.2 » supprimé.')
+  assert.equal(
+    traduireMessageServeur('Cleaned up 1 failed job, deleted 2 files.'),
+    '1 tâche(s) en échec nettoyée(s), 2 fichier(s) supprimé(s).'
+  )
+  assert.equal(traduireMessageServeur('Cancelled 3 jobs.'), '3 tâche(s) annulée(s).')
+  assert.equal(
+    traduireMessageServeur('Update sidecar is not available. Ensure the updater container is running.'),
+    "Le service de mise à jour (sidecar) n'est pas disponible. Vérifiez que le conteneur « updater » est démarré."
+  )
+  assert.equal(traduireMessageServeur('Session not found'), 'Conversation introuvable')
+})

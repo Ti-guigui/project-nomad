@@ -505,7 +505,7 @@ export default function ModelsPage(props: {
                 disabled={remoteOllamaSaving || !remoteOllamaUrl}
                 className="mb-0.5"
               >
-                Save &amp; Test
+                Enregistrer et tester
               </StyledButton>
               {props.models.settings.remoteOllamaUrl && (
                 <StyledButton
