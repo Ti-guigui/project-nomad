@@ -66,7 +66,7 @@ export default function MapsManager(props: {
     onSuccess: () => {
       addNotification({
         type: 'success',
-        message: 'Base map downloaded successfully.',
+        message: 'Carte de base téléchargée.',
       })
       router.reload({ only: ['maps'] })
     },
@@ -74,7 +74,7 @@ export default function MapsManager(props: {
       addNotification({
         type: 'error',
         message:
-          'Could not download the base map. Please connect this NOMAD to the internet and try again.',
+          'Impossible de télécharger la carte de base. Connectez ce NOMAD à internet et réessayez.',
       })
     },
   })
@@ -85,7 +85,7 @@ export default function MapsManager(props: {
       invalidateDownloads()
       addNotification({
         type: 'success',
-        message: 'Global map download has been queued. This is a large file (~125 GB) and may take a while.',
+        message: 'Le téléchargement de la carte mondiale est en file d’attente. C’est un très gros fichier (~125 Go) : cela peut prendre du temps.',
       })
       closeAllModals()
     },
@@ -93,7 +93,7 @@ export default function MapsManager(props: {
       console.error('Error downloading global map:', error)
       addNotification({
         type: 'error',
-        message: 'Failed to start the global map download. Please try again.',
+        message: 'Impossible de lancer le téléchargement de la carte mondiale. Veuillez réessayer.',
       })
     },
   })
@@ -104,13 +104,13 @@ export default function MapsManager(props: {
 
       const res = await api.downloadBaseMapAssets()
       if (!res) {
-        throw new Error('An unknown error occurred while downloading base assets.')
+        throw new Error('Une erreur inconnue est survenue lors du téléchargement des ressources de base.')
       }
 
       if (res.success) {
         addNotification({
           type: 'success',
-          message: 'Base map assets downloaded successfully.',
+          message: 'Ressources de base des cartes téléchargées.',
         })
         router.reload()
       }
@@ -118,7 +118,7 @@ export default function MapsManager(props: {
       console.error('Error downloading base assets:', error)
       addNotification({
         type: 'error',
-        message: 'An error occurred while downloading the base map assets. Please try again.',
+        message: 'Une erreur est survenue lors du téléchargement des ressources de base. Veuillez réessayer.',
       })
     } finally {
       setDownloading(false)
@@ -131,7 +131,7 @@ export default function MapsManager(props: {
       invalidateDownloads()
       addNotification({
         type: 'success',
-        message: `Download for collection "${record.name}" has been queued.`,
+        message: `Téléchargement de la collection « ${record.name} » mis en file d’attente.`,
       })
     } catch (error) {
       console.error('Error downloading collection:', error)
@@ -144,7 +144,7 @@ export default function MapsManager(props: {
       invalidateDownloads()
       addNotification({
         type: 'success',
-        message: 'Download has been queued.',
+        message: 'Téléchargement mis en file d’attente.',
       })
     } catch (error) {
       console.error('Error downloading custom file:', error)
@@ -159,7 +159,7 @@ export default function MapsManager(props: {
       await api.deleteMapRegionFile(file.name)
       addNotification({
         type: 'success',
-        message: `${file.name} has been deleted.`,
+        message: `${file.name} a été supprimé.`,
       })
       closeAllModals()
       router.reload({ only: ['maps'] })
@@ -167,7 +167,7 @@ export default function MapsManager(props: {
       console.error('Error deleting map file:', error)
       addNotification({
         type: 'error',
-        message: `Failed to delete ${file.name}. Please try again.`,
+        message: `Impossible de supprimer ${file.name}. Veuillez réessayer.`,
       })
     } finally {
       setDeletingFileKey(null)
@@ -177,17 +177,17 @@ export default function MapsManager(props: {
   async function confirmDeleteFile(file: FileEntry) {
     openModal(
       <StyledModal
-        title="Confirm Delete?"
+        title="Confirmer la suppression ?"
         onConfirm={() => deleteFile(file)}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmText="Supprimer"
+        cancelText="Annuler"
         confirmVariant="danger"
         confirmLoading={file.type === 'file' && deletingFileKey === file.key}
       >
         <p className="text-text-secondary">
-          Are you sure you want to delete {file.name}? This action cannot be undone.
+          Voulez-vous vraiment supprimer {file.name} ? Cette action est irréversible.
         </p>
       </StyledModal>,
       'confirm-delete-file-modal'
@@ -198,12 +198,12 @@ export default function MapsManager(props: {
     const isCollection = 'resources' in record
     openModal(
       <StyledModal
-        title="Confirm Download?"
+        title="Confirmer le téléchargement ?"
         onConfirm={() => {
           if (isCollection) {
             if (record.all_installed) {
               addNotification({
-                message: `All resources in the collection "${record.name}" have already been downloaded.`,
+                message: `Toutes les ressources de la collection « ${record.name} » sont déjà téléchargées.`,
                 type: 'info',
               })
               return
@@ -214,14 +214,14 @@ export default function MapsManager(props: {
         }}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Download"
-        cancelText="Cancel"
+        confirmText="Télécharger"
+        cancelText="Annuler"
         confirmVariant="primary"
       >
         <p className="text-text-secondary">
-          Are you sure you want to download <strong>{isCollection ? record.name : record}</strong>?
-          It may take some time for it to be available depending on the file size and your internet
-          connection.
+          Voulez-vous vraiment télécharger <strong>{isCollection ? record.name : record}</strong> ?
+          La disponibilité peut prendre du temps selon la taille du fichier et votre connexion
+          internet.
         </p>
       </StyledModal>,
       'confirm-download-file-modal'
@@ -232,19 +232,19 @@ export default function MapsManager(props: {
     if (!globalMapInfo) return
     openModal(
       <StyledModal
-        title="Download Global Map?"
+        title="Télécharger la carte mondiale ?"
         onConfirm={() => downloadGlobalMap.mutate()}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Download"
-        cancelText="Cancel"
+        confirmText="Télécharger"
+        cancelText="Annuler"
         confirmVariant="primary"
         confirmLoading={downloadGlobalMap.isPending}
       >
         <p className="text-text-secondary">
-          This will download the full Protomaps global map ({formatBytes(globalMapInfo.size, 1)}, build {globalMapInfo.date}).
-          Covers the entire planet so you won't need individual region files.
-          Make sure you have enough disk space.
+          La carte mondiale complète de Protomaps va être téléchargée ({formatBytes(globalMapInfo.size, 1)}, version du {globalMapInfo.date}).
+          Elle couvre toute la planète : plus besoin de fichiers par région.
+          Vérifiez que vous avez assez d'espace disque.
         </p>
       </StyledModal>,
       'confirm-global-map-download-modal'
@@ -260,7 +260,7 @@ export default function MapsManager(props: {
           invalidateDownloads()
           addNotification({
             type: 'success',
-            message: 'Download queued. Watch progress below.',
+            message: 'Téléchargement en file d’attente. Suivez l’avancement ci-dessous.',
           })
           closeAllModals()
         }}
@@ -272,8 +272,8 @@ export default function MapsManager(props: {
   async function openDownloadModal() {
     openModal(
       <DownloadURLModal
-        title="Download Map File"
-        suggestedURL="e.g. https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/california.pmtiles"
+        title="Télécharger un fichier de carte"
+        suggestedURL="ex. https://github.com/Ti-guigui/project-nomad/releases/download/cartes-fr/bretagne_2026-10.pmtiles"
         onCancel={() => closeAllModals()}
         onPreflightSuccess={async (url) => {
           await downloadCustomFile(url)
@@ -288,7 +288,7 @@ export default function MapsManager(props: {
     mutationFn: () => api.refreshManifests(),
     onSuccess: () => {
       addNotification({
-        message: 'Successfully refreshed map collections.',
+        message: 'Collections de cartes actualisées.',
         type: 'success',
       })
       queryClient.invalidateQueries({ queryKey: [CURATED_COLLECTIONS_KEY] })
@@ -297,13 +297,13 @@ export default function MapsManager(props: {
 
   return (
     <SettingsLayout>
-      <Head title="Maps Manager" />
+      <Head title="Gestionnaire de cartes" />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
-              <h1 className="text-4xl font-semibold mb-2">Maps Manager</h1>
-              <p className="text-text-muted">Manage your stored map files and explore new regions!</p>
+              <h1 className="text-4xl font-semibold mb-2">Gestionnaire de cartes</h1>
+              <p className="text-text-muted">Gérez vos fichiers de cartes et découvrez de nouvelles régions !</p>
             </div>
             <div className="flex space-x-4">
 
@@ -311,13 +311,13 @@ export default function MapsManager(props: {
           </div>
           {!props.maps.baseAssetsExist && (
             <Alert
-              title="The base map assets have not been installed. Please download them first to enable map functionality."
+              title="Les ressources de base des cartes ne sont pas installées. Téléchargez-les d'abord pour activer les cartes."
               type="warning"
               variant="solid"
               className="my-4"
               buttonProps={{
                 variant: 'secondary',
-                children: 'Download Base Assets',
+                children: 'Télécharger les ressources de base',
                 icon: 'IconDownload',
                 loading: downloading,
                 onClick: () => downloadBaseAssets(),
@@ -326,14 +326,14 @@ export default function MapsManager(props: {
           )}
           {props.maps.baseAssetsExist && !props.maps.worldBasemapExists && (
             <Alert
-              title="World base map not downloaded"
-              message="The low-zoom world base map (~15 MB) hasn't been downloaded yet, so the map appears blank outside any regions you've downloaded. Connect this NOMAD to the internet and download it once for offline use."
+              title="Carte du monde de base non téléchargée"
+              message="La carte du monde à faible zoom (~15 Mo) n'est pas encore téléchargée : la carte apparaît vide en dehors des régions téléchargées. Connectez ce NOMAD à internet et téléchargez-la une fois pour l'utiliser hors ligne."
               type="warning"
               variant="solid"
               className="my-4"
               buttonProps={{
                 variant: 'secondary',
-                children: 'Download Base Map',
+                children: 'Télécharger la carte de base',
                 icon: 'IconCloudDownload',
                 loading: setupWorldBasemap.isPending,
                 onClick: () => setupWorldBasemap.mutate(),
@@ -342,15 +342,15 @@ export default function MapsManager(props: {
           )}
           {globalMapInfo && globalMapAlreadyDownloaded && (
             <Alert
-              title="Global Map Installed"
-              message={`Your global map build ${globalMapInfo.date} (${formatBytes(globalMapInfo.size, 1)}) is stored locally and ready for offline use.`}
+              title="Carte mondiale installée"
+              message={`Votre carte mondiale du ${globalMapInfo.date} (${formatBytes(globalMapInfo.size, 1)}) est stockée localement et prête pour un usage hors ligne.`}
               type="success"
               variant="bordered"
               className="mt-8"
               icon="IconCircleCheck"
               buttonProps={{
                 variant: 'secondary',
-                children: 'Download latest build',
+                children: 'Télécharger la dernière version',
                 icon: 'IconRefresh',
                 onClick: () => confirmGlobalMapDownload(),
               }}
@@ -358,15 +358,15 @@ export default function MapsManager(props: {
           )}
           {globalMapInfo && !globalMapAlreadyDownloaded && (
             <Alert
-              title="Global Map Coverage Available"
-              message={`Download a complete worldwide map from Protomaps (${formatBytes(globalMapInfo.size, 1)}, build ${globalMapInfo.date}). This is a large file but covers the entire planet — no individual region downloads needed.`}
+              title="Carte mondiale disponible"
+              message={`Téléchargez une carte complète du monde depuis Protomaps (${formatBytes(globalMapInfo.size, 1)}, version du ${globalMapInfo.date}). C'est un très gros fichier, mais il couvre toute la planète — plus besoin de télécharger les régions une par une.`}
               type="info-inverted"
               variant="bordered"
               className="mt-8"
               icon="IconWorld"
               buttonProps={{
                 variant: 'primary',
-                children: 'Download Global Map',
+                children: 'Télécharger la carte mondiale',
                 icon: 'IconCloudDownload',
                 loading: downloadGlobalMap.isPending,
                 onClick: () => confirmGlobalMapDownload(),
@@ -374,28 +374,28 @@ export default function MapsManager(props: {
             />
           )}
           <Alert
-            title="Download by country or region"
-            message="Pick the countries you actually need — from a single country to a whole continent — and we'll pull just those tiles from the global Protomaps archive. Much smaller than the full 125 GB global map."
+            title="Télécharger par pays ou par territoire"
+            message="Choisissez uniquement ce dont vous avez besoin — la France métropolitaine, un territoire d'outre-mer, un pays ou tout un continent — et seules ces tuiles seront extraites de l'archive mondiale Protomaps. Bien plus léger que la carte mondiale complète de 125 Go."
             type="info-inverted"
             variant="bordered"
             className="mt-8"
             icon="IconMap2"
             buttonProps={{
               variant: 'primary',
-              children: 'Choose Countries',
+              children: 'Choisir des pays',
               icon: 'IconMap2',
               onClick: openCountryPickerModal,
             }}
           />
 
           <div className="mt-8 mb-6 flex items-center justify-between">
-            <StyledSectionHeader title="Curated Map Regions" className="!mb-0" />
+            <StyledSectionHeader title="Régions sélectionnées (France et outre-mer)" className="!mb-0" />
             <StyledButton
               onClick={() => refreshManifests.mutate()}
               disabled={refreshManifests.isPending}
               icon="IconRefresh"
             >
-              Force Refresh Collections
+              Actualiser les collections
             </StyledButton>
           </div>
           <div className="!mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -407,18 +407,18 @@ export default function MapsManager(props: {
               />
             ))}
             {curatedCollections && curatedCollections.length === 0 && (
-              <p className="text-text-muted">No curated collections available.</p>
+              <p className="text-text-muted">Aucune collection disponible.</p>
             )}
           </div>
           <div className="mt-12 mb-6 flex items-center justify-between">
-            <StyledSectionHeader title="Stored Map Files" className="!mb-0" />
+            <StyledSectionHeader title="Fichiers de cartes stockés" className="!mb-0" />
             <StyledButton
               variant="primary"
               onClick={openDownloadModal}
               loading={downloading}
               icon="IconCloudDownload"
             >
-              Download a Custom Map File
+              Télécharger un fichier de carte personnalisé
             </StyledButton>
           </div>
           <StyledTable<FileEntry & { actions?: any }>
@@ -427,7 +427,7 @@ export default function MapsManager(props: {
             loading={false}
             compact
             columns={[
-              { accessor: 'name', title: 'Name' },
+              { accessor: 'name', title: 'Nom' },
               {
                 accessor: 'actions',
                 title: 'Actions',
@@ -440,7 +440,7 @@ export default function MapsManager(props: {
                         confirmDeleteFile(record)
                       }}
                     >
-                      Delete
+                      Supprimer
                     </StyledButton>
                   </div>
                 ),

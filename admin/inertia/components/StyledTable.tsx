@@ -1,4 +1,28 @@
 import { capitalizeFirstLetter } from '~/lib/util'
+
+// Version française : intitulés des colonnes qui n'ont pas de titre explicite.
+const DEFAULT_COLUMN_TITLES: Record<string, string> = {
+  title: 'Titre',
+  author: 'Auteur',
+  summary: 'Résumé',
+  updated: 'Mis à jour',
+  size: 'Taille',
+  size_bytes: 'Taille',
+  actions: 'Actions',
+  name: 'Nom',
+  friendly_name: 'Nom',
+  estimated_pulls: 'Téléchargements estimés',
+  model_last_updated: 'Dernière mise à jour',
+  ui_location: 'Emplacement',
+  installed: 'Installée',
+  container_image: 'Image du conteneur',
+  source: 'Source',
+  collection: 'Collection',
+  active: 'Actif',
+  resource_id: 'Ressource',
+  resource_type: 'Type',
+  installed_version: 'Version',
+}
 import classNames from '~/lib/classNames'
 import LoadingSpinner from '~/components/LoadingSpinner'
 import React, { RefObject, useState } from 'react'
@@ -104,7 +128,9 @@ function StyledTable<T extends { [key: string]: any }>({
                   compact ? `${leftPadding} py-2` : `${leftPadding} py-4  pr-3`
                 )}
               >
-                {column.title ?? capitalizeFirstLetter(column.accessor.toString())}
+                {column.title ??
+                  DEFAULT_COLUMN_TITLES[column.accessor.toString()] ??
+                  capitalizeFirstLetter(column.accessor.toString())}
               </th>
             ))}
           </tr>

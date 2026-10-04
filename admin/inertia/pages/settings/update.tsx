@@ -25,13 +25,13 @@ type Props = {
 }
 
 const STAGE_LABELS: Record<SystemUpdateStatus['stage'], string> = {
-  idle: 'Preparing Update',
-  starting: 'Starting Update',
-  pulling: 'Pulling Images',
-  pulled: 'Images Pulled',
-  recreating: 'Recreating Containers',
-  complete: 'Update Complete',
-  error: 'Update Failed',
+  idle: 'Préparation de la mise à jour',
+  starting: 'Démarrage de la mise à jour',
+  pulling: 'Téléchargement des images',
+  pulled: 'Images téléchargées',
+  recreating: 'Recréation des conteneurs',
+  complete: 'Mise à jour terminée',
+  error: 'Échec de la mise à jour',
 }
 
 const ADVANCED_STAGES: ReadonlySet<SystemUpdateStatus['stage']> = new Set([
@@ -73,7 +73,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
       try {
         const response = await api.getSystemUpdateStatus()
         if (!response) {
-          throw new Error('Failed to fetch update status')
+          throw new Error("Impossible de récupérer l'état de la mise à jour")
         }
         setUpdateStatus(response)
 
@@ -126,7 +126,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
       setIsUpdating(true)
       const response = await api.startSystemUpdate()
       if (!response || !response.success) {
-        throw new Error('Failed to start update')
+        throw new Error('Impossible de lancer la mise à jour')
       }
     } catch (err: any) {
       setIsUpdating(false)
@@ -138,7 +138,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
     try {
       const response = await api.getSystemUpdateLogs()
       if (!response) {
-        throw new Error('Failed to fetch update logs')
+        throw new Error('Impossible de récupérer les journaux de mise à jour')
       }
       setLogs(response.logs)
       setShowLogs(true)
@@ -160,16 +160,16 @@ export default function SystemUpdatePage(props: { system: Props }) {
         if (data.updateAvailable) {
           addNotification({
             type: 'success',
-            message: `Update available: ${data.latestVersion}`,
+            message: `Mise à jour disponible : ${data.latestVersion}`,
           })
         } else {
-          addNotification({ type: 'success', message: 'System is up to date' })
+          addNotification({ type: 'success', message: 'Le système est à jour' })
         }
         setError(null)
       }
     },
     onError: (error: any) => {
-      const errorMessage = error?.message || 'Failed to check for updates'
+      const errorMessage = error?.message || 'Impossible de rechercher les mises à jour'
       setError(errorMessage)
       addNotification({ type: 'error', message: errorMessage })
     },
@@ -197,7 +197,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
       return await api.updateSetting(key, value)
     },
     onSuccess: () => {
-      addNotification({ message: 'Setting updated successfully.', type: 'success' })
+      addNotification({ message: 'Réglage mis à jour.', type: 'success' })
       earlyAccessSetting.refetch()
       // Toggling Early Access changes which versions are eligible, so re-evaluate
       // immediately rather than making the user click Check Again.
@@ -205,7 +205,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
     },
     onError: (error) => {
       console.error('Error updating setting:', error)
-      addNotification({ message: 'There was an error updating the setting. Please try again.', type: 'error' })
+      addNotification({ message: 'Une erreur est survenue lors de la mise à jour du réglage. Veuillez réessayer.', type: 'error' })
     },
   })
 
@@ -214,33 +214,32 @@ export default function SystemUpdatePage(props: { system: Props }) {
     mutationFn: (email: string) => api.subscribeToReleaseNotes(email),
     onSuccess: (data) => {
       if (data && data.success) {
-        addNotification({ type: 'success', message: 'Successfully subscribed to release notes!' })
+        addNotification({ type: 'success', message: 'Abonnement aux notes de version enregistré !' })
         setEmail('')
       } else {
         addNotification({
           type: 'error',
-          message: `Failed to subscribe: ${data?.message || 'Unknown error'}`,
+          message: `Échec de l'abonnement : ${data?.message || 'erreur inconnue'}`,
         })
       }
     },
     onError: (error: any) => {
       addNotification({
         type: 'error',
-        message: `Error subscribing to release notes: ${error.message || 'Unknown error'}`,
+        message: `Erreur lors de l'abonnement aux notes de version : ${error.message || 'erreur inconnue'}`,
       })
     },
   })
 
   return (
     <SettingsLayout>
-      <Head title="System Update" />
+      <Head title="Mise à jour du système" />
       <div className="xl:pl-72 w-full">
         <main className="px-6 lg:px-12 py-6 lg:py-8">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-desert-green mb-2">System Update</h1>
+            <h1 className="text-4xl font-bold text-desert-green mb-2">Mise à jour du système</h1>
             <p className="text-desert-stone-dark">
-              Keep your Project NOMAD instance up to date with the latest features and
-              improvements.
+              Gardez votre Project NOMAD à jour avec les dernières fonctions et améliorations.
             </p>
           </div>
 
@@ -248,7 +247,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
             <div className="mb-6">
               <Alert
                 type="error"
-                title="Update Failed"
+                title="Échec de la mise à jour"
                 message={error}
                 variant="bordered"
                 dismissible
@@ -260,8 +259,8 @@ export default function SystemUpdatePage(props: { system: Props }) {
             <div className="mb-6">
               <Alert
                 type="info"
-                title="Container Restarting"
-                message="The admin container is restarting. This page will reload automatically when the update is complete."
+                title="Redémarrage du conteneur"
+                message="Le conteneur d'administration redémarre. Cette page se rechargera automatiquement à la fin de la mise à jour."
                 variant="solid"
               />
             </div>
@@ -270,8 +269,8 @@ export default function SystemUpdatePage(props: { system: Props }) {
             <div className="mb-6">
               <Alert
                 type="info"
-                title="Connection Temporarily Lost (Expected)"
-                message="You may see error notifications while the backend restarts during the update. This is completely normal and expected. Connection should be restored momentarily."
+                title="Connexion temporairement perdue (normal)"
+                message="Des notifications d'erreur peuvent apparaître pendant le redémarrage du serveur lors de la mise à jour. C'est tout à fait normal. La connexion devrait revenir dans un instant."
                 variant="solid"
               />
             </div>
@@ -283,12 +282,12 @@ export default function SystemUpdatePage(props: { system: Props }) {
               {!isUpdating && (
                 <>
                   <h2 className="text-2xl font-bold text-desert-green mb-2">
-                    {versionInfo.updateAvailable ? 'Update Available' : 'System Up to Date'}
+                    {versionInfo.updateAvailable ? 'Mise à jour disponible' : 'Système à jour'}
                   </h2>
                   <p className="text-desert-stone-dark mb-6">
                     {versionInfo.updateAvailable
-                      ? `A new version (${versionInfo.latestVersion}) is available for your Project NOMAD instance.`
-                      : 'Your system is running the latest version!'}
+                      ? `Une nouvelle version (${versionInfo.latestVersion}) est disponible pour votre Project NOMAD.`
+                      : 'Votre système utilise la dernière version !'}
                   </p>
                 </>
               )}
@@ -304,7 +303,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
 
               <div className="flex justify-center gap-8 mb-6">
                 <div className="text-center">
-                  <p className="text-sm text-desert-stone mb-1">Current Version</p>
+                  <p className="text-sm text-desert-stone mb-1">Version actuelle</p>
                   <p className="text-xl font-bold text-desert-green">
                     {versionInfo.currentVersion}
                   </p>
@@ -327,7 +326,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
                       </svg>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-desert-stone mb-1">Latest Version</p>
+                      <p className="text-sm text-desert-stone mb-1">Dernière version</p>
                       <p className="text-xl font-bold text-desert-olive">
                         {versionInfo.latestVersion}
                       </p>
@@ -357,7 +356,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     onClick={handleStartUpdate}
                     disabled={!versionInfo.updateAvailable}
                   >
-                    {versionInfo.updateAvailable ? 'Start Update' : 'No Update Available'}
+                    {versionInfo.updateAvailable ? 'Lancer la mise à jour' : 'Aucune mise à jour disponible'}
                   </StyledButton>
                   <StyledButton
                     variant="ghost"
@@ -366,14 +365,14 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     onClick={() => checkVersionMutation.mutate()}
                     loading={checkVersionMutation.isPending}
                   >
-                    Check Again
+                    Vérifier de nouveau
                   </StyledButton>
                 </div>
               )}
             </div>
             <div className="border-t bg-surface-primary p-6">
               <h3 className="text-lg font-semibold text-desert-green mb-4">
-                What happens during an update?
+                Que se passe-t-il pendant une mise à jour ?
               </h3>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
@@ -381,9 +380,9 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     1
                   </div>
                   <div>
-                    <p className="font-medium text-desert-stone-dark">Pull Latest Images</p>
+                    <p className="font-medium text-desert-stone-dark">Téléchargement des dernières images</p>
                     <p className="text-sm text-desert-stone">
-                      Downloads the newest Docker images for all core containers
+                      Télécharge les images Docker les plus récentes de tous les conteneurs principaux
                     </p>
                   </div>
                 </div>
@@ -392,9 +391,9 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     2
                   </div>
                   <div>
-                    <p className="font-medium text-desert-stone-dark">Recreate Containers</p>
+                    <p className="font-medium text-desert-stone-dark">Recréation des conteneurs</p>
                     <p className="text-sm text-desert-stone">
-                      Safely stops and recreates all core containers with the new images
+                      Arrête proprement puis recrée tous les conteneurs principaux avec les nouvelles images
                     </p>
                   </div>
                 </div>
@@ -403,9 +402,9 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     3
                   </div>
                   <div>
-                    <p className="font-medium text-desert-stone-dark">Automatic Reload</p>
+                    <p className="font-medium text-desert-stone-dark">Rechargement automatique</p>
                     <p className="text-sm text-desert-stone">
-                      This page will automatically reload when the update is complete
+                      Cette page se recharge automatiquement à la fin de la mise à jour
                     </p>
                   </div>
                 </div>
@@ -420,7 +419,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     onClick={handleViewLogs}
                     fullWidth
                   >
-                    View Update Logs
+                    Voir les journaux de mise à jour
                   </StyledButton>
                 </div>
               )}
@@ -429,18 +428,18 @@ export default function SystemUpdatePage(props: { system: Props }) {
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <Alert
               type="info"
-              title="Backup Reminder"
-              message="While updates are designed to be safe, it's always recommended to backup any critical data before proceeding."
+              title="Pensez à sauvegarder"
+              message="Les mises à jour sont conçues pour être sûres, mais il est toujours conseillé de sauvegarder les données importantes avant de commencer."
               variant="solid"
             />
             <Alert
               type="warning"
-              title="Temporary Downtime"
-              message="Services will be briefly unavailable during the update process. This typically takes 2-5 minutes depending on your internet connection."
+              title="Interruption temporaire"
+              message="Les services seront brièvement indisponibles pendant la mise à jour. Cela prend en général 2 à 5 minutes selon votre connexion internet."
               variant="solid"
             />
           </div>
-          <StyledSectionHeader title="Early Access" className="mt-8" />
+          <StyledSectionHeader title="Accès anticipé" className="mt-8" />
           <div className="bg-surface-primary rounded-lg border shadow-md overflow-hidden mt-6 p-6">
             <Switch
               checked={earlyAccessSetting.data?.value || false}
@@ -448,8 +447,8 @@ export default function SystemUpdatePage(props: { system: Props }) {
                 updateSettingMutation.mutate({ key: 'system.earlyAccess', value: newVal })
               }}
               disabled={updateSettingMutation.isPending}
-              label="Enable Early Access"
-              description="Receive release candidate (RC) versions before they are officially released. Note: RC versions may contain bugs and are not recommended for environments where stability and data integrity are critical."
+              label="Activer l'accès anticipé"
+              description="Recevez les versions candidates (RC) avant leur sortie officielle. Attention : elles peuvent contenir des bogues et sont déconseillées là où la stabilité et l'intégrité des données sont essentielles."
             />
           </div>
           <CoreAutoUpdateSection />
@@ -460,8 +459,8 @@ export default function SystemUpdatePage(props: { system: Props }) {
             <div className="flex flex-col md:flex-row justify-between items-center p-8 gap-y-8 md:gap-y-0 gap-x-8">
               <div>
                 <h2 className="max-w-xl text-lg font-bold text-desert-green sm:text-xl lg:col-span-7">
-                  Want to stay updated with the latest from Project NOMAD? Subscribe to receive
-                  release notes directly to your inbox. Unsubscribe anytime.
+                  Envie de suivre les nouveautés de Project NOMAD ? Abonnez-vous pour recevoir les notes
+                  de version par e-mail (en anglais). Désabonnement possible à tout moment.
                 </h2>
               </div>
               <div className="flex flex-col">
@@ -470,7 +469,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     name="email"
                     label=""
                     type="email"
-                    placeholder="Your email address"
+                    placeholder="Votre adresse e-mail"
                     disabled={false}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -483,12 +482,12 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     onClick={() => subscribeToReleaseNotesMutation.mutateAsync(email)}
                     loading={subscribeToReleaseNotesMutation.isPending}
                   >
-                    Subscribe
+                    S'abonner
                   </StyledButton>
                 </div>
                 <p className="mt-2 text-sm text-desert-stone-dark">
-                  We care about your privacy. Project NOMAD will never share your email with
-                  third parties or send you spam.
+                  Nous respectons votre vie privée : Project NOMAD ne partagera jamais votre e-mail
+                  avec des tiers et ne vous enverra pas de spam.
                 </p>
               </div>
             </div>
@@ -498,7 +497,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
               <div className="bg-surface-primary rounded-lg shadow-2xl max-w-4xl w-full max-h-[80vh] flex flex-col">
                 <div className="p-6 border-b border-desert-stone-light flex justify-between items-center">
-                  <h3 className="text-xl font-bold text-desert-green">Update Logs</h3>
+                  <h3 className="text-xl font-bold text-desert-green">Journaux de mise à jour</h3>
                   <button
                     onClick={() => setShowLogs(false)}
                     className="text-desert-stone hover:text-desert-green transition-colors"
@@ -515,12 +514,12 @@ export default function SystemUpdatePage(props: { system: Props }) {
                 </div>
                 <div className="p-6 overflow-auto flex-1">
                   <pre className="bg-black text-green-400 p-4 rounded text-xs font-mono whitespace-pre-wrap">
-                    {logs || 'No logs available yet...'}
+                    {logs || 'Aucun journal pour le moment…'}
                   </pre>
                 </div>
                 <div className="p-6 border-t border-desert-stone-light">
                   <StyledButton variant="secondary" onClick={() => setShowLogs(false)} fullWidth>
-                    Close
+                    Fermer
                   </StyledButton>
                 </div>
               </div>

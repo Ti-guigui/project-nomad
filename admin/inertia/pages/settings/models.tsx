@@ -72,7 +72,7 @@ export default function ModelsPage(props: {
         router.reload()
       }
     } catch (error: any) {
-      const msg = error?.response?.data?.message || error?.message || 'Failed to configure remote Ollama.'
+      const msg = error?.response?.data?.message || error?.message || "Impossible de configurer l'Ollama distant."
       setRemoteOllamaError(msg)
     } finally {
       setRemoteOllamaSaving(false)
@@ -86,7 +86,7 @@ export default function ModelsPage(props: {
       const res = await api.configureRemoteOllama(null)
       if (res?.success) {
         setRemoteOllamaUrl('')
-        addNotification({ message: 'Remote Ollama configuration cleared.', type: 'success' })
+        addNotification({ message: "Configuration de l'Ollama distant effacée.", type: 'success' })
         router.reload()
       }
     } catch (error: any) {
@@ -134,7 +134,7 @@ export default function ModelsPage(props: {
     setIsForceRefreshing(true)
     await refetch()
     setIsForceRefreshing(false)
-    addNotification({ message: 'Model list refreshed from remote.', type: 'success' })
+    addNotification({ message: 'Liste des modèles actualisée.', type: 'success' })
   }
 
   async function handleInstallModel(modelName: string) {
@@ -142,14 +142,14 @@ export default function ModelsPage(props: {
       const res = await api.downloadModel(modelName)
       if (res.success) {
         addNotification({
-          message: `Model download initiated for ${modelName}. It may take some time to complete.`,
+          message: `Téléchargement du modèle ${modelName} lancé. Cela peut prendre un moment.`,
           type: 'success',
         })
       }
     } catch (error) {
       console.error('Error installing model:', error)
       addNotification({
-        message: `There was an error installing the model: ${modelName}. Please try again.`,
+        message: `Erreur lors de l'installation du modèle ${modelName}. Veuillez réessayer.`,
         type: 'error',
       })
     }
@@ -160,7 +160,7 @@ export default function ModelsPage(props: {
       const res = await api.deleteModel(modelName)
       if (res.success) {
         addNotification({
-          message: `Model deleted: ${modelName}.`,
+          message: `Modèle supprimé : ${modelName}.`,
           type: 'success',
         })
       }
@@ -169,7 +169,7 @@ export default function ModelsPage(props: {
     } catch (error) {
       console.error('Error deleting model:', error)
       addNotification({
-        message: `There was an error deleting the model: ${modelName}. Please try again.`,
+        message: `Erreur lors de la suppression du modèle ${modelName}. Veuillez réessayer.`,
         type: 'error',
       })
     }
@@ -178,19 +178,19 @@ export default function ModelsPage(props: {
   async function confirmDeleteModel(model: string) {
     openModal(
       <StyledModal
-        title="Delete Model?"
+        title="Supprimer le modèle ?"
         onConfirm={() => {
           handleDeleteModel(model)
         }}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmText="Supprimer"
+        cancelText="Annuler"
         confirmVariant="primary"
       >
         <p className="text-text-primary">
-          Are you sure you want to delete this model? You will need to download it again if you want
-          to use it in the future.
+          Voulez-vous vraiment supprimer ce modèle ? Il faudra le retélécharger pour l'utiliser de
+          nouveau.
         </p>
       </StyledModal>,
       'confirm-delete-model-modal'
@@ -204,13 +204,13 @@ export default function ModelsPage(props: {
   // hardware can afford. An explicit choice is a cap, never a boost — asking for
   // more than a model or a GPU can support just degrades or fails to load.
   const contextWindowOptions = [
-    { value: 'auto', label: 'Auto (recommended)' },
-    { value: '4096', label: '4K tokens' },
-    { value: '8192', label: '8K tokens' },
-    { value: '16384', label: '16K tokens' },
-    { value: '32768', label: '32K tokens' },
-    { value: '65536', label: '64K tokens' },
-    { value: '131072', label: '128K tokens' },
+    { value: 'auto', label: 'Auto (recommandé)' },
+    { value: '4096', label: '4K jetons' },
+    { value: '8192', label: '8K jetons' },
+    { value: '16384', label: '16K jetons' },
+    { value: '32768', label: '32K jetons' },
+    { value: '65536', label: '64K jetons' },
+    { value: '131072', label: '128K jetons' },
   ]
 
   // Presets rather than a raw 0-1 number: the value is a cosine-similarity
@@ -228,7 +228,7 @@ export default function ModelsPage(props: {
     // the chosen model has since been deleted.
     ...(RAG_MIN_RELEVANCE_PRESETS.some((p) => String(p.value) === minRelevance)
       ? []
-      : [{ value: minRelevance, label: `Custom (${minRelevance})`, disabled: true }]),
+      : [{ value: minRelevance, label: `Personnalisé (${minRelevance})`, disabled: true }]),
   ]
 
   const responseStyleOptions = RESPONSE_STYLE_PRESETS.map((preset) => ({
@@ -241,10 +241,10 @@ export default function ModelsPage(props: {
     tokens >= 1024 ? `${Math.round(tokens / 1024)}K` : String(tokens)
 
   const tasksModelOptions = [
-    { value: '', label: 'Use the chat model' },
+    { value: '', label: 'Utiliser le modèle de discussion' },
     ...props.models.installedModels.map((model) => ({ value: model.name, label: model.name })),
     ...(tasksModel && !props.models.installedModels.some((m) => m.name === tasksModel)
-      ? [{ value: tasksModel, label: `${tasksModel} (not installed)`, disabled: true }]
+      ? [{ value: tasksModel, label: `${tasksModel} (non installé)`, disabled: true }]
       : []),
   ]
 
@@ -258,14 +258,14 @@ export default function ModelsPage(props: {
       // without a reload.
       queryClient.invalidateQueries({ queryKey: ['system-setting', key] })
       addNotification({
-        message: 'Setting updated successfully.',
+        message: 'Réglage mis à jour.',
         type: 'success',
       })
     },
     onError: (error) => {
       console.error('Error updating setting:', error)
       addNotification({
-        message: 'There was an error updating the setting. Please try again.',
+        message: 'Une erreur est survenue lors de la mise à jour du réglage. Veuillez réessayer.',
         type: 'error',
       })
     },
@@ -273,18 +273,19 @@ export default function ModelsPage(props: {
 
   return (
     <SettingsLayout>
-      <Head title={`${aiAssistantName} Settings | Project NOMAD`} />
+      <Head title={`Paramètres de ${aiAssistantName} | Project NOMAD`} />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
           <h1 className="text-4xl font-semibold mb-4">{aiAssistantName}</h1>
           <p className="text-text-muted mb-4">
-            Easily manage the {aiAssistantName}'s settings and installed models. We recommend
-            starting with smaller models first to see how they perform on your system before moving
-            on to larger ones.
+            Gérez facilement les réglages et les modèles installés de {aiAssistantName}. Nous vous
+            conseillons de commencer par de petits modèles pour voir comment ils se comportent sur
+            votre système avant de passer à de plus gros. Pour le français, privilégiez des modèles
+            multilingues (Mistral, Qwen, Llama récents…).
           </p>
           {!isInstalled && (
             <Alert
-              title={`${aiAssistantName}'s dependencies are not installed. Please install them to manage AI models.`}
+              title={`Les dépendances de ${aiAssistantName} ne sont pas installées. Installez-les pour gérer les modèles d'IA.`}
               type="warning"
               variant="solid"
               className="!mt-6"
@@ -298,7 +299,7 @@ export default function ModelsPage(props: {
             />
           )}
 
-          <StyledSectionHeader title="Settings" className="mt-8 mb-4" />
+          <StyledSectionHeader title="Paramètres" className="mt-8 mb-4" />
           <div className="bg-surface-primary rounded-lg border-2 border-border-subtle p-6">
             <div className="space-y-4">
               <Switch
@@ -307,8 +308,8 @@ export default function ModelsPage(props: {
                   setChatSuggestionsEnabled(newVal)
                   updateSettingMutation.mutate({ key: 'chat.suggestionsEnabled', value: newVal })
                 }}
-                label="Chat Suggestions"
-                description="Display AI-generated conversation starters in the chat interface"
+                label="Suggestions de discussion"
+                description="Affiche des idées de questions générées par l'IA dans l'interface de discussion"
               />
               <Switch
                 checked={ollamaFlashAttention}
@@ -317,7 +318,7 @@ export default function ModelsPage(props: {
                   updateSettingMutation.mutate({ key: 'ai.ollamaFlashAttention', value: newVal })
                 }}
                 label="Flash Attention"
-                description="Enables OLLAMA_FLASH_ATTENTION=1 for improved memory efficiency. Disable if you experience instability. Takes effect after reinstalling the AI Assistant."
+                description="Active OLLAMA_FLASH_ATTENTION=1 pour économiser de la mémoire. Désactivez-le en cas d'instabilité. Prend effet après réinstallation de l'assistant IA."
               />
               <Switch
                 checked={autoThinking}
@@ -325,8 +326,8 @@ export default function ModelsPage(props: {
                   setAutoThinking(newVal)
                   updateSettingMutation.mutate({ key: 'ai.autoThinking', value: newVal })
                 }}
-                label="Use thinking automatically when a model supports it"
-                description="Sets the default for models that can think. You can still turn thinking on or off for an individual model in the chat window."
+                label="Activer automatiquement la réflexion quand le modèle le permet"
+                description="Définit la valeur par défaut pour les modèles capables de raisonner. Vous pouvez toujours activer ou désactiver la réflexion pour un modèle dans la fenêtre de discussion."
               />
               <Switch
                 checked={ragEnabled}
@@ -334,14 +335,14 @@ export default function ModelsPage(props: {
                   setRagEnabled(newVal)
                   updateSettingMutation.mutate({ key: 'rag.enabled', value: newVal })
                 }}
-                label="Knowledge Base Retrieval"
-                description="Search your knowledge base for relevant documents before answering. Turn this off to save memory and speed up replies when your knowledge base is small or empty. This is the same switch as the one in the chat window."
+                label="Recherche dans la base de connaissances"
+                description="Cherche les documents utiles dans votre base de connaissances avant de répondre. Désactivez-la pour économiser de la mémoire et accélérer les réponses quand la base est petite ou vide. C'est le même interrupteur que dans la fenêtre de discussion."
               />
               <Input
                 name="aiAssistantCustomName"
-                label="Assistant Name"
-                helpText='Give your AI assistant a custom name that will be used in the chat interface and other areas of the application.'
-                placeholder="AI Assistant"
+                label="Nom de l'assistant"
+                helpText="Donnez à votre assistant IA un nom personnalisé, utilisé dans l'interface de discussion et ailleurs dans l'application."
+                placeholder="Assistant IA"
                 value={aiAssistantCustomName}
                 onChange={(e) => setAiAssistantCustomName(e.target.value)}
                 onBlur={() =>
@@ -353,8 +354,8 @@ export default function ModelsPage(props: {
               />
               <Select
                 name="tasksModel"
-                label="Tasks Model"
-                helpText="Small, fast model used for background work like chat titles and suggestions. Leave this set to the chat model to use whichever model the chat is using. Avoid reasoning models here — they are slow at short, aesthetic tasks."
+                label="Modèle pour les tâches"
+                helpText="Petit modèle rapide utilisé pour les tâches de fond comme les titres de discussion et les suggestions. Laissez « Utiliser le modèle de discussion » pour reprendre le modèle de la discussion. Évitez les modèles à raisonnement : ils sont lents sur ces petites tâches."
                 value={tasksModel}
                 options={tasksModelOptions}
                 onChange={(newVal) => {
@@ -364,8 +365,8 @@ export default function ModelsPage(props: {
               />
               <Select
                 name="minRelevance"
-                label="Knowledge Base Relevance"
-                helpText="How closely a knowledge-base passage has to match your question before it is used in an answer. Stricter settings keep unrelated passages out; too strict and genuinely useful ones get dropped too. When nothing clears the bar, the assistant answers from its own knowledge instead."
+                label="Pertinence de la base de connaissances"
+                helpText="À quel point un passage de la base de connaissances doit correspondre à votre question pour être utilisé. Plus c'est strict, plus les passages hors sujet sont écartés ; trop strict, et des passages utiles le sont aussi. Si rien ne passe le seuil, l'assistant répond avec ses propres connaissances."
                 value={minRelevance}
                 options={minRelevanceOptions}
                 disabled={!ragEnabled}
@@ -381,13 +382,13 @@ export default function ModelsPage(props: {
                   setRelevanceCheck(newVal)
                   updateSettingMutation.mutate({ key: 'rag.relevanceCheck', value: newVal })
                 }}
-                label="Double-check knowledge base matches"
-                description="Before answering, ask the Tasks Model whether the passages found are actually about your question, and leave them out (and uncited) when they are not. Helps most with large libraries like Wikipedia or Project Gutenberg, where something always looks similar. Needs a capable Tasks Model (about 8B parameters or larger); smaller models reject too many good matches. Adds a short delay to every reply."
+                label="Vérifier les passages trouvés"
+                description="Avant de répondre, demande au modèle pour les tâches si les passages trouvés concernent vraiment votre question, et les écarte (sans les citer) sinon. Surtout utile avec de grandes bibliothèques comme Wikipédia ou le Projet Gutenberg, où quelque chose ressemble toujours à la question. Nécessite un modèle pour les tâches assez puissant (environ 8B paramètres ou plus) ; les plus petits rejettent trop de bons passages. Ajoute un court délai à chaque réponse."
               />
               <Select
                 name="responseStyle"
-                label="Response Style"
-                helpText="How adventurous the assistant is when picking its next word. Auto follows whatever the model's author recommended and fills in the rest, and suits most people. Focused gives shorter, steadier, more repeatable answers and is the better choice for looking things up. Creative varies its wording more, at some cost to accuracy."
+                label="Style de réponse"
+                helpText="Le degré d'audace de l'assistant dans le choix des mots. Auto suit les recommandations de l'auteur du modèle et convient à la plupart des gens. Précis donne des réponses plus courtes, plus stables et reproductibles : le meilleur choix pour chercher une information. Créatif varie davantage la formulation, au prix d'un peu de justesse."
                 value={responseStyle}
                 options={responseStyleOptions}
                 onChange={(newVal) => {
@@ -397,8 +398,8 @@ export default function ModelsPage(props: {
               />
               <Select
                 name="contextWindow"
-                label="Context Window"
-                helpText="How much conversation and knowledge-base context each reply can consider. Auto sizes this per model from its trained limit and your available memory. Choosing a value sets an upper limit — it can lower the window to save memory, but never raises it beyond what a model supports."
+                label="Fenêtre de contexte"
+                helpText="La quantité de conversation et de contexte de la base de connaissances prise en compte à chaque réponse. Auto l'ajuste pour chaque modèle selon sa limite et votre mémoire disponible. Choisir une valeur fixe un plafond : cela peut réduire la fenêtre pour économiser de la mémoire, sans jamais dépasser ce que le modèle permet."
                 value={contextWindow}
                 options={contextWindowOptions}
                 onChange={(newVal) => {
@@ -408,34 +409,34 @@ export default function ModelsPage(props: {
               />
               {Object.keys(resolvedWindows).length > 0 && (
                 <p className="text-xs text-text-muted">
-                  Currently in effect:{' '}
+                  Actuellement appliqué :{' '}
                   {Object.entries(resolvedWindows)
                     .map(([name, tokens]) => `${name} → ${formatWindow(tokens)}`)
                     .join(', ')}
-                  . Changes take effect for new conversations.
+                  . Les changements s'appliquent aux nouvelles conversations.
                 </p>
               )}
             </div>
           </div>
 
-          <StyledSectionHeader title="Installed Models" className="mt-12 mb-4" />
+          <StyledSectionHeader title="Modèles installés" className="mt-12 mb-4" />
           <div className="bg-surface-primary rounded-lg border-2 border-border-subtle p-6">
             {props.models.installedModels.length === 0 ? (
               <p className="text-text-muted">
-                No models installed. Browse the model catalog below to get started.
+                Aucun modèle installé. Parcourez le catalogue ci-dessous pour commencer.
               </p>
             ) : (
               <table className="min-w-full divide-y divide-border-subtle">
                 <thead>
                   <tr>
                     <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                      Model
+                      Modèle
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                      Parameters
+                      Paramètres
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                      Disk Size
+                      Taille sur le disque
                     </th>
                     <th className="px-4 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">
                       Action
@@ -450,7 +451,7 @@ export default function ModelsPage(props: {
                       </td>
                       <td className="px-4 py-3">
                         <span className="text-sm text-text-secondary">
-                          {model.details?.parameter_size || 'N/A'}
+                          {model.details?.parameter_size || 'N/D'}
                         </span>
                       </td>
                       <td className="px-4 py-3">
@@ -465,7 +466,7 @@ export default function ModelsPage(props: {
                           onClick={() => confirmDeleteModel(model.name)}
                           icon="IconTrash"
                         >
-                          Delete
+                          Supprimer
                         </StyledButton>
                       </td>
                     </tr>
@@ -475,18 +476,18 @@ export default function ModelsPage(props: {
             )}
           </div>
 
-          <StyledSectionHeader title="Remote Connection" className="mt-8 mb-4" />
+          <StyledSectionHeader title="Connexion distante" className="mt-8 mb-4" />
           <div className="bg-surface-primary rounded-lg border-2 border-border-subtle p-6">
             <p className="text-sm text-text-secondary mb-4">
-              Connect to any OpenAI-compatible API server — Ollama, LM Studio, llama.cpp, and others are all supported.
-              For remote Ollama instances, the host must be started with <code className="bg-surface-secondary px-1 rounded">OLLAMA_HOST=0.0.0.0</code>.
+              Connectez-vous à n'importe quel serveur compatible avec l'API OpenAI — Ollama, LM Studio, llama.cpp et d'autres sont pris en charge.
+              Pour un Ollama distant, le serveur doit être lancé avec <code className="bg-surface-secondary px-1 rounded">OLLAMA_HOST=0.0.0.0</code>.
             </p>
             <div className="flex items-end gap-3">
               <div className="flex-1">
                 <Input
                   name="remoteOllamaUrl"
-                  label="Remote Ollama/OpenAI API URL"
-                  placeholder="http://192.168.1.100:11434  (or :1234 for OpenAI API Compatible Apps)"
+                  label="URL de l'API Ollama/OpenAI distante"
+                  placeholder="http://192.168.1.100:11434  (ou :1234 pour les applications compatibles OpenAI)"
                   value={remoteOllamaUrl}
                   onChange={(e) => {
                     setRemoteOllamaUrl(e.target.value)
@@ -514,7 +515,7 @@ export default function ModelsPage(props: {
                   disabled={remoteOllamaSaving}
                   className="mb-0.5"
                 >
-                  Clear
+                  Effacer
                 </StyledButton>
               )}
             </div>
@@ -522,19 +523,19 @@ export default function ModelsPage(props: {
 
           <ActiveModelDownloads withHeader />
 
-          <StyledSectionHeader title="Models" className="mt-12 mb-4" />
+          <StyledSectionHeader title="Modèles" className="mt-12 mb-4" />
           <Alert
             type="info"
             variant="bordered"
-            title="Model downloading is only supported when using a Ollama backend."
-            message="If you are connected to an OpenAI API host (e.g. LM Studio), please download models directly in that application."
+            title="Le téléchargement de modèles n'est possible qu'avec un serveur Ollama."
+            message="Si vous êtes connecté à un serveur compatible OpenAI (ex. LM Studio), téléchargez les modèles directement dans cette application."
             className="mb-4"
           />
           <div className="flex justify-start items-center gap-3 mt-4">
             <Input
               name="search"
               label=""
-              placeholder="Search language models.."
+              placeholder="Rechercher des modèles de langage…"
               value={queryUI}
               onChange={(e) => {
                 setQueryUI(e.target.value)
@@ -550,7 +551,7 @@ export default function ModelsPage(props: {
               loading={isForceRefreshing}
               className='mt-1'
             >
-              Refresh Models
+              Actualiser les modèles
             </StyledButton>
           </div>
           <StyledTable<NomadOllamaModel>
@@ -559,7 +560,7 @@ export default function ModelsPage(props: {
             columns={[
               {
                 accessor: 'name',
-                title: 'Name',
+                title: 'Nom',
                 render(record) {
                   return (
                     <div className="flex flex-col">
@@ -571,11 +572,11 @@ export default function ModelsPage(props: {
               },
               {
                 accessor: 'estimated_pulls',
-                title: 'Estimated Pulls',
+                title: 'Téléchargements estimés',
               },
               {
                 accessor: 'model_last_updated',
-                title: 'Last Updated',
+                title: 'Dernière mise à jour',
               },
             ]}
             data={availableModelData?.models || []}
@@ -588,16 +589,16 @@ export default function ModelsPage(props: {
                       <thead className="bg-surface-primary">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Tag
+                            Étiquette
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Input Type
+                            Type d'entrée
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Context Size
+                            Taille du contexte
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Model Size
+                            Taille du modèle
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                             Action
@@ -617,15 +618,15 @@ export default function ModelsPage(props: {
                                 </span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="text-sm text-text-secondary">{tag.input || 'N/A'}</span>
+                                <span className="text-sm text-text-secondary">{tag.input || 'N/D'}</span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className="text-sm text-text-secondary">
-                                  {tag.context || 'N/A'}
+                                  {tag.context || 'N/D'}
                                 </span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="text-sm text-text-secondary">{tag.size || 'N/A'}</span>
+                                <span className="text-sm text-text-secondary">{tag.size || 'N/D'}</span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <StyledButton
@@ -639,7 +640,7 @@ export default function ModelsPage(props: {
                                   }}
                                   icon={isInstalled ? 'IconTrash' : 'IconDownload'}
                                 >
-                                  {isInstalled ? 'Delete' : 'Install'}
+                                  {isInstalled ? 'Supprimer' : 'Installer'}
                                 </StyledButton>
                               </td>
                             </tr>
@@ -660,7 +661,7 @@ export default function ModelsPage(props: {
                   setLimit((prev) => prev + 15)
                 }}
               >
-                Load More
+                Charger plus
               </StyledButton>
             )}
           </div>

@@ -84,19 +84,19 @@ export default function ZimPage() {
   async function confirmDeleteFile(file: ZimFileWithMetadata) {
     openModal(
       <StyledModal
-        title="Confirm Delete?"
+        title="Confirmer la suppression ?"
         onConfirm={() => {
           deleteFileMutation.mutateAsync(file)
           closeAllModals()
         }}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmText="Supprimer"
+        cancelText="Annuler"
         confirmVariant="danger"
       >
         <p className="text-text-secondary">
-          Are you sure you want to delete {file.name}? This action cannot be undone.
+          Voulez-vous vraiment supprimer {file.name} ? Cette action est irréversible.
         </p>
       </StyledModal>,
       'confirm-delete-file-modal'
@@ -120,22 +120,22 @@ export default function ZimPage() {
         type: 'success',
         message:
           result.added > 0
-            ? `Found ${result.added} new ${result.added === 1 ? 'book' : 'books'}. Library now has ${result.after}.`
-            : `Library is up to date (${result.after} ${result.after === 1 ? 'book' : 'books'}).`,
+            ? `${result.added} ${result.added === 1 ? 'nouvel ouvrage trouvé' : 'nouveaux ouvrages trouvés'}. La bibliothèque en compte maintenant ${result.after}.`
+            : `La bibliothèque est à jour (${result.after} ${result.after === 1 ? 'ouvrage' : 'ouvrages'}).`,
       })
     },
   })
 
   return (
     <SettingsLayout>
-      <Head title="Content Manager | Project NOMAD" />
+      <Head title="Gestionnaire de contenus | Project NOMAD" />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
           <div className="flex items-center justify-between gap-4">
             <div className="flex flex-col">
-              <h1 className="text-4xl font-semibold mb-2">Content Manager</h1>
+              <h1 className="text-4xl font-semibold mb-2">Gestionnaire de contenus</h1>
               <p className="text-text-muted">
-                Manage your stored content files.
+                Gérez vos fichiers de contenus stockés.
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -144,17 +144,17 @@ export default function ZimPage() {
                 icon={showUploader ? 'IconX' : 'IconUpload'}
                 onClick={() => setShowUploader((v) => !v)}
               >
-                {showUploader ? 'Hide Uploader' : 'Upload ZIM File'}
+                {showUploader ? "Masquer l'envoi" : 'Envoyer un fichier ZIM'}
               </StyledButton>
               {isInstalled && (
                 <StyledButton
                   variant="secondary"
                   icon={'IconRefresh'}
                   loading={rescanMutation.isPending}
-                  title="Rebuild the Kiwix library index from the files on disk. Use this after manually adding ZIM files outside of NOMAD."
+                  title="Reconstruit l'index de la bibliothèque Kiwix à partir des fichiers sur le disque. À utiliser après avoir ajouté des fichiers ZIM à la main, en dehors de NOMAD."
                   onClick={() => rescanMutation.mutate()}
                 >
-                  Rescan Library
+                  Réanalyser la bibliothèque
                 </StyledButton>
               )}
             </div>
@@ -162,7 +162,7 @@ export default function ZimPage() {
           {showUploader && (
             <div className="mt-6">
               <p className="text-text-muted text-sm mb-3">
-                Upload a ZIM file from your browser. Files up to 20 GB are supported. For best results upload from the same machine or over a stable LAN connection. Larger files should be copied directly to the storage volume.
+                Envoyez un fichier ZIM depuis votre navigateur. Les fichiers jusqu'à 20 Go sont acceptés. Pour de meilleurs résultats, envoyez-le depuis la même machine ou via une connexion locale stable. Les fichiers plus gros doivent être copiés directement sur le volume de stockage.
               </p>
               <ZimUploader
                 existingFilenames={data?.map((f) => f.name) ?? []}
@@ -175,8 +175,8 @@ export default function ZimPage() {
                     type: 'success',
                     message:
                       added > 0
-                        ? `Upload complete. ${added} new ${added === 1 ? 'book' : 'books'} added to the library.`
-                        : 'Upload complete. Library is up to date.',
+                        ? `Envoi terminé. ${added} ${added === 1 ? 'nouvel ouvrage ajouté' : 'nouveaux ouvrages ajoutés'} à la bibliothèque.`
+                        : 'Envoi terminé. La bibliothèque est à jour.',
                   })
                 }}
               />
@@ -184,7 +184,7 @@ export default function ZimPage() {
           )}
           {!isInstalled && (
             <Alert
-              title="The Kiwix application is not installed. Please install it to view downloaded ZIM files"
+              title="L'application Kiwix n'est pas installée. Installez-la pour voir les fichiers ZIM téléchargés"
               type="warning"
               variant='solid'
               className="!mt-6"
@@ -198,7 +198,7 @@ export default function ZimPage() {
             columns={[
               {
                 accessor: 'title',
-                title: renderSortHeader('Title', 'name'),
+                title: renderSortHeader('Titre', 'name'),
                 render: (record) => (
                   <span className="font-medium">
                     {record.title || record.name}
@@ -216,7 +216,7 @@ export default function ZimPage() {
               },
               {
                 accessor: 'size_bytes',
-                title: renderSortHeader('Size', 'size'),
+                title: renderSortHeader('Taille', 'size'),
                 render: (record) => (
                   <span className="text-text-secondary tabular-nums">
                     {record.size_bytes ? formatBytes(record.size_bytes, 1) : '—'}
@@ -235,7 +235,7 @@ export default function ZimPage() {
                         confirmDeleteFile(record)
                       }}
                     >
-                      Delete
+                      Supprimer
                     </StyledButton>
                   </div>
                 ),

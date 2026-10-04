@@ -177,9 +177,9 @@ export const RAG_MIN_FINAL_SCORE = 0.62
  * later cannot invalidate a value someone has already saved.
  */
 export const RAG_MIN_RELEVANCE_PRESETS = [
-  { value: 0, label: 'Off — use every passage retrieved' },
-  { value: 0.55, label: 'Lenient' },
-  { value: RAG_MIN_FINAL_SCORE, label: 'Balanced (recommended)' },
+  { value: 0, label: 'Désactivé — utiliser tous les passages trouvés' },
+  { value: 0.55, label: 'Souple' },
+  { value: RAG_MIN_FINAL_SCORE, label: 'Équilibré (recommandé)' },
   // The last floor that costs no recall on the golden set. Stricter than this
   // starts dropping answers, which is a choice to offer, not one to default to.
   { value: 0.66, label: 'Strict' },
@@ -307,10 +307,10 @@ export const DEFAULT_RESPONSE_STYLE: ResponseStyle = 'auto'
  * Context Window and Knowledge Base Relevance selects above it are ordered.
  */
 export const RESPONSE_STYLE_PRESETS: { value: ResponseStyle; label: string }[] = [
-  { value: 'auto', label: 'Auto (recommended)' },
-  { value: 'focused', label: 'Focused (factual, repeatable)' },
-  { value: 'creative', label: 'Creative (varied, exploratory)' },
-  { value: 'off', label: 'Backend defaults (send nothing)' },
+  { value: 'auto', label: 'Auto (recommandé)' },
+  { value: 'focused', label: 'Précis (factuel, reproductible)' },
+  { value: 'creative', label: 'Créatif (varié, exploratoire)' },
+  { value: 'off', label: 'Valeurs du serveur (ne rien envoyer)' },
 ]
 
 export const SYSTEM_PROMPTS = {

@@ -40,7 +40,7 @@ export default function ConditionsShow({ condition, drugs, remedies, drugRowCoun
             className="inline-flex items-center gap-1 text-sm text-desert-green hover:underline"
           >
             <IconArrowLeft size={16} />
-            Drug Reference
+            Référentiel des médicaments
           </Link>
         </div>
 
@@ -58,32 +58,32 @@ export default function ConditionsShow({ condition, drugs, remedies, drugRowCoun
         {/* Drug list / empty states */}
         {noData ? (
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            <p className="text-lg font-semibold mb-2">No drug data yet</p>
+            <p className="text-lg font-semibold mb-2">Pas encore de données sur les médicaments</p>
             <p className="mb-6 opacity-70">
-              Download the offline FDA drug labels from Drug Reference to see matches for this
-              situation.
+              Téléchargez les notices FDA hors ligne depuis le référentiel des médicaments pour voir
+              les correspondances avec cette situation.
             </p>
             <Link href="/drug-reference">
               <span className="inline-block rounded bg-desert-green px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-desert-green-dark">
-                Go to Drug Reference
+                Aller au référentiel des médicaments
               </span>
             </Link>
           </div>
         ) : drugs.length === 0 ? (
           <div className="text-center py-8 opacity-60">
-            No over-the-counter drugs match &ldquo;{label}&rdquo; in the current label data. Try
-            searching by drug name in{' '}
+            Aucun médicament sans ordonnance ne correspond à «&nbsp;{label}&nbsp;» dans les notices
+            actuelles. Essayez une recherche par nom de médicament dans le{' '}
             <Link href="/drug-reference" className="text-desert-green hover:underline">
-              Drug Reference
+              référentiel des médicaments
             </Link>
             .
           </div>
         ) : (
           <>
             <div className="flex items-baseline justify-between mb-2">
-              <h2 className="text-base font-semibold">Over-the-counter options</h2>
+              <h2 className="text-base font-semibold">Médicaments sans ordonnance</h2>
               <span className="text-xs text-gray-500">
-                {drugs.length} result{drugs.length !== 1 ? 's' : ''}
+                {drugs.length} résultat{drugs.length !== 1 ? 's' : ''}
               </span>
             </div>
             <div className="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
@@ -101,9 +101,9 @@ export default function ConditionsShow({ condition, drugs, remedies, drugRowCoun
               <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-desert-tan/20 text-desert-tan-dark">
                 <IconLeaf size={16} />
               </span>
-              <h2 className="text-base font-semibold text-desert-tan-dark">Natural remedies</h2>
+              <h2 className="text-base font-semibold text-desert-tan-dark">Remèdes naturels</h2>
               <span className="text-xs text-desert-stone ml-auto">
-                {remedies.length} {remedies.length !== 1 ? 'remedies' : 'remedy'}
+                {remedies.length} {remedies.length !== 1 ? 'remèdes' : 'remède'}
               </span>
             </div>
 
@@ -121,8 +121,9 @@ export default function ConditionsShow({ condition, drugs, remedies, drugRowCoun
 
             {/* Plain-text credit — no link-out; the reference is fully bundled. */}
             <p className="mt-3 text-xs text-desert-stone">
-              Sources: NCCIH &ldquo;Herbs at a Glance&rdquo; (NIH) and US-government health
-              guidance (CDC, MedlinePlus/NLM, FDA). Public domain (US government works).
+              Sources : NCCIH «&nbsp;Herbs at a Glance&nbsp;» (NIH) et recommandations sanitaires du
+              gouvernement américain (CDC, MedlinePlus/NLM, FDA). Domaine public (œuvres du
+              gouvernement américain).
             </p>
           </div>
         )}
@@ -130,13 +131,13 @@ export default function ConditionsShow({ condition, drugs, remedies, drugRowCoun
         {/* ── Source citation ───────────────────────────────────────────────── */}
         <footer className="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 space-y-1">
           <p>
-            <strong>Source:</strong> U.S. Food &amp; Drug Administration drug labeling, via{' '}
-            <strong>openFDA</strong> — public domain (CC0 1.0). NOMAD is not affiliated with or
-            endorsed by the FDA.
+            <strong>Source :</strong> notices de la Food &amp; Drug Administration américaine, via{' '}
+            <strong>openFDA</strong> — domaine public (CC0 1.0). NOMAD n'est ni affilié à la FDA ni
+            approuvé par elle.
           </p>
           <p>
-            Matches are FDA label-indication text, not medical recommendations. Do not rely on this
-            data to make decisions regarding medical care.
+            Les correspondances proviennent du texte des indications des notices FDA, pas de
+            recommandations médicales. Ne vous fiez pas à ces données pour prendre des décisions de soins.
           </p>
         </footer>
       </div>
@@ -155,7 +156,7 @@ function NaturalRemedyCard({ remedy }: { remedy: NaturalRemedy }) {
           <p className="font-semibold text-sm text-desert-tan-dark">
             {remedy.name}
             <span className="ml-2 inline-block rounded-full bg-desert-tan/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-desert-tan-dark align-middle">
-              {remedy.kind === 'self-care' ? 'Self-care' : 'Herb'}
+              {remedy.kind === 'self-care' ? 'Soins personnels' : 'Plante'}
             </span>
           </p>
           {remedy.commonNames.length > 0 && (
@@ -165,7 +166,7 @@ function NaturalRemedyCard({ remedy }: { remedy: NaturalRemedy }) {
         {/* Plain-text attribution — deliberately NOT a link. The card is fully
             self-contained for offline use; nothing on it needs internet. */}
         <span className="flex-shrink-0 text-xs text-desert-stone mt-0.5">
-          Source: {remedySourceName(remedy)}
+          Source : {remedySourceName(remedy)}
         </span>
       </div>
 
@@ -174,14 +175,14 @@ function NaturalRemedyCard({ remedy }: { remedy: NaturalRemedy }) {
         <p className="text-desert-green-darker">{remedy.uses}</p>
         {remedy.how && (
           <p className="text-xs text-desert-green-darker bg-desert-sand/40 rounded px-2 py-1.5 border border-desert-stone-lighter/40">
-            <strong>How:</strong> {remedy.how}
+            <strong>Comment :</strong> {remedy.how}
           </p>
         )}
         <p className="text-xs text-desert-stone-dark border-l-2 border-desert-tan-lighter pl-2">
-          <strong className="text-desert-tan-dark">Evidence:</strong> {remedy.evidence}
+          <strong className="text-desert-tan-dark">Efficacité :</strong> {remedy.evidence}
         </p>
         <p className="text-xs text-desert-red-dark bg-desert-red/5 rounded px-2 py-1.5 border border-desert-red-lighter/30">
-          <strong>Cautions:</strong> {remedy.cautions}
+          <strong>Précautions :</strong> {remedy.cautions}
         </p>
       </div>
     </div>

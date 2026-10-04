@@ -5,21 +5,21 @@ import SettingsLayout from '~/layouts/SettingsLayout'
 export default function SupportPage() {
   return (
     <SettingsLayout>
-      <Head title="Support the Project | Project NOMAD" />
+      <Head title="Soutenir le projet | Project NOMAD" />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6 max-w-4xl">
-          <h1 className="text-4xl font-semibold mb-4">Support the Project</h1>
+          <h1 className="text-4xl font-semibold mb-4">Soutenir le projet</h1>
           <p className="text-text-muted mb-10 text-lg">
-            Project NOMAD is 100% free and open source — no subscriptions, no paywalls, no catch.
-            If you'd like to help keep the project going, here are a few ways to show your support.
+            Project NOMAD est 100 % gratuit et libre — sans abonnement, sans contenu payant, sans piège.
+            Si vous voulez aider le projet d'origine à continuer, voici quelques façons de le soutenir.
           </p>
 
           {/* Ko-fi */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-3">Buy Us a Coffee</h2>
+            <h2 className="text-2xl font-semibold mb-3">Offrir un café à l'équipe</h2>
             <p className="text-text-muted mb-4">
-              Every contribution helps fund development, server costs, and new content packs for NOMAD.
-              Even a small donation goes a long way.
+              Chaque contribution aide à financer le développement, les serveurs et de nouveaux packs de
+              contenus pour NOMAD. Même un petit don compte.
             </p>
             <a
               href="https://ko-fi.com/crosstalk"
@@ -27,14 +27,14 @@ export default function SupportPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#FF5E5B] hover:bg-[#e54e4b] text-white font-semibold rounded-lg transition-colors"
             >
-              Support on Ko-fi
+              Soutenir sur Ko-fi
               <IconExternalLink size={18} />
             </a>
           </section>
 
           {/* Rogue Support */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-3">Need Help With Your Home Network?</h2>
+            <h2 className="text-2xl font-semibold mb-3">Besoin d'aide pour votre réseau domestique ?</h2>
             <a
               href="https://rogue.support"
               target="_blank"
@@ -48,8 +48,8 @@ export default function SupportPage() {
               />
             </a>
             <p className="text-text-muted mb-4">
-              Rogue Support is a networking consultation service for home users.
-              Think of it as Uber for computer networking — expert help when you need it.
+              Rogue Support est un service de conseil en réseau pour les particuliers (en anglais).
+              Un peu comme un Uber du réseau informatique — l'aide d'un expert quand vous en avez besoin.
             </p>
             <a
               href="https://rogue.support"
@@ -57,14 +57,14 @@ export default function SupportPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-blue-600 hover:underline font-medium"
             >
-              Visit Rogue.Support
+              Visiter Rogue.Support
               <IconExternalLink size={16} />
             </a>
           </section>
 
           {/* Other Ways to Help */}
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-3">Other Ways to Help</h2>
+            <h2 className="text-2xl font-semibold mb-3">Autres façons d'aider</h2>
             <ul className="space-y-2 text-text-muted">
               <li>
                 <a
@@ -73,9 +73,9 @@ export default function SupportPage() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  Star the project on GitHub
+                  Mettre une étoile au projet sur GitHub
                 </a>
-                {' '}— it helps more people discover NOMAD
+                {' '}— cela aide d'autres personnes à découvrir NOMAD
               </li>
               <li>
                 <a
@@ -84,11 +84,11 @@ export default function SupportPage() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  Report bugs and suggest features
+                  Signaler des bogues et proposer des fonctions
                 </a>
-                {' '}— every report makes NOMAD better
+                {' '}— chaque signalement améliore NOMAD
               </li>
-              <li>Share NOMAD with someone who'd use it — word of mouth is the best marketing</li>
+              <li>Parlez de NOMAD à ceux que ça pourrait intéresser — le bouche-à-oreille reste la meilleure publicité</li>
               <li>
                 <a
                   href="https://discord.com/invite/crosstalksolutions"
@@ -96,9 +96,9 @@ export default function SupportPage() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  Join the Discord community
+                  Rejoindre la communauté Discord
                 </a>
-                {' '}— hang out, share your build, help other users
+                {' '}— discuter, partager votre installation, aider d'autres utilisateurs (en anglais)
               </li>
             </ul>
           </section>

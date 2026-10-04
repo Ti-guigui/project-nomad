@@ -9,13 +9,13 @@ export default function CreatorPacksPage() {
 
   return (
     <SettingsLayout>
-      <Head title="Creator Packs" />
+      <Head title="Packs de créateurs" />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
-          <h1 className="text-4xl font-semibold mb-2">Creator Packs</h1>
+          <h1 className="text-4xl font-semibold mb-2">Packs de créateurs</h1>
           <p className="text-text-muted mb-4">
-            Install branded video collections from creators. Packs download in the background and
-            play offline through Kiwix.
+            Installez des collections de vidéos de créateurs. Les packs se téléchargent en arrière-plan
+            et se regardent hors ligne via Kiwix.
           </p>
 
           {configured ? (
