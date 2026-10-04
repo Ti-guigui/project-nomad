@@ -1,199 +1,230 @@
 <div align="center">
 <img src="admin/public/nomad-primary.svg" width="200" alt="Project NOMAD"/>
 
-# Project NOMAD
-### Knowledge That Never Goes Offline
+# Project NOMAD — version française
+### Le savoir qui ne tombe jamais hors ligne
 
-[![Website](https://img.shields.io/badge/Website-projectnomad.us-blue)](https://www.projectnomad.us)
-[![Discord](https://img.shields.io/badge/Discord-Join%20Community-5865F2)](https://discord.com/invite/crosstalksolutions)
-[![Benchmark](https://img.shields.io/badge/Benchmark-Leaderboard-green)](https://benchmark.projectnomad.us)
+[![Site officiel](https://img.shields.io/badge/Site-projectnomad.us-blue)](https://www.projectnomad.us)
+[![Projet d'origine](https://img.shields.io/badge/Projet%20d'origine-Crosstalk--Solutions-lightgrey)](https://github.com/Crosstalk-Solutions/project-nomad)
 
 </div>
 
 ---
 
-Project NOMAD is a self-contained, offline-first knowledge and education server packed with critical tools, knowledge, and AI to keep you informed and empowered — anytime, anywhere.
+> **À propos de ce dépôt.** Il s'agit d'une copie (fork) de [Project NOMAD](https://github.com/Crosstalk-Solutions/project-nomad), traduite en français et adaptée à la **France métropolitaine et aux territoires d'outre-mer** :
+> - interface et documentation en français ;
+> - Wikipédia en français et bibliothèques francophones (Wikivoyage, Wiktionnaire, Vikidia, Wikilivres, WikiMed, iFixit, Gutenberg…) ;
+> - nouvelle catégorie de contenus **« France & Outre-mer »** ;
+> - cartes hors ligne des **13 régions de métropole** et des **12 territoires d'outre-mer** (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte, Saint-Pierre-et-Miquelon, Saint-Martin, Saint-Barthélemy, Nouvelle-Calédonie, Polynésie française, Wallis-et-Futuna, TAAF) ;
+> - sélecteur de pays avec la France découpée en métropole + chaque DROM.
+>
+> Toutes les ressources restent celles de leurs auteurs respectifs (Kiwix, Wikimédia, OpenStreetMap/Protomaps…). Voir [Mise en place du fork](#mise-en-place-du-fork) pour la publication de l'image Docker et des cartes.
 
-## Installation & Quickstart
-Project NOMAD can be installed on any Debian-based operating system (we recommend Ubuntu 26.04 LTS; 24.04 LTS and Debian 12 are also supported). Installation is completely terminal-based, and all tools and resources are designed to be accessed through the browser, so there's no need for a desktop environment if you'd rather setup NOMAD as a "server" and access it through other clients.
+Project NOMAD est un serveur de savoir et d'éducation autonome, conçu pour fonctionner hors ligne, qui regroupe des outils, des connaissances essentielles et de l'IA pour vous garder informé et autonome — n'importe quand, n'importe où.
 
-**Before you start:** NOMAD itself needs about **5 GB of disk and under 1 GB of RAM**. The offline content you add afterwards is what actually fills a drive, and the AI Assistant is what drives the memory requirement up. See [Device Requirements](#device-requirements) for both, and the [FAQ](https://www.projectnomad.us/docs/faq) for individual content sizes.
+## Installation et démarrage rapide
+Project NOMAD s'installe sur tout système d'exploitation basé sur Debian (Ubuntu 26.04 LTS recommandé ; Ubuntu 24.04 LTS et Debian 12 sont aussi pris en charge). L'installation se fait entièrement en ligne de commande, et tous les outils et ressources s'utilisent depuis un navigateur : pas besoin d'environnement de bureau si vous préférez faire de NOMAD un « serveur » et y accéder depuis d'autres appareils.
 
-*Note: sudo/root privileges are required to run the install script*
+**Avant de commencer :** NOMAD lui-même n'a besoin que d'environ **5 Go de disque et de moins de 1 Go de RAM**. Ce sont les contenus hors ligne ajoutés ensuite qui remplissent le disque, et l'assistant IA qui fait grimper les besoins en mémoire. Voir [Configuration requise](#configuration-requise).
 
-### Quick Install (Debian-based OS Only)
+*Remarque : les droits sudo/root sont nécessaires pour lancer le script d'installation.*
+
+### Installation rapide (systèmes Debian uniquement)
 ```bash
 sudo apt-get update && \
 sudo apt-get install -y curl && \
-curl -fsSL https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/install_nomad.sh \
+curl -fsSL https://raw.githubusercontent.com/Ti-guigui/project-nomad/refs/heads/main/install/install_nomad.sh \
   -o install_nomad.sh && \
 sudo bash install_nomad.sh
 ```
 
-Project NOMAD is now installed on your device! Open a browser and navigate to `http://localhost:8080` (or `http://DEVICE_IP:8080`) to start exploring!
+Project NOMAD est maintenant installé ! Ouvrez un navigateur à l'adresse `http://localhost:8080` (ou `http://IP_DE_L_APPAREIL:8080`) et commencez l'exploration.
 
-For a complete step-by-step walkthrough (including Ubuntu installation), see the [Installation Guide](https://www.projectnomad.us/install). For Windows users, see the [WSL2 install guide](https://www.projectnomad.us/install/wsl2) — community-supported path covering native Docker and Docker Desktop install routes.
+Pour un pas-à-pas complet (y compris l'installation d'Ubuntu), voir le [guide d'installation officiel](https://www.projectnomad.us/install) (en anglais). Pour Windows, voir le [guide WSL2](https://www.projectnomad.us/install/wsl2).
 
-### Advanced Installation
-For more control over the installation process, copy and paste the [Docker Compose template](https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/management_compose.yaml) into a `docker-compose.yml` file and customize it to your liking (be sure to replace any placeholders with your actual values). Then, run `docker compose up -d` to start the Command Center and its dependencies. Note: this method is recommended for advanced users only, as it requires familiarity with Docker and manual configuration before starting.
+### Installation avancée
+Pour mieux contrôler l'installation, copiez le [modèle Docker Compose](install/management_compose.yaml) dans un fichier `docker-compose.yml` et personnalisez-le (pensez à remplacer les valeurs d'exemple par les vôtres). Lancez ensuite `docker compose up -d` pour démarrer le Centre de commande et ses dépendances. Cette méthode est réservée aux utilisateurs avancés : elle demande de connaître Docker et de configurer les choses à la main.
 
-## How It Works
-NOMAD is a management UI ("Command Center") and API that orchestrates a collection of containerized tools and resources via [Docker](https://www.docker.com/). It handles installation, configuration, and updates for everything — so you don't have to.
+## Fonctionnement
+NOMAD est une interface de gestion (le « Centre de commande ») et une API qui orchestrent un ensemble d'outils et de ressources conteneurisés via [Docker](https://www.docker.com/). Il gère l'installation, la configuration et les mises à jour de tout — pour que vous n'ayez pas à le faire.
 
-**Built-in capabilities include:**
-- **AI Chat with Knowledge Base** — local AI chat powered by [Ollama](https://ollama.com/) or you can use OpenAI API compatible software such as LM Studio or llama.cpp, with document upload and semantic search (RAG via [Qdrant](https://qdrant.tech/))
-- **Information Library** — offline Wikipedia, medical references, ebooks, and more via [Kiwix](https://kiwix.org/)
-- **Education Platform** — Khan Academy courses with progress tracking via [Kolibri](https://learningequality.org/kolibri/)
-- **Offline Maps** — downloadable regional maps via [ProtoMaps](https://protomaps.com)
-- **Data Tools** — encryption, encoding, and analysis via [CyberChef](https://gchq.github.io/CyberChef/)
-- **Notes** — local note-taking via [FlatNotes](https://github.com/dullage/flatnotes)
-- **System Benchmark** — hardware scoring with a [community leaderboard](https://benchmark.projectnomad.us)
-- **Supply Depot** — a one-click app catalog (PDF tools, file browser, e-book library, password manager, and more) plus the ability to run your own custom Docker containers
-- **Automatic Updates** — opt-in, hands-off updates for the core software, installed apps, and offline content, on a schedule you control
-- **Easy Setup Wizard** — guided first-time configuration with curated content collections
+**Fonctionnalités intégrées :**
+- **Assistant IA avec base de connaissances** — discussion avec une IA locale propulsée par [Ollama](https://ollama.com/), ou par un logiciel compatible avec l'API OpenAI comme LM Studio ou llama.cpp, avec import de documents et recherche sémantique (RAG via [Qdrant](https://qdrant.tech/))
+- **Bibliothèque d'information** — Wikipédia hors ligne, références médicales, livres numériques et plus encore via [Kiwix](https://kiwix.org/)
+- **Plateforme éducative** — cours Khan Academy avec suivi de progression via [Kolibri](https://learningequality.org/kolibri/)
+- **Cartes hors ligne** — cartes régionales téléchargeables via [ProtoMaps](https://protomaps.com)
+- **Outils de données** — chiffrement, encodage et analyse via [CyberChef](https://gchq.github.io/CyberChef/)
+- **Notes** — prise de notes locale via [FlatNotes](https://github.com/dullage/flatnotes)
+- **Banc d'essai système** — score matériel avec un [classement communautaire](https://benchmark.projectnomad.us)
+- **Dépôt d'applications** — un catalogue d'applications en un clic (outils PDF, explorateur de fichiers, bibliothèque de livres numériques, gestionnaire de mots de passe…) et la possibilité de lancer vos propres conteneurs Docker
+- **Mises à jour automatiques** — mises à jour du logiciel, des applications et des contenus, sur un créneau que vous choisissez
+- **Assistant de configuration** — première configuration guidée avec des collections de contenus sélectionnées
 
-NOMAD also includes built-in tools like a Wikipedia content selector, ZIM library manager, and content explorer.
+NOMAD comprend aussi un sélecteur de contenu Wikipédia, un gestionnaire de bibliothèque ZIM et un explorateur de contenus.
 
-## What's Included
+## Contenu
 
-| Capability | Powered By | What You Get |
+| Fonction | Propulsé par | Ce que vous obtenez |
 |-----------|-----------|-------------|
-| Information Library | Kiwix | Offline Wikipedia, medical references, survival guides, ebooks |
-| AI Assistant | Ollama + Qdrant | Built-in chat with document upload and semantic search |
-| Education Platform | Kolibri | Khan Academy courses, progress tracking, multi-user support |
-| Offline Maps | ProtoMaps | Downloadable regional maps for offline viewing and search |
-| Data Tools | CyberChef | Encryption, encoding, hashing, and data analysis |
-| Notes | FlatNotes | Local note-taking with markdown support |
-| System Benchmark | Built-in | Hardware scoring, Builder Tags, and community leaderboard |
-| Supply Depot | Built-in | One-click app catalog + bring-your-own custom Docker containers |
+| Bibliothèque d'information | Kiwix | Wikipédia hors ligne, références médicales, guides de survie, livres numériques |
+| Assistant IA | Ollama + Qdrant | Discussion avec import de documents et recherche sémantique |
+| Plateforme éducative | Kolibri | Cours Khan Academy, suivi de progression, multi-utilisateurs |
+| Cartes hors ligne | ProtoMaps | Cartes régionales téléchargeables, consultables hors ligne |
+| Outils de données | CyberChef | Chiffrement, encodage, hachage et analyse de données |
+| Notes | FlatNotes | Prise de notes locale au format Markdown |
+| Banc d'essai | Intégré | Score matériel, badges et classement communautaire |
+| Dépôt d'applications | Intégré | Catalogue d'applications en un clic + vos propres conteneurs Docker |
 
-## Device Requirements
-While many similar offline survival computers are designed to be run on bare-minimum, lightweight hardware, Project NOMAD is quite the opposite. To install and run the
-available AI tools, we highly encourage the use of a beefy, GPU-backed device to make the most of your install.
+### Contenus français et outre-mer de cette version
 
-At its core, however, NOMAD is still very lightweight. For a barebones installation of the management application itself, the following minimal specs are required:
+| Catégorie | Exemples de contenus |
+|-----------|----------------------|
+| France & Outre-mer | Wikivoyage (guides de toutes les régions et de l'outre-mer), géographie et histoire par Wikipédia, Wikisource |
+| Médecine & Secours | WikiMed (encyclopédie médicale de Wikipédia en français), C'est pas sorcier – Médecine |
+| Éducation & Référence | Vikidia, Wikilivres, Wikiversité, Wiktionnaire, Les Fondamentaux (Canopé), PhET |
+| Bibliothèque & Littérature | Wikiquote, livres audio, Bouquineux, Projet Gutenberg en français |
+| Bricolage & Réparation | iFixit en français |
+| Agriculture & Alimentation | Cuisine libre, C'est pas sorcier – Botanique |
+| Informatique | Documentation ubuntu-fr, Informatique par Wikipédia |
+| Cartes | 13 régions de métropole, Antilles & Guyane, océan Indien, Pacifique |
 
-*Note: Project NOMAD is not sponsored by any hardware manufacturer and is designed to be as hardware-agnostic as possible. The hardware listed below is for example/comparison use only*
+Quand aucune ressource française équivalente n'existe, les ressources anglaises d'origine sont conservées et signalées par « (anglais) ».
 
-#### Minimum Specs
-- Processor: 2 GHz dual-core processor or better
-- RAM: 4GB system memory (the whole stack without AI runs in under 1 GB)
-- Storage: At least 5 GB free disk space (plan for 10 GB to install comfortably)
-- OS: Debian-based (Ubuntu 26.04 LTS recommended)
-- Stable internet connection (required during install only)
+## Configuration requise
+Contrairement à beaucoup d'ordinateurs de survie hors ligne pensés pour du matériel minimaliste, Project NOMAD vise plutôt l'inverse. Pour installer et utiliser les outils d'IA, nous recommandons vivement une machine puissante, avec carte graphique.
 
-Adding the AI Assistant brings the install to roughly **25 GB**, because Ollama and a general-purpose model are both large, and a model needs about its download size in memory while it answers. That memory comes from VRAM if you have a discrete GPU and from system RAM if you do not, which is the single biggest reason the figures below are so much higher.
+Le cœur de NOMAD reste néanmoins très léger. Pour une installation minimale de l'application de gestion seule, voici la configuration requise :
 
-To run LLMs and other included AI tools:
+*Remarque : Project NOMAD n'est sponsorisé par aucun fabricant de matériel et se veut aussi indépendant du matériel que possible. Le matériel cité ci-dessous n'est donné qu'à titre d'exemple.*
 
-#### Optimal Specs
-- Processor: AMD Ryzen 7 or Intel Core i7 or better
-- RAM: 32 GB system memory
-- Graphics: NVIDIA RTX 3060 or AMD equivalent or better (more VRAM = run larger models)
-- Storage: At least 250 GB free disk space (preferably on SSD)
-- OS: Debian-based (Ubuntu 26.04 LTS recommended)
-- Stable internet connection (required during install only)
+#### Configuration minimale
+- Processeur : double cœur 2 GHz ou mieux
+- RAM : 4 Go (l'ensemble sans IA tourne avec moins de 1 Go)
+- Stockage : au moins 5 Go libres (prévoir 10 Go pour être à l'aise)
+- Système : basé sur Debian (Ubuntu 26.04 LTS recommandé)
+- Connexion internet stable (uniquement pendant l'installation)
 
-**For detailed build recommendations at three price points ($150–$1,000+), see the [Hardware Guide](https://www.projectnomad.us/hardware).**
+L'ajout de l'assistant IA porte l'installation à environ **25 Go**, car Ollama et un modèle généraliste sont volumineux, et un modèle a besoin d'à peu près sa taille de téléchargement en mémoire pour répondre. Cette mémoire est prise sur la VRAM si vous avez une carte graphique dédiée, sinon sur la RAM : c'est la principale raison pour laquelle les chiffres ci-dessous sont bien plus élevés.
 
-Again, Project NOMAD itself is quite lightweight — it's the tools and resources you choose to install with NOMAD that will determine the specs required for your unique deployment
+Pour faire tourner les LLM et les autres outils d'IA :
 
-#### Running AI models on a different host
-By default, NOMAD's installer will attempt to setup Ollama on the host when the AI Assistant is installed. However, if you would like to run the AI model on a different host, you can go to the settings of the AI assistant and input a URL for either an ollama or OpenAI-compatible API server (such as LM Studio).  
-Note that if you use Ollama on a different host, you must start the server with this option: `OLLAMA_HOST=0.0.0.0`.  
-Ollama is the preferred way to use the AI assistant, as it has features such as model download that OpenAI API does not support. So when using LM Studio, for example, you will have to use LM Studio to download models.
-You are responsible for the setup of Ollama/OpenAI server on the other host.
+#### Configuration optimale
+- Processeur : AMD Ryzen 7 ou Intel Core i7 ou mieux
+- RAM : 32 Go
+- Carte graphique : NVIDIA RTX 3060 ou équivalent AMD ou mieux (plus de VRAM = modèles plus gros)
+- Stockage : au moins 250 Go libres (de préférence sur SSD)
+- Système : basé sur Debian (Ubuntu 26.04 LTS recommandé)
+- Connexion internet stable (uniquement pendant l'installation)
 
-## Frequently Asked Questions (FAQ)
-For answers to common questions about Project NOMAD, please see our [FAQ](FAQ.md) page.
+**Pour des recommandations de montage détaillées à trois niveaux de prix, voir le [guide matériel](https://www.projectnomad.us/hardware) (en anglais).**
 
-## About Internet Usage & Privacy
-Project NOMAD is designed for offline usage. An internet connection is only required during the initial installation (to download dependencies) and if you (the user) decide to download additional tools and resources at a later time. Otherwise, NOMAD does not require an internet connection and has ZERO built-in telemetry.
+Encore une fois, Project NOMAD lui-même est léger : ce sont les outils et ressources que vous choisissez d'installer qui déterminent la configuration nécessaire.
 
-To test internet connectivity, NOMAD first attempts to make a request to Cloudflare's utility endpoint, `https://1.1.1.1/cdn-cgi/trace`. If that endpoint is unreachable (for example, because your network blocks `1.1.1.1`), it falls back to other endpoints the application already contacts (the GitHub API and the Project NOMAD API) and considers the connection online if any of them respond.
+#### Faire tourner les modèles d'IA sur une autre machine
+Par défaut, l'installateur de NOMAD essaie d'installer Ollama sur la machine hôte lors de l'installation de l'assistant IA. Si vous préférez faire tourner le modèle sur une autre machine, ouvrez les paramètres de l'assistant IA et indiquez l'URL d'un serveur Ollama ou d'un serveur compatible avec l'API OpenAI (comme LM Studio).
+Si vous utilisez Ollama sur une autre machine, le serveur doit être lancé avec l'option `OLLAMA_HOST=0.0.0.0`.
+Ollama reste la méthode recommandée, car il permet notamment de télécharger des modèles, ce que l'API OpenAI ne permet pas : avec LM Studio, par exemple, il faut télécharger les modèles depuis LM Studio.
+La mise en place du serveur Ollama/OpenAI sur l'autre machine est de votre ressort.
 
-You can override the endpoint used for this check in two ways. The connectivity test URL can be configured from the UI under **Settings → Advanced** (stored locally on your instance), or you can set the `INTERNET_STATUS_TEST_URL` environment variable. When set, the environment variable always takes precedence over the UI-configured value. If neither is set, the built-in defaults above are used.
+## Foire aux questions (FAQ)
+Pour les questions fréquentes, consultez la [FAQ](FAQ.md).
 
-## About Security
-By design, Project NOMAD is intended to be open and available without hurdles — it includes no authentication. If you decide to connect your device to a local network after install (e.g. for allowing other devices to access its resources), you can block/open ports to control which services are exposed.
+## Utilisation d'internet et vie privée
+Project NOMAD est conçu pour une utilisation hors ligne. Une connexion internet n'est nécessaire que pendant l'installation initiale (pour télécharger les dépendances) et si vous décidez de télécharger des outils et ressources supplémentaires par la suite. Sinon, NOMAD n'a pas besoin d'internet et ne contient AUCUNE télémétrie.
 
-**Will authentication be added in the future?** Maybe. It's not currently a priority, but if there's enough demand for it, we may consider building in an optional authentication layer in a future release to support use cases where multiple users need access to the same instance but with different permission levels (e.g. family use with parental controls, classroom use with teacher/admin accounts, etc.). We have a suggestion for this on our public roadmap, so if this is something you'd like to see, please upvote it here: https://roadmap.projectnomad.us/posts/1/user-authentication-please-build-in-user-auth-with-admin-user-roles
+Pour tester la connexion, NOMAD interroge d'abord le point d'accès utilitaire de Cloudflare, `https://1.1.1.1/cdn-cgi/trace`. S'il est injoignable (par exemple parce que votre réseau bloque `1.1.1.1`), il se rabat sur d'autres adresses que l'application contacte déjà (l'API GitHub et l'API de Project NOMAD) et considère la connexion active si l'une d'elles répond.
 
-For now, we recommend using network-level controls to manage access if you're planning to expose your NOMAD instance to other devices on a local network. NOMAD is not designed to be exposed directly to the internet, and we strongly advise against doing so unless you really know what you're doing, have taken appropriate security measures, and understand the risks involved.
+Vous pouvez changer l'adresse utilisée de deux façons : dans l'interface, sous **Paramètres → Avancé** (enregistré localement sur votre instance), ou avec la variable d'environnement `INTERNET_STATUS_TEST_URL`. La variable d'environnement est toujours prioritaire. Si aucune n'est définie, les valeurs par défaut ci-dessus sont utilisées.
 
-## Contributing
-Contributions are welcome and appreciated! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to the project.
+## Sécurité
+Project NOMAD est volontairement ouvert et accessible sans obstacle : il n'intègre aucune authentification. Si vous connectez l'appareil à un réseau local après l'installation (par exemple pour que d'autres appareils accèdent à ses ressources), vous pouvez ouvrir ou bloquer des ports pour choisir les services exposés.
 
-### Testing Auto-Updates (Dry Run)
+Nous recommandons d'utiliser des contrôles au niveau du réseau pour gérer les accès si vous exposez NOMAD à d'autres appareils sur un réseau local. NOMAD n'est pas conçu pour être exposé directement sur internet, et nous le déconseillons fortement, sauf si vous savez vraiment ce que vous faites, avez pris les mesures de sécurité adaptées et comprenez les risques.
 
-The Command Center can automatically install **minor/patch** updates of itself during a configurable window, after a cool-off period, and only when pre-flight checks pass (sufficient disk for the new image, no downloads or app installs in progress). Major versions always require a manual update.
+## Mise en place du fork
 
-Because exercising this logic with real version bumps is impractical, an Ace command runs the **entire decision pipeline without ever triggering an update**. Run it from the `admin/` directory:
+Ce dépôt est autonome : les catalogues de contenus, l'image Docker et les cartes sont lus depuis **ce** dépôt (`Ti-guigui/project-nomad`) et non depuis le projet d'origine. Trois actions sont à faire une fois, dans l'onglet **Actions** de GitHub :
+
+1. **Construire l'image Docker en français** — le workflow « Construire l'image Docker (version française) » se lance tout seul à chaque modification de `admin/` sur `main` (ou manuellement). Il publie `ghcr.io/ti-guigui/project-nomad:latest`.
+   Ensuite, dans **Packages → project-nomad → Package settings**, passez la visibilité du paquet en **Public**, sinon les installations ne pourront pas le télécharger.
+2. **Générer les cartes France et outre-mer** — lancez le workflow « Générer les cartes France et outre-mer » avec la version indiquée dans `collections/maps.json` (`2026-10`). Il extrait les 25 cartes depuis Protomaps et les publie dans la release `cartes-fr`. Détails dans [cartes-fr/README.md](cartes-fr/README.md).
+3. **Mettre à jour depuis le projet d'origine** (facultatif) — le bouton **Sync fork** de GitHub récupère les nouveautés de Crosstalk-Solutions. Attention : les fichiers traduits entreront souvent en conflit ; il faudra les fusionner à la main.
+
+Les mises à jour automatiques intégrées au Centre de commande vérifient les releases de ce fork : tant qu'aucune release n'y est publiée, aucune mise à jour automatique n'est proposée. Pour mettre à jour, utilisez le script `update_nomad.sh` ci-dessous, qui récupère la dernière image `latest`.
+
+## Contribuer
+Les contributions au projet d'origine se font sur [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) ; voir [CONTRIBUTING.md](CONTRIBUTING.md) (en anglais).
+
+### Tester les mises à jour automatiques (simulation)
+
+Le Centre de commande peut installer automatiquement ses propres mises à jour **mineures/correctives** pendant un créneau configurable, après un délai de carence, et seulement si les vérifications préalables passent (espace disque suffisant pour la nouvelle image, aucun téléchargement ni installation d'application en cours). Les versions majeures demandent toujours une mise à jour manuelle.
+
+Comme tester cette logique avec de vraies montées de version n'est pas pratique, une commande Ace exécute **toute la chaîne de décision sans jamais déclencher de mise à jour**. Lancez-la depuis le dossier `admin/` :
 
 ```bash
-# 1) Deterministic scenario suite — no network, DB, or Docker required.
-#    Proves every branch (major-only, cool-off, prerelease/draft, window wrap, …)
-#    and exits non-zero on failure, so it's safe to wire into CI.
+# 1) Suite de scénarios déterministes — sans réseau, base de données ni Docker.
+#    Couvre chaque cas (majeure seule, carence, préversion/brouillon, créneau à cheval…)
+#    et renvoie un code d'erreur en cas d'échec : utilisable en intégration continue.
 node ace auto-update:dry-run --scenarios
 
-# 2) Simulate "what would happen if I were running 1.32.0 right now?"
-#    against the LIVE GitHub releases feed and real pre-flight checks:
+# 2) Simuler « que se passerait-il si je tournais en 1.32.0 maintenant ? »
+#    avec le flux de releases GitHub réel et les vraies vérifications préalables :
 node ace auto-update:dry-run --current=1.32.0 --force-enabled
 
-# 3) Fully offline simulation with a canned release list and a fixed clock:
+# 3) Simulation entièrement hors ligne avec une liste de releases et une horloge fixées :
 node ace auto-update:dry-run --current=1.32.0 --force-enabled \
   --releases-file=./fixtures/releases.json --now=2026-06-04T21:00:00Z \
   --window-start=20:00 --window-end=23:00 --cooloff=72 --skip-preflight
 ```
 
-It prints the resolved decision — current version, whether the clock is inside the window, the eligible target (if any), and pre-flight blockers — ending in a clear verdict such as `WOULD UPDATE → v1.33.2` or `WOULD NOT UPDATE (outside-window): …`. **No real update is ever requested.**
+La commande affiche la décision — version actuelle, présence dans le créneau, version cible éligible et éventuels blocages — avec un verdict clair comme `WOULD UPDATE → v1.33.2` ou `WOULD NOT UPDATE (outside-window): …`. **Aucune mise à jour réelle n'est jamais demandée.**
 
-| Flag | Description |
+| Option | Description |
 |------|-------------|
-| `--scenarios` | Run the built-in deterministic scenario suite and exit |
-| `--current=<version>` | Simulate this currently-running version (e.g. `1.32.0`) |
-| `--force-enabled` | Treat auto-update as enabled, ignoring the saved setting |
-| `--cooloff=<hours>` | Override the cool-off period |
-| `--window-start=<HH:MM>` / `--window-end=<HH:MM>` | Override the update window |
-| `--now=<ISO timestamp>` | Simulate the clock at a specific time |
-| `--releases-file=<path>` | Use a local JSON releases array instead of fetching GitHub (offline) |
-| `--skip-preflight` | Bypass the Docker/disk/queue pre-flight checks |
+| `--scenarios` | Lance la suite de scénarios intégrée puis s'arrête |
+| `--current=<version>` | Simule cette version en cours (ex. `1.32.0`) |
+| `--force-enabled` | Considère la mise à jour automatique comme activée, quel que soit le réglage |
+| `--cooloff=<heures>` | Remplace le délai de carence |
+| `--window-start=<HH:MM>` / `--window-end=<HH:MM>` | Remplace le créneau de mise à jour |
+| `--now=<horodatage ISO>` | Simule l'horloge à un instant donné |
+| `--releases-file=<chemin>` | Utilise un fichier JSON local de releases au lieu de GitHub (hors ligne) |
+| `--skip-preflight` | Ignore les vérifications Docker/disque/file d'attente |
 
-## Community & Resources
+## Communauté et ressources
 
-- **Website:** [www.projectnomad.us](https://www.projectnomad.us) - Learn more about the project
-- **Discord:** [Join the Community](https://discord.com/invite/crosstalksolutions) - Get help, share your builds, and connect with other NOMAD users
-- **Benchmark Leaderboard:** [benchmark.projectnomad.us](https://benchmark.projectnomad.us) - See how your hardware stacks up against other NOMAD builds
-- **FAQ:** [FAQ.md](FAQ.md) - Find answers to frequently asked questions
-- **Community Add-Ons:** [admin/docs/community-add-ons.md](admin/docs/community-add-ons.md) - Third-party content packs built by the community
+- **Site officiel :** [www.projectnomad.us](https://www.projectnomad.us) (en anglais)
+- **Discord :** [Rejoindre la communauté](https://discord.com/invite/crosstalksolutions) (en anglais)
+- **Classement des bancs d'essai :** [benchmark.projectnomad.us](https://benchmark.projectnomad.us)
+- **FAQ :** [FAQ.md](FAQ.md)
+- **Modules communautaires :** [admin/docs/community-add-ons.md](admin/docs/community-add-ons.md)
 
-## License
+## Licence
 
-Project NOMAD is licensed under the [Apache License 2.0](LICENSE).
+Project NOMAD est distribué sous la [licence Apache 2.0](LICENSE). Cette version française est une œuvre dérivée, distribuée sous la même licence. Les données cartographiques sont © les contributeurs [OpenStreetMap](https://www.openstreetmap.org/copyright) (via [Protomaps](https://protomaps.com)).
 
-## Helper Scripts
-Once installed, Project NOMAD has a few helper scripts should you ever need to troubleshoot issues or perform maintenance that can't be done through the Command Center. All of these scripts are found in Project NOMAD's install directory, `/opt/project-nomad`
+## Scripts utilitaires
+Une fois installé, Project NOMAD fournit quelques scripts pour dépanner ou faire de la maintenance impossible depuis le Centre de commande. Ils se trouvent tous dans le dossier d'installation, `/opt/project-nomad`.
 
 ###
 
-###### Start Script - Starts all installed project containers
+###### Script de démarrage — démarre tous les conteneurs installés
 ```bash
 sudo bash /opt/project-nomad/start_nomad.sh
 ```
 ###
 
-###### Stop Script - Stops all installed project containers
+###### Script d'arrêt — arrête tous les conteneurs installés
 ```bash
 sudo bash /opt/project-nomad/stop_nomad.sh
 ```
 ###
 
-###### Update Script - Attempts to pull the latest images for the Command Center and its dependencies (i.e. mysql) and recreate the containers. Note: this *only* updates the Command Center containers. It does not update the installable application containers - that should be done through the Command Center UI
+###### Script de mise à jour — récupère les dernières images du Centre de commande et de ses dépendances (ex. mysql) puis recrée les conteneurs. Remarque : il met à jour *uniquement* les conteneurs du Centre de commande, pas les applications installées, qui se mettent à jour depuis l'interface
 ```bash
 sudo bash /opt/project-nomad/update_nomad.sh
 ```
 
-###### Uninstall Script - Need to start fresh? Use the uninstall script to make your life easy. Note: this cannot be undone!
+###### Script de désinstallation — besoin de repartir de zéro ? Ce script s'occupe de tout. Attention : c'est irréversible !
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/uninstall_nomad.sh -o uninstall_nomad.sh && sudo bash uninstall_nomad.sh
+curl -fsSL https://raw.githubusercontent.com/Ti-guigui/project-nomad/refs/heads/main/install/uninstall_nomad.sh -o uninstall_nomad.sh && sudo bash uninstall_nomad.sh
 ```

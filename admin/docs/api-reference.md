@@ -1,29 +1,27 @@
-# API Reference
+# Référence de l'API
 
-NOMAD exposes a REST API for all operations. All endpoints are under `/api/` and return JSON.
+NOMAD expose une API REST pour toutes ses opérations. Tous les points d'accès sont sous `/api/` et renvoient du JSON.
 
 ---
 
-## Interactive reference
+## Référence interactive
 
-The full, always-current endpoint reference is generated directly from the application's
-routes and validators and served as an interactive [Scalar](https://scalar.com) UI:
+La référence complète et toujours à jour est générée directement à partir des routes et des validateurs de l'application, et présentée dans une interface interactive [Scalar](https://scalar.com) :
 
-- **[/reference](/reference)** — browse every endpoint, request/response schema, and try calls live
-- **[/api/openapi.json](/api/openapi.json)** — the raw OpenAPI 3.1 document (import into Postman, Insomnia, codegen, etc.)
+- **[/reference](/reference)** — parcourez chaque point d'accès, les schémas de requête et de réponse, et testez les appels en direct
+- **[/api/openapi.json](/api/openapi.json)** — le document OpenAPI 3.1 brut (à importer dans Postman, Insomnia, un générateur de code…)
 
-Because it is derived from the same VineJS validators the API validates against, it never drifts
-from the implementation. Prefer it over any hand-written endpoint list.
+Comme elle est tirée des mêmes validateurs VineJS que ceux utilisés par l'API, elle ne s'écarte jamais de l'implémentation. Préférez-la à toute liste écrite à la main.
 
 ---
 
 ## Conventions
 
-**Base URL:** `http://<your-server>/api`
+**URL de base :** `http://<votre-serveur>/api`
 
-**Responses:**
-- Success responses include `{ "success": true }` and an HTTP 2xx status
-- Error responses return the appropriate HTTP status (400, 404, 409, 500) with an error message
-- Long-running operations (downloads, benchmarks, embeddings) return 201 or 202 with a job/benchmark ID for polling
+**Réponses :**
+- Les réponses réussies contiennent `{ "success": true }` avec un code HTTP 2xx
+- Les erreurs renvoient le code HTTP approprié (400, 404, 409, 500) avec un message d'erreur
+- Les opérations longues (téléchargements, bancs d'essai, vectorisations) renvoient 201 ou 202 avec un identifiant de tâche à interroger
 
-**Async pattern:** Submit a job → receive an ID → poll a status endpoint until complete.
+**Fonctionnement asynchrone :** soumettre une tâche → recevoir un identifiant → interroger un point d'accès d'état jusqu'à la fin.

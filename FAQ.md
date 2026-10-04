@@ -1,108 +1,105 @@
-# Frequently Asked Questions (FAQ)
+# Foire aux questions (FAQ)
 
-Find answers to some of the most common questions about Project NOMAD
+Les réponses aux questions les plus fréquentes sur Project NOMAD.
 
-## Can I customize the port(s) that NOMAD uses?
+## Puis-je changer les ports utilisés par NOMAD ?
 
-Yes, you can customize the ports that NOMAD's core services (Command Center, MySQL, Redis) use. Please refer to the [Advanced Installation](README.md#advanced-installation) section of the README for more details on how to do this.
+Oui, vous pouvez changer les ports des services principaux de NOMAD (Centre de commande, MySQL, Redis). Voir la section [Installation avancée](README.md#installation-avancée) du README.
 
-Note: As of 3/24/2026, only the core services defined in the `docker-compose.yml` file currently support port customization - the installable applications (e.g. Ollama, Kiwix, etc.) do not yet support this, but we have multiple PR's in the works to add this feature for all installable applications in a future release.
+Remarque : au 24/03/2026, seuls les services principaux définis dans le fichier `docker-compose.yml` permettent de changer les ports. Les applications installables (Ollama, Kiwix, etc.) ne le permettent pas encore, mais plusieurs contributions sont en cours pour l'ajouter à toutes les applications dans une prochaine version.
 
-## Can I customize the storage location for NOMAD's data?
+## Puis-je choisir où NOMAD stocke ses données ?
 
-Yes, you can customize the storage location for NOMAD's content by modifying the `docker-compose.yml` file to adjust the appropriate bind mounts to point to your desired storage location on your host machine. Please refer to the [Advanced Installation](README.md#advanced-installation) section of the README for more details on how to do this.
+Oui, en modifiant le fichier `docker-compose.yml` pour faire pointer les montages (bind mounts) vers l'emplacement voulu sur la machine hôte. Voir la section [Installation avancée](README.md#installation-avancée) du README.
 
-## Can I store NOMAD's data on an external drive or network storage?
+## Puis-je stocker les données de NOMAD sur un disque externe ou un stockage réseau ?
 
-Short answer: yes, but we can't do it for you (and we recommend a local drive for best performance).
+Réponse courte : oui, mais nous ne pouvons pas le faire à votre place (et nous recommandons un disque local pour de meilleures performances).
 
-Long answer: Custom storage paths, mount points, and external drives (like iSCSI or SMB/NFS volumes) **are possible**, but this will be up to your individual configuration on the host before NOMAD starts, and then passed in via the compose.yml as this is a *host-level concern*, not a NOMAD-level concern (see above for details). NOMAD itself can't configure this for you, nor could we support all possible configurations in the install script.
+Réponse longue : chemins de stockage personnalisés, points de montage et disques externes (volumes iSCSI ou SMB/NFS par exemple) **sont possibles**, mais cela dépend de votre configuration de la machine hôte avant le démarrage de NOMAD, puis se transmet via le compose.yml : c'est une question *de la machine hôte*, pas de NOMAD (voir ci-dessus). NOMAD ne peut pas le configurer pour vous, et le script d'installation ne pourrait pas prendre en charge toutes les configurations possibles.
 
-## Can I run NOMAD on MAC, WSL2, or a non-Debian-based Distro?
+## Puis-je utiliser NOMAD sur Mac, WSL2 ou une distribution non Debian ?
 
-**WSL2 on Windows** is community-supported via the [WSL2 install guide](https://www.projectnomad.us/install/wsl2) — covers two install paths (native Docker and Docker Desktop) with all known gotchas documented and empirical performance numbers comparing WSL2 to bare-metal.
+**WSL2 sous Windows** est pris en charge par la communauté grâce au [guide d'installation WSL2](https://www.projectnomad.us/install/wsl2) (en anglais) : il décrit deux méthodes (Docker natif et Docker Desktop), les pièges connus et des mesures de performances comparant WSL2 à une installation directe.
 
-**macOS and other non-Debian Linux distros** aren't officially supported. See [Why does NOMAD require a Debian-based OS?](#why-does-nomad-require-a-debian-based-os) for details.
+**macOS et les autres distributions Linux non Debian** ne sont pas officiellement pris en charge. Voir [Pourquoi NOMAD exige-t-il un système basé sur Debian ?](#pourquoi-nomad-exige-t-il-un-système-basé-sur-debian-)
 
-## Why does NOMAD require a Debian-based OS?
+## Pourquoi NOMAD exige-t-il un système basé sur Debian ?
 
-Project NOMAD is currently designed to run on Debian-based Linux distributions (with Ubuntu 26.04 LTS being the recommended version) because our installation scripts and Docker configurations are optimized for this environment. While it's technically possible to run the Docker containers on other operating systems that support Docker, we have not tested or optimized the installation process for non-Debian-based systems, so we cannot guarantee a smooth experience on those platforms at this time.
+Project NOMAD est actuellement conçu pour les distributions Linux basées sur Debian (Ubuntu 26.04 LTS recommandé), car les scripts d'installation et la configuration Docker sont optimisés pour cet environnement. Il est techniquement possible de faire tourner les conteneurs Docker sur d'autres systèmes compatibles avec Docker, mais l'installation n'a été ni testée ni optimisée pour eux : une expérience fluide n'est donc pas garantie.
 
-Support for other operating systems will come in the future, but because our development resources are limited as a free and open-source project, we needed to prioritize our efforts and focus on a narrower set of supported platforms for the initial release. We chose Debian-based Linux as our starting point because it's widely used, easy to spin up, and provides a stable environment for running Docker containers.
+D'autres systèmes seront pris en charge à l'avenir, mais les ressources de développement d'un projet libre et gratuit étant limitées, l'équipe a dû se concentrer sur un nombre restreint de plateformes pour la première version. Debian a été choisi parce qu'il est très répandu, facile à installer et offre un environnement stable pour Docker.
 
-For Windows users, the [WSL2 install guide](https://www.projectnomad.us/install/wsl2) provides a community-supported path. Community members have also published guides for other platforms (e.g. macOS) in our Discord community and [Github Discussions](https://github.com/Crosstalk-Solutions/project-nomad/discussions), so if you're interested in running NOMAD on a non-Debian-based system, we recommend checking there for any available resources or guides. However, keep in mind that if you choose to run NOMAD on a non-Debian-based system, you may encounter issues that we won't be able to provide support for, and you may need to have a higher level of technical expertise to troubleshoot and resolve any problems that arise.
+Pour Windows, le [guide WSL2](https://www.projectnomad.us/install/wsl2) propose une solution soutenue par la communauté. Des membres de la communauté ont aussi publié des guides pour d'autres plateformes (macOS par exemple) sur le Discord et dans les [discussions GitHub](https://github.com/Crosstalk-Solutions/project-nomad/discussions) du projet d'origine. Gardez toutefois à l'esprit que sur un système non Debian, vous pourrez rencontrer des problèmes pour lesquels aucune aide ne pourra être fournie, et qu'il vous faudra davantage de compétences techniques pour les résoudre.
 
-## Can I run NOMAD on a Raspberry Pi or other ARM-based device?
-Project NOMAD is currently designed to run on x86-64 architecture, and we have not yet tested or optimized it for ARM-based devices like the Raspberry Pi (and have not published any official images for ARM architecture).
+## Puis-je utiliser NOMAD sur un Raspberry Pi ou un autre appareil ARM ?
+Project NOMAD est actuellement conçu pour l'architecture x86-64 ; il n'a pas encore été testé ni optimisé pour les appareils ARM comme le Raspberry Pi (et aucune image officielle ARM n'est publiée).
 
-Support for ARM-based devices is on our roadmap, but our initial focus was on x86-64 hardware due to its widespread use and compatibility with a wide range of applications.
+La prise en charge d'ARM est prévue, mais l'effort initial a porté sur le matériel x86-64, très répandu et compatible avec un grand nombre d'applications.
 
-Community members have forked and published their own ARM-compatible images and installation guides for running NOMAD on Raspberry Pi and other ARM-based devices in our Discord community and [Github Discussions](https://github.com/Crosstalk-Solutions/project-nomad/discussions), but these are not officially supported by the core development team, and we cannot guarantee their functionality or provide support for any issues that arise when using these community-created resources.
+Des membres de la communauté ont publié leurs propres images compatibles ARM et des guides d'installation pour Raspberry Pi et autres appareils ARM sur le Discord et dans les [discussions GitHub](https://github.com/Crosstalk-Solutions/project-nomad/discussions), mais ils ne sont pas pris en charge officiellement.
 
-## What are the hardware requirements for running NOMAD?
+## Quelle configuration matérielle faut-il pour NOMAD ?
 
-Project NOMAD itself is quite lightweight and can run on even modest x86-64 hardware, but the tools and resources you choose to install with NOMAD will determine the specs required for your unique deployment. Please see the [Hardware Guide](https://www.projectnomad.us/hardware) for detailed build recommendations at various price points.
+Project NOMAD lui-même est léger et tourne même sur du matériel x86-64 modeste, mais ce sont les outils et ressources que vous installez qui déterminent la configuration nécessaire. Voir le [guide matériel](https://www.projectnomad.us/hardware) (en anglais) pour des recommandations à différents prix.
 
-## Does NOMAD support languages other than English?
+## NOMAD est-il disponible dans d'autres langues que l'anglais ?
 
-As of March 2026, Project NOMAD's UI is only available in English, and the majority of the tools and resources available through NOMAD are also primarily in English. However, we have multi-language support on our roadmap for a future release, and we are actively working on adding support for additional languages both in the UI and in the available tools/resources. If you're interested in contributing to this effort, please check out our [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to get involved.
+Le projet d'origine n'existe qu'en anglais. **Cette version** traduit l'interface et la documentation en français, et ses catalogues proposent en priorité des contenus francophones (Wikipédia, Wikivoyage, Wiktionnaire, Vikidia, WikiMed, iFixit…) ainsi que des cartes de la France et de l'outre-mer. Certaines ressources sans équivalent français restent en anglais ; elles sont signalées par « (anglais) ».
 
-## What technologies is NOMAD built with?
+## Avec quelles technologies NOMAD est-il construit ?
 
-Project NOMAD is built using a combination of technologies, including:
-- **Docker:** for containerization of the Command Center and its dependencies
-- **Node.js & TypeScript:** for the backend of the Command Center, particularly the [AdonisJS](https://adonisjs.com/) framework
-- **React:** for the frontend of the Command Center, utilizing [Vite](https://vitejs.dev/) and [Inertia.js](https://inertiajs.com/) under the hood
-- **MySQL:** for the Command Center's database
-- **Redis:** for various caching, background jobs, "cron" tasks, and other internal processes within the Command Center
+Project NOMAD repose sur plusieurs technologies :
+- **Docker :** conteneurisation du Centre de commande et de ses dépendances
+- **Node.js et TypeScript :** partie serveur du Centre de commande, avec le framework [AdonisJS](https://adonisjs.com/)
+- **React :** interface du Centre de commande, avec [Vite](https://vitejs.dev/) et [Inertia.js](https://inertiajs.com/)
+- **MySQL :** base de données du Centre de commande
+- **Redis :** cache, tâches de fond, tâches planifiées et autres processus internes
 
-NOMAD makes use of the Docker-outside-of-Docker ("DooD") pattern, which allows the Command Center to manage and orchestrate other Docker containers on the host machine without needing to run Docker itself inside a container. This approach provides better performance and compatibility with a wider range of host environments while still allowing for powerful container management capabilities through the Command Center's UI.
+NOMAD utilise le modèle « Docker-outside-of-Docker » (DooD) : le Centre de commande pilote les autres conteneurs Docker de la machine hôte sans faire tourner Docker à l'intérieur d'un conteneur. Cette approche offre de meilleures performances et une meilleure compatibilité, tout en permettant de gérer les conteneurs depuis l'interface.
 
-## Can I run NOMAD if I have existing Docker containers on my machine?
-Yes, you can safely run Project NOMAD on a machine that already has existing Docker containers. NOMAD is designed to coexist with other Docker containers and will not interfere with them as long as there are no port conflicts or resource constraints.
+## Puis-je utiliser NOMAD si j'ai déjà des conteneurs Docker sur ma machine ?
+Oui. NOMAD cohabite avec vos autres conteneurs Docker et n'interfère pas avec eux tant qu'il n'y a pas de conflit de ports ou de manque de ressources.
 
-All of NOMAD's containers are prefixed with `nomad_` in their names, so they can be easily identified and managed separately from any other containers you may have running. Just make sure to review the ports that NOMAD's core services (Command Center, MySQL, Redis) use during installation and adjust them if necessary to avoid conflicts with your existing containers.
+Tous les conteneurs de NOMAD ont un nom commençant par `nomad_`, ce qui permet de les repérer facilement. Vérifiez simplement les ports utilisés par les services principaux (Centre de commande, MySQL, Redis) pendant l'installation et changez-les si besoin.
 
-## Why does NOMAD require access to the Docker socket?
+## Pourquoi NOMAD a-t-il besoin d'accéder au socket Docker ?
 
-See [What technologies is NOMAD built with?](#what-technologies-is-nomad-built-with)
+Voir [Avec quelles technologies NOMAD est-il construit ?](#avec-quelles-technologies-nomad-est-il-construit-)
 
-## Can I use any AI models?
-NOMAD by default uses Ollama inside of a docker container to run LLM Models for the AI Assistant. So if you find a model on HuggingFace for example, you won't be able to use that model in NOMAD. The list of available models in the AI Assistant settings (/settings/models) may not show all of the models you are looking for. If you found a model from https://ollama.com/search that you'd like to try and its not in the settings page, you can use a curl command to download the model.  
-`curl -X POST -H "Content-Type: application/json" -d '{"model":"MODEL_NAME_HERE"}' http://localhost:8080/api/ollama/models` replacing MODEL_NAME_HERE with the model name from whats in the ollama website.
+## Puis-je utiliser n'importe quel modèle d'IA ?
+Par défaut, NOMAD utilise Ollama dans un conteneur Docker pour faire tourner les modèles de l'assistant IA. Un modèle trouvé sur HuggingFace, par exemple, ne pourra donc pas forcément être utilisé. La liste des modèles proposés dans les paramètres de l'assistant IA (/settings/models) ne contient pas forcément tous les modèles existants. Si vous avez trouvé sur https://ollama.com/search un modèle absent de la liste, vous pouvez le télécharger avec une commande curl :
+`curl -X POST -H "Content-Type: application/json" -d '{"model":"NOM_DU_MODELE"}' http://localhost:8080/api/ollama/models` en remplaçant NOM_DU_MODELE par le nom indiqué sur le site d'Ollama.
 
-## Do I have to install the AI features in NOMAD?
+Pour des réponses en français, privilégiez les modèles multilingues (par exemple les familles Mistral, Qwen ou Llama récentes).
 
-No, the AI features in NOMAD (Ollama, Qdrant, custom RAG pipeline, etc.) are all optional and not required to use the core functionality of NOMAD.
+## Dois-je installer les fonctions d'IA ?
 
-## Is NOMAD actually free? Are there any hidden costs?
-Yes, Project NOMAD is completely free and open-source software licensed under the Apache License 2.0. There are no hidden costs or fees associated with using NOMAD itself, and we don't have any plans to introduce "premium" features or paid tiers.
+Non. Les fonctions d'IA (Ollama, Qdrant, chaîne RAG, etc.) sont toutes facultatives et ne sont pas nécessaires pour utiliser le reste de NOMAD.
 
-Aside from the cost of the hardware you choose to run it on, there are no costs associated with using NOMAD.
+## NOMAD est-il vraiment gratuit ? Y a-t-il des coûts cachés ?
+Oui, Project NOMAD est un logiciel entièrement libre et gratuit, sous licence Apache 2.0. Son utilisation n'entraîne aucun coût caché, et aucune fonction « premium » ni offre payante n'est prévue.
 
-## Do you sell hardware or pre-built devices with NOMAD pre-installed?
+En dehors du matériel sur lequel vous l'installez, NOMAD ne coûte rien.
 
-No, we do not sell hardware or pre-built devices with NOMAD pre-installed at this time. Project NOMAD is a free and open-source software project, and we provide detailed installation instructions and hardware recommendations for users to set up their own NOMAD instances on compatible hardware of their choice. The tradeoff to this DIY approach is some additional setup time and technical know-how required on the user's end, but it also allows for greater flexibility and customization in terms of hardware selection and configuration to best suit each user's unique needs, budget, and preferences.
+## Vendez-vous du matériel ou des appareils avec NOMAD préinstallé ?
 
-## How quickly are issues resolved when reported?
+Non. Project NOMAD est un logiciel libre ; des instructions d'installation détaillées et des recommandations matérielles permettent à chacun de monter sa propre machine. Cette approche « faites-le vous-même » demande un peu de temps et de savoir-faire, mais offre plus de liberté pour choisir et configurer le matériel selon vos besoins, votre budget et vos préférences.
 
-We strive to address and resolve issues as quickly as possible, but please keep in mind that Project NOMAD is a free and open-source project maintained by a small team of volunteers. We prioritize issues based on their severity, impact on users, and the resources required to resolve them. Critical issues that affect a large number of users are typically addressed more quickly, while less severe issues may take longer to resolve. Aside from the development efforts needed to address the issue, we do our best to conduct thorough testing and validation to ensure that any fix we implement doesn't introduce new issues or regressions, which also adds to the time it takes to resolve an issue.
+## En combien de temps les problèmes signalés sont-ils corrigés ?
 
-We also encourage community involvement in troubleshooting and resolving issues, so if you encounter a problem, please consider checking our Discord community and Github Discussions for potential solutions or workarounds while we work on an official fix.
+L'équipe du projet d'origine fait au mieux, mais Project NOMAD est un projet libre maintenu par une petite équipe de bénévoles. Les problèmes sont traités selon leur gravité, leur impact et le travail nécessaire. Les problèmes critiques touchant beaucoup d'utilisateurs passent en priorité. Chaque correctif est aussi testé pour éviter d'introduire de nouveaux problèmes, ce qui prend du temps.
 
-## How often are new features added or updates released?
+Pour les problèmes propres à cette version française (traduction, contenus français, cartes), ouvrez une issue sur [ce dépôt](https://github.com/Ti-guigui/project-nomad/issues). Pour le reste, consultez le Discord et les discussions GitHub du projet d'origine.
 
-We aim to release updates and new features on a regular basis, but the exact timing can vary based on the complexity of the features being developed, the resources available to our volunteer development team, and the feedback and needs of our community. We typically release smaller "patch" versions more frequently to address bugs and make minor improvements, while larger feature releases may take more time to develop and test before they're ready for release.
+## À quelle fréquence sortent les nouvelles fonctions et mises à jour ?
 
-## I opened a PR to contribute a new feature or fix a bug. How long does it usually take for PRs to be reviewed and merged?
-We appreciate all contributions to the project and strive to review and merge pull requests (PRs) as quickly as possible. The time it takes for a PR to be reviewed and merged can vary based on several factors, including the complexity of the changes, the current workload of our maintainers, and the need for any additional testing or revisions.
+Le projet d'origine publie régulièrement des mises à jour, à un rythme qui dépend de la complexité des fonctions, des ressources de l'équipe et des retours de la communauté. Les petites versions correctives sortent plus souvent que les grandes versions de fonctionnalités.
 
-Because NOMAD is still a young project, some PRs (particularly those for new features) may take longer to review and merge as we prioritize building out the core functionality and ensuring stability before adding new features. However, we do our best to provide timely feedback on all PRs and keep contributors informed about the status of their contributions.
+## J'ai une question qui n'est pas traitée ici. Où demander de l'aide ?
 
-## I have a question that isn't answered here. Where can I ask for help?
+Sur le Discord (https://discord.com/invite/crosstalksolutions, en anglais) ou dans les discussions GitHub du projet d'origine (https://github.com/Crosstalk-Solutions/project-nomad/discussions). Pour la version française, ouvrez une issue sur [ce dépôt](https://github.com/Ti-guigui/project-nomad/issues).
 
-If you have a question that isn't answered in this FAQ, please feel free to ask for help in our Discord community (https://discord.com/invite/crosstalksolutions) or on our Github Discussions page (https://github.com/Crosstalk-Solutions/project-nomad/discussions).
+## J'ai une idée de fonction ou d'amélioration. Comment la proposer ?
 
-## I have a suggestion for a new feature or improvement. How can I share it?
-
-We welcome and encourage suggestions for new features and improvements! We highly encourage sharing your ideas (or upvoting existing suggestions) on our public roadmap at https://roadmap.projectnomad.us, where we track new feature requests. This is the best way to ensure that your suggestion is seen by the development team and the community, and it also allows other community members to upvote and show support for your idea, which can help prioritize it for future development.
+Partagez votre idée (ou votez pour une idée existante) sur la feuille de route publique du projet d'origine : https://roadmap.projectnomad.us. C'est le meilleur moyen d'être vu par l'équipe de développement et la communauté.

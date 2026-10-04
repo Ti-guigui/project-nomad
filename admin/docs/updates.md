@@ -1,67 +1,69 @@
-# Keeping NOMAD Updated
+# Garder NOMAD à jour
 
-NOMAD works best when it's kept current while you have internet, so it's ready with the latest software and content the next time you go offline. This page explains what can be updated, how to do it on demand, and how to let NOMAD handle it for you automatically.
-
----
-
-## The three kinds of updates
-
-There are three separate things that can be updated, and you control each one independently:
-
-1. **Software (the core)** — NOMAD itself: the Command Center, new features, bug fixes, and security improvements.
-2. **Apps** — the installable apps from the [Supply Depot](/supply-depot) (Kiwix, the AI Assistant, and any others you've added).
-3. **Content** — your offline material: Wikipedia and other Kiwix libraries, and downloaded map regions.
-
-You can update any of these on demand, or set any of them to update automatically.
+NOMAD fonctionne au mieux quand il est mis à jour tant que vous avez internet : il est ainsi prêt, avec les derniers logiciels et contenus, la prochaine fois que vous serez hors ligne. Cette page explique ce qui peut être mis à jour, comment le faire à la demande, et comment laisser NOMAD s'en charger automatiquement.
 
 ---
 
-## Updating on demand
+## Trois types de mises à jour
 
-To check for and install updates yourself:
+Trois éléments distincts peuvent être mis à jour, chacun réglable indépendamment :
 
-1. Go to **[Settings → Check for Updates](/settings/update)**.
-2. If a software update is available, click to install it. NOMAD downloads the update and restarts (usually 2–5 minutes).
-3. Apps can be updated from their card in the [Supply Depot](/supply-depot) using **Manage › Update**.
-4. Content is managed from **Settings → Content Manager** and **Content Explorer**, where you can download newer versions of installed libraries and maps.
+1. **Le logiciel (le cœur)** — NOMAD lui-même : le Centre de commande, les nouvelles fonctions, les corrections et les améliorations de sécurité.
+2. **Les applications** — celles du [Dépôt d'applications](/supply-depot) (Kiwix, l'assistant IA et toutes celles que vous avez ajoutées).
+3. **Les contenus** — vos ressources hors ligne : Wikipédia et les autres bibliothèques Kiwix, ainsi que les régions de carte téléchargées.
 
-If a software or app update ever fails, NOMAD is designed to recover gracefully — the previous working version keeps running, so your server stays up.
-
----
-
-## Automatic updates
-
-NOMAD can keep itself current without you having to remember to check. **Automatic updates are opt-in and off by default** — nothing updates on its own until you turn it on. You manage all of it from **Settings → Updates**.
-
-A few things are true across all three:
-
-- **You choose a time window.** Automatic updates only run during the hours you set, so they never interrupt you mid-use.
-- **Major versions are never automatic.** Only minor and patch updates apply on their own; a big version jump always waits for you to do it manually, on purpose.
-- **Safety checks come first.** Before applying anything, NOMAD confirms there's enough disk space and that no other update, download, or install is already in progress.
-- **Being offline is harmless.** If NOMAD can't reach the internet to check, it simply skips that round and tries again later.
-
-### Automatic software (core) updates
-
-Turn this on from **Settings → Updates**. When enabled, NOMAD updates its own core to newer releases within the same major version, during your chosen window, after a configurable **cool-off** period (so a brand-new release has time to prove itself before your server takes it). The same page shows the toggle, the window, the cool-off setting, and live status. If updates fail repeatedly for a real reason, NOMAD turns the feature back off and lets you know rather than retrying forever.
-
-### Automatic app updates
-
-App auto-updates are opt-in at **two levels**: a master switch in **Settings → Updates**, *and* a per-app toggle on each app's card in the [Supply Depot](/supply-depot). Both have to be on for an app to update itself. App updates share the same update window and cool-off as the core, apply only minor and patch versions, and back off automatically for any individual app that keeps failing.
-
-### Automatic content updates
-
-Installed Wikipedia/ZIM libraries and map regions can refresh themselves too. Because content downloads are large (often many gigabytes), content updates run on their **own dedicated overnight window** with a **bandwidth cap**, separate from the software and app schedule. NOMAD checks the upstream Kiwix and map catalogs directly, and when a Wikipedia library is replaced with a newer version, it keeps the AI Knowledge Base in sync automatically.
+Chacun peut être mis à jour à la demande ou automatiquement.
 
 ---
 
-## Early Access Channel
+## Mettre à jour à la demande
 
-Want new features before they reach the stable release? Enable the **Early Access Channel** from the [Check for Updates](/settings/update) page to receive release-candidate builds. Early-access builds may contain rough edges — you can switch back to stable at any time.
+Pour rechercher et installer les mises à jour vous-même :
+
+1. Allez dans **[Paramètres → Rechercher des mises à jour](/settings/update)**.
+2. Si une mise à jour du logiciel est disponible, cliquez pour l'installer. NOMAD télécharge la mise à jour et redémarre (en général 2 à 5 minutes).
+3. Les applications se mettent à jour depuis leur carte dans le [Dépôt d'applications](/supply-depot), via **Gérer › Mettre à jour**.
+4. Les contenus se gèrent depuis **Paramètres → Gestionnaire de contenus** et **Explorateur de contenus**, où vous pouvez télécharger les nouvelles versions des bibliothèques et des cartes installées.
+
+Si une mise à jour du logiciel ou d'une application échoue, NOMAD est conçu pour s'en remettre proprement : la version précédente continue de tourner et votre serveur reste disponible.
+
+> **Version française :** les mises à jour du logiciel sont recherchées dans les releases du dépôt [Ti-guigui/project-nomad](https://github.com/Ti-guigui/project-nomad). Tant qu'aucune release n'y est publiée, mettez à jour avec le script `sudo bash /opt/project-nomad/update_nomad.sh`, qui récupère la dernière image.
 
 ---
 
-## Before you go offline
+## Mises à jour automatiques
 
-Whatever you choose, the habit that matters most is simple: **update while you still have internet.** Whether you do it by hand or let automatic updates handle it, make sure your software and content are current before you head somewhere without a connection. When you're offline, you'll have the last synced versions of everything ready to go.
+NOMAD peut se tenir à jour sans que vous ayez à y penser. **Les mises à jour automatiques sont désactivées par défaut** : rien ne se met à jour tout seul tant que vous ne les avez pas activées. Tout se règle dans **Paramètres → Mises à jour**.
 
-**[Check for Updates →](/settings/update)** · **[See what's new in each version →](/docs/release-notes)**
+Quelques principes valent pour les trois types :
+
+- **Vous choisissez un créneau horaire.** Les mises à jour automatiques ne se font que pendant les heures choisies, pour ne jamais vous interrompre.
+- **Les versions majeures ne sont jamais automatiques.** Seules les versions mineures et correctives s'installent seules ; un changement de version majeure attend toujours votre action.
+- **Les vérifications de sécurité passent d'abord.** Avant toute installation, NOMAD vérifie qu'il y a assez d'espace disque et qu'aucune autre mise à jour, aucun téléchargement ni aucune installation n'est en cours.
+- **Être hors ligne n'est pas un problème.** Si NOMAD ne peut pas joindre internet, il saute simplement ce tour et réessaie plus tard.
+
+### Mises à jour automatiques du logiciel
+
+À activer dans **Paramètres → Mises à jour**. NOMAD met alors à jour son cœur vers les nouvelles versions de la même version majeure, pendant votre créneau, après un **délai de carence** réglable (pour qu'une toute nouvelle version ait le temps de faire ses preuves). La même page affiche l'interrupteur, le créneau, le délai de carence et l'état en direct. Si les mises à jour échouent plusieurs fois pour une vraie raison, NOMAD désactive la fonction et vous prévient au lieu de réessayer indéfiniment.
+
+### Mises à jour automatiques des applications
+
+Elles s'activent à **deux niveaux** : un interrupteur général dans **Paramètres → Mises à jour**, *et* un interrupteur par application sur sa carte dans le [Dépôt d'applications](/supply-depot). Les deux doivent être activés pour qu'une application se mette à jour seule. Elles partagent le créneau et le délai de carence du cœur, n'installent que les versions mineures et correctives, et se mettent en pause pour une application qui échoue à répétition.
+
+### Mises à jour automatiques des contenus
+
+Les bibliothèques Wikipédia/ZIM et les régions de carte installées peuvent aussi se rafraîchir seules. Comme ces téléchargements sont volumineux (souvent plusieurs gigaoctets), ils ont leur **propre créneau nocturne** et une **limite de bande passante**, distincts de ceux du logiciel et des applications. NOMAD interroge directement les catalogues Kiwix et cartographiques, et quand une bibliothèque Wikipédia est remplacée par une version plus récente, il garde automatiquement la base de connaissances de l'IA synchronisée.
+
+---
+
+## Canal d'accès anticipé
+
+Envie des nouveautés avant leur sortie stable ? Activez le **canal d'accès anticipé** sur la page [Rechercher des mises à jour](/settings/update) pour recevoir les versions candidates. Elles peuvent contenir quelques imperfections ; vous pouvez revenir au canal stable à tout moment.
+
+---
+
+## Avant de partir hors ligne
+
+Quoi que vous choisissiez, la bonne habitude est simple : **mettez à jour tant que vous avez internet.** À la main ou automatiquement, assurez-vous que vos logiciels et contenus sont à jour avant de partir sans connexion. Une fois hors ligne, vous aurez les dernières versions synchronisées de tout.
+
+**[Rechercher des mises à jour →](/settings/update)** · **[Voir les nouveautés de chaque version →](/docs/release-notes)**

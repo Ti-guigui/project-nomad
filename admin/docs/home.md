@@ -1,85 +1,85 @@
-# Welcome to Project NOMAD
+# Bienvenue dans Project NOMAD
 
-Your personal offline knowledge server is ready to use.
+Votre serveur de connaissances hors ligne est prêt.
 
-## What is NOMAD?
+## Qu'est-ce que NOMAD ?
 
-**NOMAD** is an offline-first knowledge and education server. It's your personal server for accessing knowledge, education, and AI assistance — even when you have no internet connection.
+**NOMAD** est un serveur de savoir et d'éducation pensé pour fonctionner hors ligne. C'est votre serveur personnel pour accéder aux connaissances, à l'éducation et à l'aide d'une IA — même sans connexion internet.
 
-Think of it as having Wikipedia, Khan Academy, an AI assistant, and offline maps all in one place, running on hardware you control.
+Imaginez Wikipédia, Khan Academy, un assistant IA et des cartes hors ligne réunis au même endroit, sur du matériel qui vous appartient.
 
-![Command Center Dashboard](/docs/dashboard.webp)
+![Tableau de bord du Centre de commande](/docs/dashboard.webp)
 
-## What Can You Do?
+## Que pouvez-vous faire ?
 
-### Browse Offline Knowledge
-Access millions of Wikipedia articles, medical references, how-to guides, and ebooks — all stored locally on your server. No internet required.
+### Consulter le savoir hors ligne
+Des millions d'articles de Wikipédia, des références médicales, des guides pratiques et des livres numériques, tous stockés sur votre serveur. Aucune connexion internet nécessaire.
 
-*Launch the Information Library from the home screen or the [Supply Depot](/supply-depot).*
+*Lancez la Bibliothèque d'information depuis l'écran d'accueil ou le [Dépôt d'applications](/supply-depot).*
 
-### Learn Something New
-Khan Academy courses covering math, science, economics, and more. Complete with videos and exercises, all available offline.
+### Apprendre quelque chose de nouveau
+Des cours Khan Academy en mathématiques, sciences, économie et plus encore, avec vidéos et exercices, tous disponibles hors ligne.
 
-*Launch the Education Platform from the home screen or the [Supply Depot](/supply-depot).*
+*Lancez la Plateforme éducative depuis l'écran d'accueil ou le [Dépôt d'applications](/supply-depot).*
 
-### Chat with AI
-Ask questions, get explanations, brainstorm ideas, or get help with writing. Your local AI assistant works completely offline — and you can upload documents to the Knowledge Base for document-aware responses.
+### Discuter avec l'IA
+Posez des questions, demandez des explications, cherchez des idées ou faites-vous aider pour écrire. Votre assistant IA local fonctionne entièrement hors ligne — et vous pouvez ajouter des documents à la base de connaissances pour qu'il s'appuie dessus.
 
-**[Open AI Chat →](/chat)**
+**[Ouvrir l'assistant IA →](/chat)**
 
-### Upload Documents to the Knowledge Base
-Upload PDFs, text files, and other documents for the AI to reference. The Knowledge Base uses semantic search to find relevant information from your uploaded documents when you ask questions.
+### Ajouter des documents à la base de connaissances
+Importez des PDF, des fichiers texte et d'autres documents que l'IA pourra consulter. La base de connaissances utilise la recherche sémantique pour retrouver les informations utiles dans vos documents quand vous posez une question.
 
-**[Open Knowledge Base →](/knowledge-base)**
+**[Ouvrir la base de connaissances →](/knowledge-base)**
 
-### View Offline Maps
-Navigate and explore maps without an internet connection. Download regions you need before going offline.
+### Consulter les cartes hors ligne
+Naviguez et explorez des cartes sans connexion internet. Téléchargez les régions dont vous avez besoin avant de partir — la France métropolitaine et tous les territoires d'outre-mer sont disponibles.
 
-**[Open Maps →](/maps)**
+**[Ouvrir les cartes →](/maps)**
 
-### Benchmark Your Hardware
-Run a System Benchmark to see how your hardware performs and compare your NOMAD Score with the community leaderboard.
+### Évaluer votre matériel
+Lancez un banc d'essai pour mesurer les performances de votre matériel et comparer votre score NOMAD avec le classement communautaire.
 
-**[Open Benchmark →](/settings/benchmark)**
-
----
-
-## Getting Started
-
-**New to NOMAD?** Use the Easy Setup wizard to configure your server and download content collections.
-
-**[Run Easy Setup →](/easy-setup)**
-
-Or explore the **[Getting Started Guide](/docs/getting-started)** for a walkthrough of all features.
+**[Ouvrir le banc d'essai →](/settings/benchmark)**
 
 ---
 
-## Quick Links
+## Pour commencer
 
-| I want to... | Go here |
+**Nouveau sur NOMAD ?** Utilisez l'assistant de configuration pour paramétrer votre serveur et télécharger des collections de contenus.
+
+**[Lancer l'assistant de configuration →](/easy-setup)**
+
+Ou parcourez le **[guide Premiers pas](/docs/getting-started)** pour découvrir toutes les fonctions.
+
+---
+
+## Liens rapides
+
+| Je veux… | Aller ici |
 |--------------|---------|
-| Chat with the AI | [AI Chat →](/chat) |
-| Upload documents for AI | [Knowledge Base →](/knowledge-base) |
-| Install more apps | [Supply Depot →](/supply-depot) |
-| Add Wikipedia/reference content | [Content Explorer →](/settings/zim/remote-explorer) |
-| Manage installed content | [Content Manager →](/settings/zim) |
-| Download map regions | [Maps Manager →](/settings/maps) |
-| Run a benchmark | [System Benchmark →](/settings/benchmark) |
-| Check for updates | [System Update →](/settings/update) |
-| View system status | [System Info →](/settings/system) |
+| Discuter avec l'IA | [Assistant IA →](/chat) |
+| Ajouter des documents pour l'IA | [Base de connaissances →](/knowledge-base) |
+| Installer d'autres applications | [Dépôt d'applications →](/supply-depot) |
+| Ajouter Wikipédia ou des ouvrages de référence | [Explorateur de contenus →](/settings/zim/remote-explorer) |
+| Gérer les contenus installés | [Gestionnaire de contenus →](/settings/zim) |
+| Télécharger des régions de carte | [Gestionnaire de cartes →](/settings/maps) |
+| Lancer un banc d'essai | [Banc d'essai →](/settings/benchmark) |
+| Rechercher des mises à jour | [Mise à jour du système →](/settings/update) |
+| Voir l'état du système | [Informations système →](/settings/system) |
 
 ---
 
-## Keeping Your Server Updated
+## Garder votre serveur à jour
 
-NOMAD works best when kept up to date while you have internet access. This ensures you have the latest:
-- Software features and bug fixes
-- Wikipedia and reference content
-- Educational materials
-- AI model improvements
+NOMAD donne le meilleur de lui-même quand il est mis à jour tant que vous avez internet. Vous disposez ainsi des dernières :
+- fonctions et corrections du logiciel ;
+- versions de Wikipédia et des ouvrages de référence ;
+- ressources éducatives ;
+- améliorations des modèles d'IA.
 
-When you go offline, you'll have everything you need — the last synced versions of all your content.
+Une fois hors ligne, vous aurez tout ce qu'il faut : les dernières versions synchronisées de tous vos contenus.
 
-You can update on demand, or turn on **automatic updates** so NOMAD keeps its software, apps, and content current on its own while you have internet. See the **[Updates guide](/docs/updates)** for how it works.
+Vous pouvez mettre à jour à la demande, ou activer les **mises à jour automatiques** pour que NOMAD tienne à jour son logiciel, ses applications et ses contenus tout seul quand internet est disponible. Voir le **[guide des mises à jour](/docs/updates)**.
 
-**[Check for Updates →](/settings/update)**
+**[Rechercher des mises à jour →](/settings/update)**

@@ -1,342 +1,334 @@
-# Frequently Asked Questions
+# Foire aux questions
 
-## General Questions
+## Questions générales
 
-### What is NOMAD?
-NOMAD is a personal server that gives you access to knowledge, education, and AI assistance without requiring an internet connection. It runs on your own hardware, keeping your data private and accessible anytime.
+### Qu'est-ce que NOMAD ?
+NOMAD est un serveur personnel qui donne accès au savoir, à l'éducation et à l'aide d'une IA sans connexion internet. Il tourne sur votre propre matériel : vos données restent privées et accessibles à tout moment.
 
-### Do I need internet to use NOMAD?
-No — that's the whole point. Once your content is downloaded, everything works offline. You only need internet to:
-- Download new content
-- Update the software
-- Sync the latest versions of Wikipedia, maps, etc.
+### Faut-il internet pour utiliser NOMAD ?
+Non, c'est tout l'intérêt. Une fois vos contenus téléchargés, tout fonctionne hors ligne. Internet ne sert qu'à :
+- télécharger de nouveaux contenus ;
+- mettre à jour le logiciel ;
+- récupérer les dernières versions de Wikipédia, des cartes, etc.
 
-### What operating system does NOMAD need?
-Debian-based Linux. **Ubuntu 26.04 LTS is what we recommend and test on** for new installs.
+### Quel système d'exploitation faut-il ?
+Linux basé sur Debian. **Ubuntu 26.04 LTS est la version recommandée et testée** pour les nouvelles installations.
 
-Ubuntu 24.04 LTS and Debian 12 are also supported, so there is no need to reinstall if you are already on one of those. Windows users can follow the [WSL2 guide](https://www.projectnomad.us/install/wsl2), which is community-supported.
+Ubuntu 24.04 LTS et Debian 12 sont aussi pris en charge : inutile de réinstaller si vous les utilisez déjà. Sous Windows, suivez le [guide WSL2](https://www.projectnomad.us/install/wsl2), soutenu par la communauté.
 
-macOS and non-Debian distributions like Fedora or Arch are not officially supported. NOMAD does not need a desktop environment, so Ubuntu Server is a fine choice if you are comfortable at the terminal.
+macOS et les distributions non Debian comme Fedora ou Arch ne sont pas officiellement pris en charge. NOMAD n'a pas besoin d'environnement de bureau : Ubuntu Server convient très bien si vous êtes à l'aise avec le terminal.
 
-For a full walkthrough including the Ubuntu install itself, see the [Installation Guide](https://www.projectnomad.us/install).
+Pour un pas-à-pas complet, installation d'Ubuntu comprise, voir le [guide d'installation](https://www.projectnomad.us/install) (en anglais).
 
-### What hardware do I need?
-NOMAD is designed for capable hardware, especially if you want to use the AI features. Recommended:
-- Modern multi-core CPU (AMD Ryzen 7 with Radeon graphics is the community sweet spot)
-- 16GB+ RAM (32GB+ for best AI performance)
-- SSD storage (size depends on content — 500GB minimum, 1TB+ recommended)
-- NVIDIA or AMD GPU recommended for faster AI responses
+### Quel matériel faut-il ?
+NOMAD est pensé pour du matériel performant, surtout si vous voulez utiliser l'IA. Recommandé :
+- Processeur multicœur récent (un AMD Ryzen 7 avec graphismes Radeon est le meilleur compromis selon la communauté)
+- 16 Go de RAM ou plus (32 Go ou plus pour une IA performante)
+- Stockage SSD (selon les contenus : 500 Go minimum, 1 To ou plus recommandé)
+- Carte graphique NVIDIA ou AMD recommandée pour des réponses d'IA plus rapides
 
-**For detailed build recommendations at three price points ($150–$1,000+), see the [Hardware Guide](https://www.projectnomad.us/hardware).**
+**Pour des recommandations détaillées à trois niveaux de prix, voir le [guide matériel](https://www.projectnomad.us/hardware) (en anglais).**
 
-### How much RAM do I need?
+### Combien de RAM faut-il ?
 
-**Without the AI Assistant, the whole stack sits under 1GB.** Measured on a running
-install: the Command Center 241MB, MySQL 444MB, Redis 9MB, Kiwix 101MB, and the
-knowledge base index 155MB. That is why 4GB is a real minimum rather than a
-defensive one.
+**Sans l'assistant IA, l'ensemble tient sous 1 Go.** Mesuré sur une installation en fonctionnement : Centre de commande 241 Mo, MySQL 444 Mo, Redis 9 Mo, Kiwix 101 Mo et index de la base de connaissances 155 Mo. C'est pourquoi 4 Go est un vrai minimum, pas une marge de sécurité.
 
-**The AI is the variable, and it is the model rather than NOMAD.** Ollama idles at
-roughly 1.2GB, and a model needs about its download size resident while it answers,
-so an 8B model at ~4.6GB wants about that much on top. **8GB is workable for a small
-model, 16GB is comfortable, and 32GB is the recommendation if you want to run larger
-ones.**
+**L'IA est la variable, et c'est le modèle qui compte plus que NOMAD.** Ollama consomme environ 1,2 Go au repos, et un modèle a besoin d'à peu près sa taille de téléchargement en mémoire quand il répond : un modèle 8B d'environ 4,6 Go demande donc à peu près autant en plus. **8 Go suffisent pour un petit modèle, 16 Go sont confortables, et 32 Go sont recommandés pour des modèles plus gros.**
 
-Where that memory comes from depends on your hardware. With a discrete GPU the model
-loads into VRAM and never touches system RAM, so VRAM is the number that limits which
-models you can run. With an integrated GPU or no GPU at all, it comes out of system
-RAM, which is why a CPU-only box needs more of it.
+L'origine de cette mémoire dépend du matériel. Avec une carte graphique dédiée, le modèle se charge en VRAM sans toucher à la RAM : c'est alors la VRAM qui limite les modèles utilisables. Avec un circuit graphique intégré ou sans carte graphique, la mémoire est prise sur la RAM, d'où le besoin d'en avoir davantage sur une machine sans carte graphique.
 
-### How much storage do I need?
+### Combien d'espace disque faut-il ?
 
-**To install NOMAD itself: about 5GB, so leave 10GB free.** That covers the
-Command Center and its database, before any content. Adding the AI Assistant
-brings the total to roughly 25GB, because Ollama and a general-purpose model are
-both large.
+**Pour installer NOMAD lui-même : environ 5 Go, prévoyez donc 10 Go libres.** Cela couvre le Centre de commande et sa base de données, sans contenus. L'ajout de l'assistant IA porte le total à environ 25 Go, car Ollama et un modèle généraliste sont volumineux.
 
-After that it depends entirely on what you download:
-- Full Wikipedia: ~95GB
-- Khan Academy courses: ~50GB
-- Medical references: ~500MB
-- US state maps: ~2-3GB each
-- AI models: 10-40GB depending on model
+Ensuite, tout dépend de ce que vous téléchargez :
+- Wikipédia en français complète : environ 3,5 Go (compacte), 12 Go (sans images) ou 52 Go (intégrale)
+- Cours Khan Academy : environ 50 Go
+- Références médicales : 300 Mo à 1,5 Go
+- Cartes : de 1 à 35 Mo par territoire d'outre-mer, de 50 à 950 Mo par région de métropole
+- Modèles d'IA : 10 à 40 Go selon le modèle
 
-Start with essentials and add more as needed.
+Commencez par l'essentiel et ajoutez au fur et à mesure.
 
 ---
 
-## Content Questions
+## Questions sur les contenus
 
-### How do I add more Wikipedia content?
-1. Go to **Settings** (hamburger menu → Settings)
-2. Click **Content Explorer**
-3. Browse available Wikipedia packages
-4. Click Download on items you want
+### Comment ajouter du contenu Wikipédia ?
+1. Allez dans **Paramètres** (menu → Paramètres)
+2. Cliquez sur **Explorateur de contenus**
+3. Parcourez les éditions de Wikipédia disponibles
+4. Cliquez sur Télécharger pour celles qui vous intéressent
 
-You can also use the **Content Explorer** to browse all available ZIM content beyond Wikipedia.
+L'**Explorateur de contenus** permet aussi de parcourir tous les contenus ZIM disponibles au-delà de Wikipédia.
 
-### How do I add more educational courses?
-1. Open **Kolibri**
-2. Sign in as an admin
-3. Go to **Device → Channels**
-4. Browse and import available channels
+### Comment ajouter des cours ?
+1. Ouvrez **Kolibri**
+2. Connectez-vous en tant qu'administrateur
+3. Allez dans **Appareil → Chaînes**
+4. Parcourez et importez les chaînes disponibles (de nombreuses chaînes existent en français)
 
-### How current is the content?
-Content is as current as when it was last downloaded. Wikipedia snapshots are typically updated monthly. Check the file names or descriptions for dates.
+### Les contenus sont-ils à jour ?
+Les contenus sont à jour à la date de leur dernier téléchargement. Les instantanés de Wikipédia sont en général renouvelés chaque mois. La date figure dans le nom ou la description des fichiers.
 
-### Can I add my own files?
-Yes — with the Knowledge Base. Upload PDFs, text files, and other documents to the [Knowledge Base](/knowledge-base), and the AI can reference them when answering your questions. This uses semantic search to find relevant information from your uploaded files.
+### Où trouver des informations sur la France et l'outre-mer ?
+Dans la catégorie **France & Outre-mer** : Wikivoyage (guides de toutes les régions et de tous les territoires d'outre-mer), géographie et histoire par Wikipédia, Wikisource. Côté cartes, les collections couvrent les 13 régions de métropole, les Antilles et la Guyane, l'océan Indien (La Réunion, Mayotte, TAAF) et le Pacifique (Nouvelle-Calédonie, Polynésie française, Wallis-et-Futuna).
 
-For Kiwix content, NOMAD uses standard ZIM files. For educational content, Kolibri uses its own channel format.
+### Puis-je ajouter mes propres fichiers ?
+Oui, avec la base de connaissances. Importez PDF, fichiers texte et autres documents dans la [base de connaissances](/knowledge-base) : l'IA pourra s'y référer pour répondre à vos questions, grâce à la recherche sémantique.
 
-### What are curated collection tiers?
-When selecting content in the Easy Setup wizard or Content Explorer, collections are organized into three tiers:
-- **Essential** — Core content for the category (smallest download)
-- **Standard** — Essential plus additional useful content
-- **Comprehensive** — Everything available for the category (largest download)
+Pour les contenus Kiwix, NOMAD utilise des fichiers ZIM standard. Pour les contenus éducatifs, Kolibri utilise son propre format de chaînes.
 
-This helps you balance content coverage against storage usage.
+### Que sont les niveaux des collections ?
+Dans l'assistant de configuration ou l'Explorateur de contenus, les collections sont organisées en trois niveaux :
+- **Essentiel** — le contenu de base de la catégorie (le plus léger)
+- **Standard** — l'Essentiel plus des contenus utiles en complément
+- **Complet** — tout ce qui est disponible pour la catégorie (le plus lourd)
 
----
-
-## AI Questions
-
-### How do I use the AI chat?
-1. Go to [AI Chat](/chat) from the Command Center
-2. Type your question or request
-3. The AI responds in conversational style
-
-The AI must be installed first — enable it during Easy Setup or install it from the [Supply Depot](/supply-depot) page.
-
-### How do I upload documents to the Knowledge Base?
-1. Go to **[Knowledge Base →](/knowledge-base)**
-2. Upload your documents (PDFs, text files, etc.)
-3. Documents are processed and indexed automatically
-4. Ask questions in AI Chat — the AI will reference your uploaded documents when relevant
-
-You can also remove documents from the Knowledge Base when they're no longer needed.
-
-NOMAD documentation is automatically added to the Knowledge Base when the AI Assistant is installed.
-
-### What is the System Benchmark?
-The System Benchmark tests your hardware performance and generates a NOMAD Score — a weighted composite of CPU, memory, disk, and AI performance. You can create a Builder Tag (a NOMAD-themed identity like "Tactical-Llama-1234") and share your results with the [community leaderboard](https://benchmark.projectnomad.us).
-
-Go to **[System Benchmark →](/settings/benchmark)** to run one.
-
-### What is the Early Access Channel?
-The Early Access Channel lets you opt in to receive release candidate builds with the latest features and improvements before they hit stable releases. You can enable or disable it from **Settings → Check for Updates**. Early access builds may contain bugs — if you prefer stability, stay on the stable channel.
+Cela permet de trouver l'équilibre entre richesse des contenus et espace disque.
 
 ---
 
-## Troubleshooting
+## Questions sur l'IA
 
-### A feature isn't loading or shows a blank page
+### Comment utiliser l'assistant IA ?
+1. Allez dans l'[assistant IA](/chat) depuis le Centre de commande
+2. Tapez votre question ou votre demande
+3. L'IA répond sur le ton de la conversation
 
-**Try these steps:**
-1. Wait 30 seconds — some features take time to start
-2. Refresh the page (Ctrl+R or Cmd+R)
-3. Go back to the Command Center and try again
-4. Check Settings → System to see if the service is running
-5. Try restarting the service (Stop, then Start in the Supply Depot)
+L'IA doit d'abord être installée : activez-la dans l'assistant de configuration ou installez-la depuis le [Dépôt d'applications](/supply-depot).
 
-### Maps show a gray/blank area
+### Comment ajouter des documents à la base de connaissances ?
+1. Allez dans **[Base de connaissances →](/knowledge-base)**
+2. Importez vos documents (PDF, fichiers texte, etc.)
+3. Les documents sont traités et indexés automatiquement
+4. Posez vos questions dans l'assistant IA : il s'appuiera sur vos documents quand c'est pertinent
 
-The Maps feature requires downloaded map data. If you see a blank area:
-1. Go to **Settings → Maps Manager**
-2. Download map regions for your area
-3. Wait for downloads to complete
-4. Return to Maps and refresh
+Vous pouvez aussi retirer des documents de la base de connaissances quand vous n'en avez plus besoin.
 
-### ERROR: Failed to load the XML library file '/data/kiwix-library.xml'
+La documentation de NOMAD est ajoutée automatiquement à la base de connaissances à l'installation de l'assistant IA.
 
-This usually means the Information Library service started before its Kiwix library index was fully initialized.
+### Qu'est-ce que le banc d'essai système ?
+Le banc d'essai mesure les performances de votre matériel et calcule un score NOMAD, moyenne pondérée des performances du processeur, de la mémoire, du disque et de l'IA. Vous pouvez créer un badge de constructeur (une identité NOMAD comme « Tactical-Llama-1234 ») et partager vos résultats sur le [classement communautaire](https://benchmark.projectnomad.us).
 
-Try this recovery flow:
-1. Go to **[Supply Depot](/supply-depot)**
-2. Stop **Information Library (Kiwix)**
-3. Wait 10-15 seconds, then start it again
-4. If the error persists, run **Force Reinstall** for Information Library from the same page
+Allez dans **[Banc d'essai →](/settings/benchmark)** pour en lancer un.
 
-After restart/reinstall completes, refresh the Information Library page.
-
-### AI responses are slow
-
-Local AI requires significant computing power. To improve speed:
-- **Add a GPU** — An NVIDIA GPU with the NVIDIA Container Toolkit can improve AI speed by 10-20x or more
-- Close other applications on the server
-- Ensure adequate cooling (overheating causes throttling)
-- Consider using a smaller/faster AI model if available
-
-### How do I enable GPU acceleration for AI?
-
-NOMAD automatically detects NVIDIA GPUs when the NVIDIA Container Toolkit is installed on the host system. To set up GPU acceleration:
-
-1. **Install an NVIDIA GPU** in your server (if not already present)
-2. **Install the NVIDIA Container Toolkit** on the host — follow the [official installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
-3. **Reinstall the AI Assistant** — Go to [Supply Depot](/supply-depot), find AI Assistant, and click **Force Reinstall**
-
-NOMAD will detect the GPU during installation and configure the AI to use it automatically. You'll see "NVIDIA container runtime detected" in the installation progress.
-
-**Tip:** Run a [System Benchmark](/settings/benchmark) before and after to see the difference. GPU-accelerated systems typically see 100+ tokens per second vs 10-15 on CPU only.
-
-### I added/changed my GPU but AI is still slow
-
-When you add or swap a GPU, NOMAD needs to reconfigure the AI container to use it:
-
-1. Make sure the **NVIDIA Container Toolkit** is installed on the host
-2. Go to **[Supply Depot](/supply-depot)**
-3. Find the **AI Assistant** and click **Force Reinstall**
-
-Force Reinstall recreates the AI container with GPU support enabled. Without this step, the AI continues to run on CPU only.
-
-### I see a "GPU passthrough not working" warning
-
-NOMAD checks whether your GPU is actually accessible inside the AI container. If a GPU is detected on the host but isn't working inside the container, you'll see a warning banner on the System Information and AI Settings pages. Click the **"Fix: Reinstall AI Assistant"** button to recreate the container with proper GPU access. This preserves your downloaded AI models.
-
-### AI Chat not available
-
-The AI Chat page requires the AI Assistant to be installed first:
-1. Go to **[Supply Depot](/supply-depot)**
-2. Install the **AI Assistant**
-3. Wait for the installation to complete
-4. The AI Chat will then be accessible from the home screen or [Chat](/chat)
-
-### Knowledge Base upload stuck
-
-If a document upload appears stuck in the Knowledge Base:
-1. Check that the AI Assistant is running in **Settings → Supply Depot**
-2. Large documents take time to process — wait a few minutes
-3. Try uploading a smaller document to verify the system is working
-4. Check **Settings → System** for any error messages
-
-### Benchmark won't submit to leaderboard
-
-To share results with the community leaderboard:
-- You must run a **Full Benchmark** (not System Only or AI Only)
-- The benchmark must include AI results (AI Assistant must be installed and working)
-- Your score must be higher than any previous submission from the same hardware
-
-If submission fails, check the error message for details.
-
-### "Service unavailable" or connection errors
-
-The service might still be starting up. Wait 1-2 minutes and try again.
-
-If the problem persists:
-1. Go to **Settings → Supply Depot**
-2. Find the problematic service
-3. Click **Restart**
-4. Wait 30 seconds, then try again
-
-### Downloads are stuck or failing
-
-1. Check your internet connection
-2. Go to **Settings** and check available storage
-3. If storage is full, delete unused content
-4. Cancel the stuck download and try again
-
-### The server won't start
-
-If you can't access the Command Center at all:
-1. Verify the server hardware is powered on
-2. Check network connectivity
-3. Try accessing directly via the server's IP address
-4. Check server logs if you have console access
-
-### I forgot my Kolibri password
-
-Kolibri passwords are managed separately:
-1. If you're an admin, you can reset user passwords in Kolibri's user management
-2. If you forgot the admin password, you may need to reset it via command line (contact your administrator)
+### Qu'est-ce que le canal d'accès anticipé ?
+Le canal d'accès anticipé vous permet de recevoir les versions candidates, avec les dernières fonctions et améliorations, avant leur sortie stable. Activez-le ou désactivez-le dans **Paramètres → Rechercher des mises à jour**. Ces versions peuvent contenir des bogues : si vous préférez la stabilité, restez sur le canal stable.
 
 ---
 
-## Updates and Maintenance
+## Dépannage
 
-### How do I update NOMAD?
-1. Go to **Settings → Check for Updates**
-2. If an update is available, click to install
-3. The system will download updates and restart automatically
-4. This typically takes 2-5 minutes
+### Une fonction ne se charge pas ou affiche une page blanche
 
-### Should I update regularly?
-Yes, while you have internet access. Updates include:
-- Bug fixes
-- New features
-- Security improvements
-- Performance enhancements
+**Essayez ceci :**
+1. Attendez 30 secondes : certaines fonctions mettent du temps à démarrer
+2. Rechargez la page (Ctrl+R ou Cmd+R)
+3. Revenez au Centre de commande et réessayez
+4. Vérifiez dans Paramètres → Système si le service tourne
+5. Redémarrez le service (Arrêter puis Démarrer dans le Dépôt d'applications)
 
-### Can NOMAD update itself automatically?
-Yes. NOMAD can keep its software, its installed apps, and its content current on its own. Automatic updates are **opt-in and off by default** — you turn on what you want from **Settings → Updates** (and, for apps, a per-app toggle in the Supply Depot). They only run inside a time window you choose, after safety checks, and never apply major version jumps automatically. See the **[Updates guide](/docs/updates)** for a full walkthrough.
+### Les cartes affichent une zone grise ou vide
 
-### How do I update content (Wikipedia, etc.)?
-Content updates are separate from software updates:
-1. Go to **Settings → Content Manager** or **Content Explorer**
-2. Check for newer versions of your installed content
-3. Download updated versions as needed
+Les cartes nécessitent des données téléchargées. Si vous voyez une zone vide :
+1. Allez dans **Paramètres → Gestionnaire de cartes**
+2. Téléchargez les régions de votre zone
+3. Attendez la fin des téléchargements
+4. Revenez aux cartes et rechargez la page
 
-You can also turn on **automatic content updates** so installed Wikipedia/ZIM libraries and map regions refresh on their own overnight — see the [Updates guide](/docs/updates).
+### ERREUR : Failed to load the XML library file '/data/kiwix-library.xml'
 
-Tip: New Wikipedia snapshots are released approximately monthly.
+Cela signifie en général que la Bibliothèque d'information a démarré avant que son index Kiwix soit prêt.
 
-### What happens if an update fails?
-The system is designed to recover gracefully. If an update fails:
-1. The previous version should continue working
-2. Try the update again later
-3. Check Settings → System for error messages
+Pour corriger :
+1. Allez dans le **[Dépôt d'applications](/supply-depot)**
+2. Arrêtez la **Bibliothèque d'information (Kiwix)**
+3. Attendez 10 à 15 secondes puis redémarrez-la
+4. Si l'erreur persiste, lancez **Forcer la réinstallation** pour la Bibliothèque d'information sur la même page
 
-### Command-Line Maintenance
+Une fois le redémarrage ou la réinstallation terminé, rechargez la page de la Bibliothèque d'information.
 
-For advanced troubleshooting or when you can't access the web interface, NOMAD includes helper scripts in `/opt/project-nomad`:
+### Les réponses de l'IA sont lentes
 
-**Start all services:**
+L'IA locale demande beaucoup de puissance de calcul. Pour l'accélérer :
+- **Ajoutez une carte graphique** — une carte NVIDIA avec le NVIDIA Container Toolkit peut accélérer l'IA de 10 à 20 fois ou plus
+- Fermez les autres applications du serveur
+- Assurez un bon refroidissement (la surchauffe ralentit le processeur)
+- Essayez un modèle d'IA plus petit et plus rapide
+
+### Comment activer l'accélération graphique pour l'IA ?
+
+NOMAD détecte automatiquement les cartes NVIDIA quand le NVIDIA Container Toolkit est installé sur la machine hôte. Pour mettre en place l'accélération :
+
+1. **Installez une carte graphique NVIDIA** dans votre serveur (si ce n'est pas déjà fait)
+2. **Installez le NVIDIA Container Toolkit** sur la machine — suivez le [guide d'installation officiel](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+3. **Réinstallez l'assistant IA** — allez dans le [Dépôt d'applications](/supply-depot), trouvez l'assistant IA et cliquez sur **Forcer la réinstallation**
+
+NOMAD détectera la carte graphique pendant l'installation et configurera l'IA pour l'utiliser. Le message « NVIDIA container runtime detected » apparaît alors dans le suivi de l'installation.
+
+**Astuce :** lancez un [banc d'essai](/settings/benchmark) avant et après pour mesurer la différence. Avec une carte graphique, on obtient souvent plus de 100 jetons par seconde, contre 10 à 15 sur le processeur seul.
+
+### J'ai ajouté ou changé de carte graphique mais l'IA reste lente
+
+Quand vous ajoutez ou changez de carte graphique, NOMAD doit reconfigurer le conteneur de l'IA :
+
+1. Vérifiez que le **NVIDIA Container Toolkit** est installé sur la machine
+2. Allez dans le **[Dépôt d'applications](/supply-depot)**
+3. Trouvez l'**assistant IA** et cliquez sur **Forcer la réinstallation**
+
+La réinstallation recrée le conteneur de l'IA avec la prise en charge de la carte graphique. Sans cette étape, l'IA continue de tourner uniquement sur le processeur.
+
+### Je vois un avertissement « la carte graphique n'est pas accessible »
+
+NOMAD vérifie que votre carte graphique est réellement accessible dans le conteneur de l'IA. Si une carte est détectée sur la machine mais ne fonctionne pas dans le conteneur, un bandeau d'avertissement apparaît sur les pages Informations système et Paramètres de l'IA. Cliquez sur le bouton de réinstallation de l'assistant IA pour recréer le conteneur avec le bon accès. Vos modèles téléchargés sont conservés.
+
+### L'assistant IA n'est pas disponible
+
+La page de l'assistant IA nécessite que l'assistant soit installé :
+1. Allez dans le **[Dépôt d'applications](/supply-depot)**
+2. Installez l'**assistant IA**
+3. Attendez la fin de l'installation
+4. L'assistant est ensuite accessible depuis l'écran d'accueil ou la page [Discussion](/chat)
+
+### L'import dans la base de connaissances est bloqué
+
+Si l'import d'un document semble bloqué :
+1. Vérifiez que l'assistant IA tourne dans **Paramètres → Dépôt d'applications**
+2. Les gros documents prennent du temps : patientez quelques minutes
+3. Essayez d'importer un document plus petit pour vérifier que tout fonctionne
+4. Cherchez d'éventuels messages d'erreur dans **Paramètres → Système**
+
+### Le banc d'essai ne s'envoie pas au classement
+
+Pour partager vos résultats sur le classement communautaire :
+- Lancez un **banc d'essai complet** (pas Système seul ni IA seule)
+- Le banc d'essai doit contenir des résultats d'IA (l'assistant IA doit être installé et fonctionner)
+- Votre score doit dépasser tout envoi précédent depuis le même matériel
+
+Si l'envoi échoue, lisez le message d'erreur pour en savoir plus.
+
+### « Service indisponible » ou erreurs de connexion
+
+Le service est peut-être encore en train de démarrer. Attendez 1 à 2 minutes et réessayez.
+
+Si le problème persiste :
+1. Allez dans **Paramètres → Dépôt d'applications**
+2. Trouvez le service en cause
+3. Cliquez sur **Redémarrer**
+4. Attendez 30 secondes et réessayez
+
+### Les téléchargements sont bloqués ou échouent
+
+1. Vérifiez votre connexion internet
+2. Allez dans **Paramètres** et vérifiez l'espace disponible
+3. Si le disque est plein, supprimez des contenus inutilisés
+4. Annulez le téléchargement bloqué et relancez-le
+
+### Le serveur ne démarre pas
+
+Si vous ne pouvez pas du tout accéder au Centre de commande :
+1. Vérifiez que le serveur est allumé
+2. Vérifiez la connexion réseau
+3. Essayez d'y accéder directement par l'adresse IP du serveur
+4. Consultez les journaux du serveur si vous avez accès à la console
+
+### J'ai oublié mon mot de passe Kolibri
+
+Les mots de passe Kolibri sont gérés à part :
+1. Si vous êtes administrateur, vous pouvez réinitialiser les mots de passe dans la gestion des utilisateurs de Kolibri
+2. Si vous avez oublié le mot de passe administrateur, il faudra peut-être le réinitialiser en ligne de commande (voyez avec votre administrateur)
+
+---
+
+## Mises à jour et maintenance
+
+### Comment mettre à jour NOMAD ?
+1. Allez dans **Paramètres → Rechercher des mises à jour**
+2. Si une mise à jour est disponible, cliquez pour l'installer
+3. Le système télécharge la mise à jour et redémarre automatiquement
+4. Cela prend en général 2 à 5 minutes
+
+Pour cette version française, vous pouvez aussi lancer `sudo bash /opt/project-nomad/update_nomad.sh`, qui récupère la dernière image publiée.
+
+### Faut-il mettre à jour régulièrement ?
+Oui, tant que vous avez internet. Les mises à jour apportent :
+- des corrections de bogues ;
+- de nouvelles fonctions ;
+- des améliorations de sécurité ;
+- de meilleures performances.
+
+### NOMAD peut-il se mettre à jour tout seul ?
+Oui. NOMAD peut tenir à jour son logiciel, ses applications installées et ses contenus. Les mises à jour automatiques sont **désactivées par défaut** : activez ce que vous voulez dans **Paramètres → Mises à jour** (et, pour les applications, avec l'interrupteur de chaque application dans le Dépôt d'applications). Elles ne se font que dans le créneau horaire choisi, après des vérifications de sécurité, et n'installent jamais automatiquement une version majeure. Voir le **[guide des mises à jour](/docs/updates)**.
+
+### Comment mettre à jour les contenus (Wikipédia, etc.) ?
+Les mises à jour des contenus sont séparées de celles du logiciel :
+1. Allez dans **Paramètres → Gestionnaire de contenus** ou **Explorateur de contenus**
+2. Vérifiez s'il existe des versions plus récentes de vos contenus
+3. Téléchargez les nouvelles versions si besoin
+
+Vous pouvez aussi activer les **mises à jour automatiques des contenus** pour que les bibliothèques Wikipédia/ZIM et les régions de carte se renouvellent seules la nuit — voir le [guide des mises à jour](/docs/updates).
+
+Astuce : de nouveaux instantanés de Wikipédia sortent environ chaque mois.
+
+### Que se passe-t-il si une mise à jour échoue ?
+Le système est conçu pour s'en remettre proprement. Si une mise à jour échoue :
+1. La version précédente doit continuer de fonctionner
+2. Réessayez plus tard
+3. Cherchez des messages d'erreur dans Paramètres → Système
+
+### Maintenance en ligne de commande
+
+Pour un dépannage avancé, ou si l'interface web est inaccessible, NOMAD fournit des scripts dans `/opt/project-nomad` :
+
+**Démarrer tous les services :**
 ```bash
 sudo bash /opt/project-nomad/start_nomad.sh
 ```
 
-**Stop all services:**
+**Arrêter tous les services :**
 ```bash
 sudo bash /opt/project-nomad/stop_nomad.sh
 ```
 
-**Update Command Center:**
+**Mettre à jour le Centre de commande :**
 ```bash
 sudo bash /opt/project-nomad/update_nomad.sh
 ```
-*Note: This updates the Command Center only, not individual apps. Update apps through the web interface.*
+*Remarque : ce script met à jour uniquement le Centre de commande, pas les applications. Mettez-les à jour depuis l'interface web.*
 
-**Uninstall NOMAD:**
+**Désinstaller NOMAD :**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/install/uninstall_nomad.sh -o uninstall_nomad.sh
+curl -fsSL https://raw.githubusercontent.com/Ti-guigui/project-nomad/refs/heads/main/install/uninstall_nomad.sh -o uninstall_nomad.sh
 sudo bash uninstall_nomad.sh
 ```
-*Warning: This cannot be undone. All data will be deleted.*
+*Attention : c'est irréversible. Toutes les données seront supprimées.*
 
 ---
 
-## Privacy and Security
+## Vie privée et sécurité
 
-### Is my data private?
-Yes. NOMAD runs entirely on your hardware. Your searches, AI conversations, and usage data never leave your server.
+### Mes données restent-elles privées ?
+Oui. NOMAD tourne entièrement sur votre matériel. Vos recherches, vos conversations avec l'IA et vos données d'utilisation ne quittent jamais votre serveur.
 
-### Can others access my server?
-By default, NOMAD is accessible on your local network. Anyone on the same network can access it. For public networks, consider additional security measures.
+### D'autres personnes peuvent-elles accéder à mon serveur ?
+Par défaut, NOMAD est accessible sur votre réseau local : toute personne connectée au même réseau peut y accéder. Sur un réseau public, prévoyez des mesures de sécurité supplémentaires.
 
-### Does the AI send data anywhere?
-No. The AI runs completely locally. Your conversations are not sent to any external service. The AI chat is built into the Command Center — there's no separate service to configure.
+### L'IA envoie-t-elle des données quelque part ?
+Non. L'IA tourne entièrement en local. Vos conversations ne sont envoyées à aucun service extérieur. L'assistant est intégré au Centre de commande : il n'y a pas de service séparé à configurer.
 
 ---
 
-## Getting More Help
+## Obtenir plus d'aide
 
-### The AI can help
-Try asking a question in [AI Chat](/chat). The local AI can answer questions about many topics, including technical troubleshooting. If you've uploaded NOMAD documentation to the Knowledge Base, it can also help with NOMAD-specific questions.
+### L'IA peut vous aider
+Posez votre question dans l'[assistant IA](/chat). L'IA locale répond sur de nombreux sujets, y compris le dépannage technique. La documentation de NOMAD étant dans la base de connaissances, elle peut aussi répondre aux questions sur NOMAD.
 
-### Check the documentation
-You're in the docs now. Use the menu to find specific topics.
+### Consultez la documentation
+Vous y êtes. Utilisez le menu pour trouver un sujet précis.
 
-### Join the community
-Get help from other NOMAD users on **[Discord](https://discord.com/invite/crosstalksolutions)**.
+### Rejoignez la communauté
+Obtenez de l'aide d'autres utilisateurs de NOMAD sur **[Discord](https://discord.com/invite/crosstalksolutions)** (en anglais), ou signalez un problème de la version française sur [GitHub](https://github.com/Ti-guigui/project-nomad/issues).
 
-### Release Notes
-See what's changed in each version: **[Release Notes](/docs/release-notes)**
+### Notes de version
+Découvrez ce qui change à chaque version : **[Notes de version](/docs/release-notes)** (en anglais).

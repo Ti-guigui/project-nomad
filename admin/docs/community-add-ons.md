@@ -1,48 +1,48 @@
-# Community Add-Ons
+# Modules communautaires
 
-Project NOMAD ships with a curated set of built-in tools and content, but the community has started building add-ons that extend the platform with specialized offline content packs. These are third-party projects, not maintained by the NOMAD team. Install them at your own discretion, and please direct any bugs or feature requests to the add-on's own repository.
+Project NOMAD est livré avec une sélection d'outils et de contenus intégrés, mais la communauté a commencé à créer des modules qui enrichissent la plateforme avec des packs de contenus hors ligne spécialisés. Ce sont des projets tiers, non maintenus par l'équipe de NOMAD. Installez-les à votre discrétion, et signalez bogues et demandes au dépôt du module concerné.
 
-Have you built a NOMAD add-on? Open an issue on the [Project NOMAD GitHub repository](https://github.com/Crosstalk-Solutions/project-nomad/issues/new) or send us a note through the [contact form on projectnomad.us](https://www.projectnomad.us/contact), and we'll review it for inclusion on this page.
-
----
-
-## ZIM Content Packs
-
-ZIM content packs drop additional offline reference material into your existing Kiwix library. They typically ship with an `install.sh` script that downloads source material, builds a ZIM file with `zimwriterfs`, and registers it with your running Kiwix container.
-
-### U.S. Military Field Manuals
-
-**Repository:** [github.com/jrsphoto/ZIM-military-field-manuals](https://github.com/jrsphoto/ZIM-military-field-manuals)
-
-Roughly 180 public-domain U.S. military field manuals covering field medicine, survival, combat first aid, map reading, and more. Built into a searchable ZIM that drops into your Kiwix library.
-
-Final ZIM size is around 2 GB. The builder downloads about 2 GB of source PDFs from archive.org during the build.
-
-### W3Schools Programming Archive
-
-**Repository:** [github.com/kennethbrewer3/ZIM-w3schools-offline](https://github.com/kennethbrewer3/ZIM-w3schools-offline)
-
-A full offline copy of the W3Schools programming tutorials, covering HTML, CSS, JavaScript, Python, SQL, and more. Good for learning to code, looking up syntax, or teaching programming in an environment without internet.
-
-Final ZIM size is around 700 MB. The builder downloads about 6 GB of source files from a GitHub mirror during the build.
+Vous avez créé un module pour NOMAD ? Ouvrez une issue sur le [dépôt GitHub de Project NOMAD](https://github.com/Crosstalk-Solutions/project-nomad/issues/new) ou écrivez via le [formulaire de contact de projectnomad.us](https://www.projectnomad.us/contact) (en anglais) pour qu'il soit étudié pour cette page.
 
 ---
 
-## Installing a Community Add-On
+## Packs de contenus ZIM
 
-Each add-on has its own install instructions, but most ZIM packs follow the same shape:
+Les packs ZIM ajoutent des ouvrages de référence hors ligne à votre bibliothèque Kiwix existante. Ils sont en général fournis avec un script `install.sh` qui télécharge les sources, construit un fichier ZIM avec `zimwriterfs` et l'enregistre dans votre conteneur Kiwix.
 
-1. Clone the add-on's repository onto your NOMAD host over SSH.
-2. Check the README for required build dependencies. Most need `git`, `python3`, `unzip`, and `zim-tools`.
-3. Run the included `install.sh` with a `--deploy` flag, pointing it at your Kiwix library path (`/opt/project-nomad/storage/zim`) and your Kiwix container name (`nomad_kiwix_server`).
-4. The script builds the ZIM, copies it into your Kiwix library, registers it with Kiwix, and restarts the Kiwix container.
+### Manuels de campagne de l'armée américaine (en anglais)
 
-Once the script finishes, the new content will appear in your Information Library the next time you load it.
+**Dépôt :** [github.com/jrsphoto/ZIM-military-field-manuals](https://github.com/jrsphoto/ZIM-military-field-manuals)
 
-Expect the initial build to take anywhere from a few minutes to an hour or more depending on the add-on's size and your host's CPU.
+Environ 180 manuels de campagne de l'armée américaine, dans le domaine public : médecine de terrain, survie, secourisme au combat, lecture de cartes et plus. Le tout dans un ZIM consultable qui s'ajoute à votre bibliothèque Kiwix.
+
+Le ZIM final pèse environ 2 Go. La construction télécharge environ 2 Go de PDF sources depuis archive.org.
+
+### Archive des tutoriels W3Schools (en anglais)
+
+**Dépôt :** [github.com/kennethbrewer3/ZIM-w3schools-offline](https://github.com/kennethbrewer3/ZIM-w3schools-offline)
+
+Une copie hors ligne complète des tutoriels de programmation W3Schools : HTML, CSS, JavaScript, Python, SQL et plus. Idéal pour apprendre à coder, retrouver une syntaxe ou enseigner la programmation sans internet.
+
+Le ZIM final pèse environ 700 Mo. La construction télécharge environ 6 Go de fichiers sources depuis un miroir GitHub.
 
 ---
 
-## A Note on Support
+## Installer un module communautaire
 
-These add-ons are community-built and community-maintained. If something goes wrong with an install script or the content inside a ZIM, please open an issue on the add-on's own repository rather than Project NOMAD's. We're happy to help if the issue is with NOMAD itself, for example if Kiwix isn't picking up a new ZIM after an install, but we can't maintain or support third-party content.
+Chaque module a ses propres instructions, mais la plupart des packs ZIM suivent le même schéma :
+
+1. Clonez le dépôt du module sur votre machine NOMAD via SSH.
+2. Lisez le README pour connaître les dépendances de construction. La plupart demandent `git`, `python3`, `unzip` et `zim-tools`.
+3. Lancez le script `install.sh` fourni avec l'option `--deploy`, en lui indiquant le chemin de votre bibliothèque Kiwix (`/opt/project-nomad/storage/zim`) et le nom de votre conteneur Kiwix (`nomad_kiwix_server`).
+4. Le script construit le ZIM, le copie dans votre bibliothèque Kiwix, l'enregistre et redémarre le conteneur Kiwix.
+
+Une fois le script terminé, le nouveau contenu apparaît dans votre Bibliothèque d'information au prochain chargement.
+
+La première construction peut prendre de quelques minutes à plus d'une heure selon la taille du module et le processeur de votre machine.
+
+---
+
+## À propos de l'assistance
+
+Ces modules sont créés et maintenus par la communauté. En cas de problème avec un script d'installation ou le contenu d'un ZIM, ouvrez une issue sur le dépôt du module plutôt que sur celui de Project NOMAD. L'équipe aide volontiers si le problème vient de NOMAD lui-même (par exemple si Kiwix ne détecte pas un nouveau ZIM après installation), mais ne peut pas maintenir ni prendre en charge des contenus tiers.

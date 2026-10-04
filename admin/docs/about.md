@@ -1,17 +1,22 @@
-# About Project NOMAD
+# À propos de Project NOMAD
 
-Project NOMAD ("NOMAD" for short) is a project started in 2025 by Chris Sherwood of [Crosstalk Solutions, LLC](https://crosstalksolutions.com). The goal of the project is not to create just another utility for storing offline resources, but rather to allow users to run their own ultimate "survival computer". The name started as a backronym, Node for Offline Maps, Archives, and Data, but these days we just call it NOMAD.
+Project NOMAD (« NOMAD » pour faire court) est un projet lancé en 2025 par Chris Sherwood, de [Crosstalk Solutions, LLC](https://crosstalksolutions.com). Son but n'est pas de créer un énième outil de stockage de ressources hors ligne, mais de permettre à chacun de faire tourner son propre « ordinateur de survie » ultime. Le nom était à l'origine un rétroacronyme — *Node for Offline Maps, Archives, and Data* (nœud pour cartes, archives et données hors ligne) — mais aujourd'hui on dit simplement NOMAD.
 
-While many similar offline survival computers are designed to be run on bare-minimum, lightweight hardware, Project NOMAD is quite the opposite. To install and run the available AI tools, we highly encourage the use of a beefy, GPU-backed device to make the most of your install. See the [Hardware Guide](https://www.projectnomad.us/hardware) for detailed build recommendations at three price points.
+Alors que beaucoup d'ordinateurs de survie hors ligne sont conçus pour du matériel minimaliste, Project NOMAD fait plutôt l'inverse. Pour installer et utiliser les outils d'IA, nous recommandons vivement une machine puissante, avec carte graphique. Voir le [guide matériel](https://www.projectnomad.us/hardware) (en anglais) pour des recommandations à trois niveaux de prix.
 
-Since its initial release, NOMAD has grown to include built-in AI chat with a Knowledge Base for document-aware responses, a System Benchmark with a community leaderboard, curated content collections with tiered options, and an Easy Setup Wizard to get new users up and running quickly.
+Depuis sa première version, NOMAD s'est enrichi d'un assistant IA avec base de connaissances, d'un banc d'essai avec classement communautaire, de collections de contenus par niveaux et d'un assistant de configuration pour démarrer rapidement.
 
-Project NOMAD is open source, released under the [Apache License 2.0](https://github.com/Crosstalk-Solutions/project-nomad/blob/main/LICENSE).
+Project NOMAD est un logiciel libre, distribué sous [licence Apache 2.0](https://github.com/Crosstalk-Solutions/project-nomad/blob/main/LICENSE).
 
-## Links
+## Version française
 
-- **Website:** [www.projectnomad.us](https://www.projectnomad.us)
-- **Hardware Guide:** [www.projectnomad.us/hardware](https://www.projectnomad.us/hardware)
-- **Discord:** [Join the Community](https://discord.com/invite/crosstalksolutions)
-- **GitHub:** [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad)
-- **Benchmark Leaderboard:** [benchmark.projectnomad.us](https://benchmark.projectnomad.us)
+Cette version est une adaptation du projet d'origine : interface et documentation traduites en français, contenus francophones proposés en priorité, catégorie « France & Outre-mer » et cartes hors ligne de la France métropolitaine et de tous les territoires d'outre-mer (données © contributeurs OpenStreetMap, via Protomaps).
+
+## Liens
+
+- **Site officiel :** [www.projectnomad.us](https://www.projectnomad.us)
+- **Guide matériel :** [www.projectnomad.us/hardware](https://www.projectnomad.us/hardware)
+- **Discord :** [Rejoindre la communauté](https://discord.com/invite/crosstalksolutions)
+- **GitHub (projet d'origine) :** [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad)
+- **GitHub (version française) :** [Ti-guigui/project-nomad](https://github.com/Ti-guigui/project-nomad)
+- **Classement des bancs d'essai :** [benchmark.projectnomad.us](https://benchmark.projectnomad.us)
