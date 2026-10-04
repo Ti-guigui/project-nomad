@@ -25,8 +25,10 @@ import { KIWIX_CATALOG_BASE_URL } from '../../constants/kiwix.js'
  * defensive — a malformed entry is skipped, never thrown.
  */
 
+// Version française : les cartes France et outre-mer sont publiées comme fichiers
+// de la release « cartes-fr » du fork (voir cartes-fr/README.md).
 const GITHUB_PMTILES_URL =
-  'https://api.github.com/repos/Crosstalk-Solutions/project-nomad-maps/contents/pmtiles'
+  'https://api.github.com/repos/Ti-guigui/project-nomad/releases/tags/cartes-fr'
 
 const CATALOG_TIMEOUT_MS = 15000
 /** Concurrent ZIM catalog lookups — keep small to avoid hammering the mirror. */
@@ -260,7 +262,12 @@ export class KiwixCatalogService {
       headers: { Accept: 'application/vnd.github+json' },
       timeout: CATALOG_TIMEOUT_MS,
     })
-    return Array.isArray(res.data) ? res.data : []
+    const assets = Array.isArray(res.data?.assets) ? res.data.assets : []
+    return assets.map((asset: any) => ({
+      name: asset?.name,
+      download_url: asset?.browser_download_url ?? null,
+      size: asset?.size,
+    }))
   }
 
   private pickNewestMap(listing: GithubContentEntry[], resourceId: string): CatalogResult | null {

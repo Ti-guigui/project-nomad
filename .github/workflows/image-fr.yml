@@ -1,0 +1,45 @@
+name: Construire l'image Docker (version française)
+
+# Construit l'image de NOMAD en français et la publie sur
+# ghcr.io/<propriétaire>/project-nomad:latest, l'image utilisée par
+# install/management_compose.yaml. Se lance à chaque modification de
+# l'application sur main, ou manuellement depuis l'onglet « Actions ».
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'admin/**'
+      - 'Dockerfile'
+      - 'install/entrypoint.sh'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v6
+      - name: Nom de l'image
+        id: image
+        run: |
+          echo "nom=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/project-nomad" >> "$GITHUB_OUTPUT"
+          echo "version=$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+      - name: Connexion au registre GitHub
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Construire et publier
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: |
+            ${{ steps.image.outputs.nom }}:latest
+            ${{ steps.image.outputs.nom }}:${{ steps.image.outputs.version }}-fr
+          build-args: |
+            VERSION=${{ steps.image.outputs.version }}
+            VCS_REF=${{ github.sha }}

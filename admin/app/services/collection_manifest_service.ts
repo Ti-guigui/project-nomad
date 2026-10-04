@@ -29,10 +29,10 @@ import type {
 } from '../../types/collections.js'
 
 const SPEC_URLS: Record<ManifestType, string> = {
-  zim_categories: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/kiwix-categories.json',
-  maps: 'https://github.com/Crosstalk-Solutions/project-nomad/raw/refs/heads/main/collections/maps.json',
-  wikipedia: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/wikipedia.json',
-  creator_packs: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/creator-packs.json',
+  zim_categories: 'https://raw.githubusercontent.com/Ti-guigui/project-nomad/refs/heads/main/collections/kiwix-categories.json',
+  maps: 'https://github.com/Ti-guigui/project-nomad/raw/refs/heads/main/collections/maps.json',
+  wikipedia: 'https://raw.githubusercontent.com/Ti-guigui/project-nomad/refs/heads/main/collections/wikipedia.json',
+  creator_packs: 'https://raw.githubusercontent.com/Ti-guigui/project-nomad/refs/heads/main/collections/creator-packs.json',
 }
 
 const VALIDATORS: Record<ManifestType, any> = {

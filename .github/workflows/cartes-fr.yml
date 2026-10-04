@@ -1,0 +1,66 @@
+name: Générer les cartes France et outre-mer
+
+# Lancement manuel depuis l'onglet « Actions » du dépôt.
+# Les cartes sont publiées dans la release « cartes-fr », d'où NOMAD les télécharge
+# (voir collections/maps.json et cartes-fr/README.md).
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version des cartes (AAAA-MM). Doit correspondre à celle de collections/maps.json.'
+        required: true
+        default: '2026-10'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  preparer:
+    runs-on: ubuntu-latest
+    outputs:
+      regions: ${{ steps.liste.outputs.regions }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Lister les régions
+        id: liste
+        run: |
+          echo "regions=$(ls cartes-fr/regions/*.geojson | xargs -n1 basename | sed 's/\.geojson$//' | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+      - name: Créer la release cartes-fr si besoin
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view cartes-fr --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create cartes-fr --repo "$GITHUB_REPOSITORY" \
+              --title "Cartes France et outre-mer" \
+              --notes "Cartes hors ligne (.pmtiles) de la France métropolitaine et des territoires d'outre-mer, extraites de Protomaps / OpenStreetMap. © les contributeurs OpenStreetMap."
+
+  generer:
+    needs: preparer
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        region: ${{ fromJson(needs.preparer.outputs.regions) }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Installer pmtiles
+        run: |
+          curl -fsSL -o pmtiles.tar.gz https://github.com/protomaps/go-pmtiles/releases/download/v1.30.2/go-pmtiles_1.30.2_Linux_x86_64.tar.gz
+          tar xzf pmtiles.tar.gz pmtiles
+          sudo mv pmtiles /usr/local/bin/
+      - name: Extraire la carte
+        run: cartes-fr/generer.sh "${{ inputs.version }}" sortie "${{ matrix.region }}"
+      - name: Publier dans la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REGION: ${{ matrix.region }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          # Supprime les anciennes versions de cette région pour ne garder que la plus récente
+          gh release view cartes-fr --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' \
+            | grep -E "^${REGION}_[0-9]{4}-[0-9]{2}\.pmtiles$" \
+            | grep -v "^${REGION}_${VERSION}\.pmtiles$" \
+            | while read -r ANCIEN; do gh release delete-asset cartes-fr "$ANCIEN" --repo "$GITHUB_REPOSITORY" --yes; done || true
+          gh release upload cartes-fr "sortie/${REGION}_${VERSION}.pmtiles" --repo "$GITHUB_REPOSITORY" --clobber

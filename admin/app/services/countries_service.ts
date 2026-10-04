@@ -30,10 +30,11 @@ const COUNTRY_GEOJSON_PATH = join(
 const REGION_BUFFER_DEGREES = 0.1
 
 const GROUP_ORDER = [
-  'north-america',
-  'south-america',
+  'france',
   'europe',
   'africa',
+  'north-america',
+  'south-america',
   'asia',
   'oceania',
 ]
@@ -41,34 +42,76 @@ const GROUP_ORDER = [
 const GROUP_META: Record<string, { id: string; name: string; description: string }> = {
   'North America': {
     id: 'north-america',
-    name: 'North America',
-    description: 'All countries in North America and the Caribbean.',
+    name: 'Amérique du Nord',
+    description: "Tous les pays d'Amérique du Nord et des Caraïbes.",
   },
   'South America': {
     id: 'south-america',
-    name: 'South America',
-    description: 'All countries in South America.',
+    name: 'Amérique du Sud',
+    description: "Tous les pays d'Amérique du Sud.",
   },
   Europe: {
     id: 'europe',
     name: 'Europe',
-    description: 'All countries in Europe.',
+    description: "Tous les pays d'Europe.",
   },
   Africa: {
     id: 'africa',
-    name: 'Africa',
-    description: 'All countries in Africa.',
+    name: 'Afrique',
+    description: "Tous les pays d'Afrique.",
   },
   Asia: {
     id: 'asia',
-    name: 'Asia',
-    description: 'All countries in Asia.',
+    name: 'Asie',
+    description: "Tous les pays d'Asie.",
   },
   Oceania: {
     id: 'oceania',
-    name: 'Oceania',
-    description: 'Australia, New Zealand, and Pacific island nations.',
+    name: 'Océanie',
+    description: 'Australie, Nouvelle-Zélande et États insulaires du Pacifique.',
   },
+}
+
+const CONTINENT_NAMES_FR: Record<string, string> = {
+  'North America': 'Amérique du Nord',
+  'South America': 'Amérique du Sud',
+  'Europe': 'Europe',
+  'Africa': 'Afrique',
+  'Asia': 'Asie',
+  'Oceania': 'Océanie',
+}
+
+// France et outre-mer : regroupés sous une rubrique dédiée, en tête de liste.
+const FRANCE_GROUP = {
+  id: 'france',
+  name: 'France & Outre-mer',
+  description: "France métropolitaine (avec la Corse) et tous les territoires d'outre-mer.",
+}
+const FRANCE_CONTINENT = FRANCE_GROUP.name
+
+// Natural Earth livre la France sous la forme d'un seul polygone multiple qui
+// contient aussi les cinq départements et régions d'outre-mer. On le découpe
+// pour pouvoir télécharger la métropole et chaque DROM séparément (sinon
+// l'extraction « France » couvrirait aussi la Guyane, La Réunion, etc.).
+// Chaque DROM reçoit son code ISO 3166-1 propre. Boîtes : [ouest, est, sud, nord].
+const FRANCE_SPLIT: { code: CountryCode; code3: string; name: string; bbox: number[] }[] = [
+  { code: 'GP', code3: 'GLP', name: 'Guadeloupe', bbox: [-62, -60.9, 15.8, 16.6] },
+  { code: 'MQ', code3: 'MTQ', name: 'Martinique', bbox: [-61.3, -60.7, 14.3, 15] },
+  { code: 'GF', code3: 'GUF', name: 'Guyane', bbox: [-55, -51, 2, 6] },
+  { code: 'RE', code3: 'REU', name: 'La Réunion', bbox: [55, 56, -22, -20.5] },
+  { code: 'YT', code3: 'MYT', name: 'Mayotte', bbox: [44.9, 45.4, -13.2, -12.5] },
+]
+
+// Noms usuels pour les collectivités d'outre-mer (Natural Earth abrège certains noms).
+const FRANCE_OVERSEAS_NAMES: Record<string, string> = {
+  FR: 'France métropolitaine',
+  PM: 'Saint-Pierre-et-Miquelon',
+  BL: 'Saint-Barthélemy',
+  MF: 'Saint-Martin',
+  WF: 'Wallis-et-Futuna',
+  PF: 'Polynésie française',
+  NC: 'Nouvelle-Calédonie',
+  TF: 'Terres australes et antarctiques françaises',
 }
 
 export class CountriesService {
@@ -108,20 +151,27 @@ export class CountriesService {
     const byCode = new Map<CountryCode, { country: Country; feature: NEFeature }>()
     const groupCodes: Record<string, CountryCode[]> = {}
 
-    for (const feature of sortedFeatures) {
+    for (const feature of splitFrance(sortedFeatures)) {
       const p = feature.properties
       const code = resolveIso2(p)
       if (!code) continue
       if (byCode.has(code)) continue
 
+      const isFrench = p.SOV_A3 === 'FR1'
       const continent = typeof p.CONTINENT === 'string' ? p.CONTINENT : 'Other'
-      if (continent === 'Antarctica' || continent === 'Seven seas (open ocean)') continue
+      if (!isFrench && (continent === 'Antarctica' || continent === 'Seven seas (open ocean)')) continue
 
       const country: Country = {
         code,
         code3: resolveIso3(p) ?? code,
-        name: typeof p.NAME === 'string' ? p.NAME : code,
-        continent,
+        name: isFrench
+          ? (FRANCE_OVERSEAS_NAMES[code] ?? p.NAME_FR ?? p.NAME)
+          : typeof p.NAME_FR === 'string'
+            ? p.NAME_FR
+            : typeof p.NAME === 'string'
+              ? p.NAME
+              : code,
+        continent: isFrench ? FRANCE_CONTINENT : (CONTINENT_NAMES_FR[continent] ?? continent),
         subregion: typeof p.SUBREGION === 'string' ? p.SUBREGION : continent,
         population: typeof p.POP_EST === 'number' ? p.POP_EST : 0,
       }
@@ -129,6 +179,10 @@ export class CountriesService {
       countries.push(country)
       byCode.set(code, { country, feature })
 
+      if (isFrench) {
+        if (!groupCodes[FRANCE_GROUP.id]) groupCodes[FRANCE_GROUP.id] = []
+        groupCodes[FRANCE_GROUP.id].push(code)
+      }
       if (GROUP_META[continent]) {
         const groupId = GROUP_META[continent].id
         if (!groupCodes[groupId]) groupCodes[groupId] = []
@@ -136,10 +190,10 @@ export class CountriesService {
       }
     }
 
-    countries.sort((a, b) => a.name.localeCompare(b.name))
+    countries.sort((a, b) => a.name.localeCompare(b.name, 'fr'))
 
     const groups: CountryGroup[] = GROUP_ORDER.flatMap((groupId) => {
-      const meta = Object.values(GROUP_META).find((m) => m.id === groupId)
+      const meta = [FRANCE_GROUP, ...Object.values(GROUP_META)].find((m) => m.id === groupId)
       if (!meta) return []
       const codes = (groupCodes[groupId] ?? []).slice().sort()
       if (codes.length === 0) return []
@@ -211,6 +265,51 @@ export class CountriesService {
     await writeFile(filepath, JSON.stringify(fc))
     return filepath
   }
+}
+
+/**
+ * Remplace l'entité « France » de Natural Earth par la métropole (FR) et une
+ * entité par DROM, en répartissant ses polygones selon FRANCE_SPLIT.
+ */
+function splitFrance(features: NEFeature[]): NEFeature[] {
+  return features.flatMap((feature) => {
+    const p = feature.properties
+    const geom = feature.geometry as { type: string; coordinates: any }
+    if (p.ADM0_A3 !== 'FRA' || geom?.type !== 'MultiPolygon') return [feature]
+
+    const buckets = new Map<string, number[][][][]>()
+    for (const polygon of geom.coordinates as number[][][][]) {
+      const xs = polygon[0].map((c) => c[0])
+      const ys = polygon[0].map((c) => c[1])
+      const part = FRANCE_SPLIT.find(
+        ({ bbox: [w, e, s, n] }) =>
+          Math.min(...xs) >= w && Math.max(...xs) <= e && Math.min(...ys) >= s && Math.max(...ys) <= n
+      )
+      const key = part?.code ?? 'FR'
+      if (!buckets.has(key)) buckets.set(key, [])
+      buckets.get(key)!.push(polygon)
+    }
+
+    return [...buckets.entries()].map(([code, polygons]) => {
+      const part = FRANCE_SPLIT.find((s) => s.code === code)
+      return {
+        type: 'Feature' as const,
+        properties: part
+          ? {
+              ...p,
+              ISO_A2: part.code,
+              ISO_A2_EH: part.code,
+              ISO_A3: part.code3,
+              ISO_A3_EH: part.code3,
+              NAME: part.name,
+              NAME_FR: part.name,
+              POP_EST: 0,
+            }
+          : p,
+        geometry: { type: 'MultiPolygon', coordinates: polygons },
+      }
+    })
+  })
 }
 
 function typeRank(f: NEFeature): number {
