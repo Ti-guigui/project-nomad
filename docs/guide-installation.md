@@ -473,6 +473,46 @@ Pour éteindre proprement le serveur : menu en haut à droite d'Ubuntu, puis **�
 
 Réutilisez **la même clé USB** et refaites les parties 3 à 6 sur chaque PC. Un seul serveur suffit en général pour toute la maison, puisque tous les appareils s'y connectent par le navigateur.
 
+### 6.9 Remplacer une installation anglaise par la version française
+
+Si NOMAD est déjà installé **en version anglaise** (dépôt `Crosstalk-Solutions`), inutile de tout réinstaller : il suffit d'indiquer à l'installation d'utiliser l'image française. **Vos contenus, modèles d'IA, conversations, notes et réglages sont conservés.**
+
+> ⚠️ **Avant de commencer**, dans l'interface anglaise, ouvrez **Settings → System** et regardez la version. Si elle est **plus récente** que la dernière release de la version française (https://github.com/Ti-guigui/project-nomad/releases), attendez que la version française soit mise à jour : sinon, ce serait un retour en arrière, avec un risque d'incompatibilité de la base de données.
+
+Dans le **Terminal** du PC NOMAD (Ctrl + Alt + T), tapez ces commandes une par une, chacune suivie d'Entrée :
+
+**1. Copie de sécurité de la configuration :**
+```bash
+sudo cp /opt/project-nomad/compose.yml /opt/project-nomad/compose.yml.anglais
+```
+
+**2. Remplacer l'image anglaise par l'image française :**
+```bash
+sudo sed -i -E 's#image: ghcr.io/crosstalk-solutions/project-nomad(:[^ ]*)?$#image: ghcr.io/ti-guigui/project-nomad:latest#' /opt/project-nomad/compose.yml
+```
+
+**3. Vérifier :**
+```bash
+grep "project-nomad" /opt/project-nomad/compose.yml | grep image
+```
+✅ Vous devez voir la ligne `image: ghcr.io/ti-guigui/project-nomad:latest`. Les lignes `project-nomad-sidecar-updater` et `project-nomad-disk-collector` restent en `crosstalk-solutions` : c'est normal.
+
+**4. Appliquer le changement :**
+```bash
+sudo bash /opt/project-nomad/update_nomad.sh
+```
+Répondez `y` à la question. Le script télécharge l'image française et redémarre les services.
+
+**5. Recharger la page :** ouvrez `http://localhost:8080` et appuyez sur **Ctrl + F5**. ✅ L'interface doit être en français.
+
+**Ce qui reste en anglais :** les contenus déjà téléchargés (Wikipédia en anglais, cartes des États-Unis…). Pour les versions françaises, passez par **Paramètres → Explorateur de contenus** (Wikipédia en français, bibliothèques francophones) et **Paramètres → Gestionnaire de cartes** (régions de France et d'outre-mer). Vous pourrez ensuite supprimer les contenus anglais pour libérer de la place.
+
+**Revenir à la version anglaise :**
+```bash
+sudo cp /opt/project-nomad/compose.yml.anglais /opt/project-nomad/compose.yml
+sudo bash /opt/project-nomad/update_nomad.sh
+```
+
 ---
 
 ## 7. Dépannage
