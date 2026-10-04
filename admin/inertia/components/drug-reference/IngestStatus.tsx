@@ -20,17 +20,17 @@ function fmtDuration(ms: number): string {
   const h = Math.floor(totalSec / 3600)
   const m = Math.floor((totalSec % 3600) / 60)
   const sec = totalSec % 60
-  if (h > 0) return `${h}h ${String(m).padStart(2, '0')}m`
-  if (m > 0) return `${m}m ${String(sec).padStart(2, '0')}s`
-  return `${sec}s`
+  if (h > 0) return `${h} h ${String(m).padStart(2, '0')} min`
+  if (m > 0) return `${m} min ${String(sec).padStart(2, '0')} s`
+  return `${sec} s`
 }
 
 /** Format a byte count as "128 MB" / "1.7 GB". */
 function fmtBytes(bytes: number): string {
   if (!isFinite(bytes) || bytes <= 0) return ''
   const mb = bytes / (1024 * 1024)
-  if (mb >= 1024) return `${(mb / 1024).toFixed(1)} GB`
-  return `${Math.round(mb)} MB`
+  if (mb >= 1024) return `${(mb / 1024).toFixed(1)} Go`
+  return `${Math.round(mb)} Mo`
 }
 
 /** One phase block: headline, explainer, progress bar, optional timing row. */
@@ -112,33 +112,33 @@ function PhaseBlock({
 /** Download-phase explainer copy. */
 function downloadExplainer(d: DrugDownloadStatus): string {
   if (d.state === 'failed') {
-    return 'The download failed — it retries automatically; if it stays failed, press "Download FDA data" to restart. Finished parts are kept and resume where they left off.'
+    return 'Le téléchargement a échoué — il réessaie automatiquement ; s’il reste en échec, cliquez sur « Télécharger les données FDA » pour relancer. Les parties terminées sont conservées et le téléchargement reprend là où il s’était arrêté.'
   }
   if (d.state === 'completed') {
-    return 'All parts are on disk. Indexing them into search next.'
+    return 'Toutes les parties sont sur le disque. Indexation pour la recherche à suivre.'
   }
   if (d.state === 'running') {
     return d.totalParts > 0
-      ? `Pulling part ${d.partsDone + 1} of ${d.totalParts} — ~1.7 GB total across all parts.`
-      : 'Reading the openFDA download manifest…'
+      ? `Téléchargement de la partie ${d.partsDone + 1} sur ${d.totalParts} — environ 1,7 Go au total.`
+      : 'Lecture de la liste des fichiers openFDA…'
   }
-  return 'Not started.'
+  return 'Pas encore commencé.'
 }
 
 /** Ingest-phase explainer copy. */
 function ingestExplainer(i: DrugIngestPhaseStatus, rowCount: number): string {
   if (i.state === 'failed') {
-    return 'Indexing failed — press "Ingest into search" to retry from the downloaded files (no re-download). Already-indexed labels are kept (the refresh is idempotent).'
+    return 'L’indexation a échoué — cliquez sur « Indexer pour la recherche » pour réessayer à partir des fichiers téléchargés (sans nouveau téléchargement). Les notices déjà indexées sont conservées.'
   }
   if (i.state === 'completed') {
-    return `${rowCount.toLocaleString()} labels are now searchable offline.`
+    return `${rowCount.toLocaleString('fr-FR')} notices sont maintenant consultables hors ligne.`
   }
   if (i.state === 'running') {
     return i.totalParts > 0
-      ? `Writing part ${i.partsDone + 1} of ${i.totalParts} into the offline database.`
-      : 'Writing labels into the offline database.'
+      ? `Écriture de la partie ${i.partsDone + 1} sur ${i.totalParts} dans la base hors ligne.`
+      : 'Écriture des notices dans la base hors ligne.'
   }
-  return 'Waiting for downloaded data.'
+  return 'En attente des données téléchargées.'
 }
 
 /**
@@ -207,18 +207,18 @@ export default function IngestStatus({ status, onRefresh, pollIntervalMs = 3000 
   const downloadTiming =
     status.phase === 'downloading' && elapsedMs !== null ? (
       <div className="flex flex-wrap items-center gap-x-3 text-xs text-text-secondary tabular-nums">
-        <span>Elapsed {fmtDuration(elapsedMs)}</span>
-        {dlBytes && <span>{dlBytes} this part</span>}
+        <span>Écoulé : {fmtDuration(elapsedMs)}</span>
+        {dlBytes && <span>{dlBytes} pour cette partie</span>}
       </div>
     ) : null
 
   const ingestTiming =
     status.phase === 'ingesting' && elapsedMs !== null ? (
       <div className="flex flex-wrap items-center gap-x-3 text-xs text-text-secondary tabular-nums">
-        <span>Elapsed {fmtDuration(elapsedMs)}</span>
+        <span>Écoulé : {fmtDuration(elapsedMs)}</span>
         {etaMs !== null && (
           <span>
-            ~{fmtDuration(etaMs)} left <span className="text-text-muted">(estimate)</span>
+            ~{fmtDuration(etaMs)} restantes <span className="text-text-muted">(estimation)</span>
           </span>
         )}
       </div>
@@ -228,7 +228,7 @@ export default function IngestStatus({ status, onRefresh, pollIntervalMs = 3000 
     <div className="text-left space-y-4">
       {/* Download phase */}
       <PhaseBlock
-        title="Download FDA data"
+        title="Télécharger les données FDA"
         state={download.state}
         pct={dlPct}
         explainer={downloadExplainer(download)}
@@ -239,7 +239,7 @@ export default function IngestStatus({ status, onRefresh, pollIntervalMs = 3000 
 
       {/* Ingest phase */}
       <PhaseBlock
-        title="Ingest into search"
+        title="Indexer pour la recherche"
         state={ingest.state}
         pct={ingPct}
         explainer={ingestExplainer(ingest, status.rowCount)}
@@ -248,10 +248,10 @@ export default function IngestStatus({ status, onRefresh, pollIntervalMs = 3000 
           ingest.state === 'running' || ingest.state === 'completed' ? (
             <span>
               <span className="text-sm font-semibold text-text-primary">
-                {ingest.records.toLocaleString()}
+                {ingest.records.toLocaleString('fr-FR')}
               </span>
               {expected > 0 && (
-                <span className="text-text-muted"> of ~{expected.toLocaleString()} labels</span>
+                <span className="text-text-muted"> sur ~{expected.toLocaleString('fr-FR')} notices</span>
               )}
             </span>
           ) : undefined
@@ -263,14 +263,14 @@ export default function IngestStatus({ status, onRefresh, pollIntervalMs = 3000 
       {/* Reassurance while busy */}
       {busy && (
         <p className="text-xs text-text-muted">
-          Runs in the background — you can leave this page and it keeps going. Search turns on
-          automatically when ingest finishes.
+          Tourne en arrière-plan — vous pouvez quitter cette page, le traitement continue. La recherche
+          s'active automatiquement à la fin de l'indexation.
         </p>
       )}
 
       {/* Ready footer */}
       {status.phase === 'ready' && status.lastUpdated && (
-        <p className="text-xs text-text-secondary">FDA data version {status.lastUpdated}.</p>
+        <p className="text-xs text-text-secondary">Version des données FDA : {status.lastUpdated}.</p>
       )}
     </div>
   )

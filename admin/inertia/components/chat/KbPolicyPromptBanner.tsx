@@ -32,7 +32,7 @@ export default function KbPolicyPromptBanner() {
   // "AI Assistant" when accessed outside that context (no-op for chat pages,
   // but keeps the component safe for future reuse elsewhere).
   const aiAssistantName =
-    usePage<{ aiAssistantName?: string }>().props?.aiAssistantName || 'AI Assistant'
+    usePage<{ aiAssistantName?: string }>().props?.aiAssistantName || 'Assistant IA'
 
   const { data: promptState } = useQuery({
     queryKey: ['kbPolicyPromptState'],
@@ -48,7 +48,7 @@ export default function KbPolicyPromptBanner() {
     onSuccess: () => {
       addNotification({
         type: 'success',
-        message: `${aiAssistantName} will index your existing content. You can track progress in the Knowledge Base panel.`,
+        message: `${aiAssistantName} va indexer vos contenus existants. Suivez l'avancement dans le panneau de la base de connaissances.`,
       })
       queryClient.invalidateQueries({ queryKey: ['kbPolicyPromptState'] })
       queryClient.invalidateQueries({ queryKey: ['ingestPolicy'] })
@@ -58,7 +58,7 @@ export default function KbPolicyPromptBanner() {
     onError: (error: any) => {
       addNotification({
         type: 'error',
-        message: error?.message || 'Could not start indexing. Try again from the Knowledge Base panel.',
+        message: error?.message || "Impossible de lancer l'indexation. Réessayez depuis le panneau de la base de connaissances.",
       })
     },
   })
@@ -68,7 +68,7 @@ export default function KbPolicyPromptBanner() {
     onSuccess: () => {
       addNotification({
         type: 'success',
-        message: 'Your content stays unindexed for now. You can opt in any time from the Knowledge Base panel.',
+        message: "Vos contenus restent non indexés pour l'instant. Vous pouvez l'activer à tout moment depuis le panneau de la base de connaissances.",
       })
       queryClient.invalidateQueries({ queryKey: ['kbPolicyPromptState'] })
       queryClient.invalidateQueries({ queryKey: ['ingestPolicy'] })
@@ -76,7 +76,7 @@ export default function KbPolicyPromptBanner() {
     onError: (error: any) => {
       addNotification({
         type: 'error',
-        message: error?.message || 'Could not save your choice. Try again.',
+        message: error?.message || "Impossible d'enregistrer votre choix. Réessayez.",
       })
     },
   })
@@ -94,10 +94,10 @@ export default function KbPolicyPromptBanner() {
           <p className="text-sm text-text-primary">
             <strong>
               {fileCount === 1
-                ? `Index your existing file for ${aiAssistantName}?`
-                : `Index your ${fileCount.toLocaleString()} existing files for ${aiAssistantName}?`}
+                ? `Indexer votre fichier existant pour ${aiAssistantName} ?`
+                : `Indexer vos ${fileCount.toLocaleString('fr-FR')} fichiers existants pour ${aiAssistantName} ?`}
             </strong>
-            {' '}When indexed, {aiAssistantName} can reference them while answering your questions.
+            {' '}Une fois indexés, {aiAssistantName} pourra s'y référer pour répondre à vos questions.
           </p>
         </div>
         <div className="flex gap-2 flex-shrink-0">
@@ -108,7 +108,7 @@ export default function KbPolicyPromptBanner() {
             disabled={isBusy}
             loading={indexNowMutation.isPending}
           >
-            Index existing content
+            Indexer les contenus existants
           </StyledButton>
           <StyledButton
             onClick={() => maybeLaterMutation.mutate()}
@@ -117,7 +117,7 @@ export default function KbPolicyPromptBanner() {
             disabled={isBusy}
             loading={maybeLaterMutation.isPending}
           >
-            Maybe later
+            Plus tard
           </StyledButton>
         </div>
       </div>

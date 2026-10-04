@@ -42,7 +42,7 @@ export default function CoreGrid({ loads }: CoreGridProps) {
         {cells.map((load, i) => (
           <div
             key={i}
-            title={`Thread ${i + 1}: ${Math.round(load)}%`}
+            title={`Thread ${i + 1} : ${Math.round(load)} %`}
             className={classNames(
               'aspect-square rounded-sm transition-colors duration-300',
               cellClass(load)
@@ -52,7 +52,7 @@ export default function CoreGrid({ loads }: CoreGridProps) {
       </div>
       <div className="text-xs text-desert-stone-dark font-mono">
         {loads.length} thread{loads.length === 1 ? '' : 's'}
-        {grouped > 1 ? ` (${grouped}/cell)` : ''}
+        {grouped > 1 ? ` (${grouped}/case)` : ''}
       </div>
     </div>
   )

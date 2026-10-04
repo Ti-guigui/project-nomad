@@ -32,7 +32,7 @@ export default function ChatMessageBubble({ message, onContinue }: ChatMessageBu
       {message.isThinking && message.thinking && (
         <div className="mb-3 rounded border border-amber-200 bg-amber-50 px-3 py-2 text-xs">
           <div className="mb-1 flex items-center gap-1.5 font-medium text-amber-700">
-            <span>Reasoning</span>
+            <span>Raisonnement</span>
             <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse inline-block" />
           </div>
           <div className="prose prose-xs max-w-none text-amber-900/80 max-h-32 overflow-y-auto">
@@ -44,8 +44,8 @@ export default function ChatMessageBubble({ message, onContinue }: ChatMessageBu
         <details className="mb-3 rounded border border-border-subtle bg-surface-secondary text-xs">
           <summary className="cursor-pointer px-3 py-2 font-medium text-text-muted hover:text-text-primary select-none">
             {message.thinkingDuration !== undefined
-              ? `Thought for ${message.thinkingDuration}s`
-              : 'Reasoning'}
+              ? `Réflexion pendant ${message.thinkingDuration} s`
+              : 'Raisonnement'}
           </summary>
           <div className="px-3 pb-3 prose prose-xs max-w-none text-text-secondary max-h-48 overflow-y-auto border-t border-border-subtle pt-2">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.thinking}</ReactMarkdown>
@@ -118,14 +118,14 @@ export default function ChatMessageBubble({ message, onContinue }: ChatMessageBu
       </div>
       {message.role === 'assistant' && message.truncated && !message.isStreaming && (
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-border-subtle pt-2 text-xs text-text-secondary">
-          <span>This answer hit the length limit and was cut off.</span>
+          <span>Cette réponse a atteint la longueur maximale et a été coupée.</span>
           {onContinue && (
             <button
               type="button"
               onClick={onContinue}
               className="rounded border border-border-default px-2 py-0.5 font-medium text-desert-green hover:bg-surface-primary focus:outline-none focus:ring-2 focus:ring-desert-green"
             >
-              Continue
+              Continuer
             </button>
           )}
         </div>

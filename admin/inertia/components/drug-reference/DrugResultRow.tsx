@@ -32,8 +32,8 @@ export default function DrugResultRow({ result, brandFirst = false }: Props) {
 
   // Headline vs sub-line depending on context.
   const headline = brandFirst
-    ? (brand ?? ingredient ?? 'Unknown')
-    : (ingredient ?? brand ?? 'Unknown')
+    ? (brand ?? ingredient ?? 'Inconnu')
+    : (ingredient ?? brand ?? 'Inconnu')
   const subParts: string[] = []
   if (brandFirst) {
     if (result.manufacturer) subParts.push(result.manufacturer)
@@ -62,13 +62,13 @@ export default function DrugResultRow({ result, brandFirst = false }: Props) {
           )}
           {isOtc && (
             <span className="px-1.5 py-0.5 rounded text-xs font-semibold bg-desert-olive/10 text-desert-olive-dark border border-desert-olive/30 flex-shrink-0">
-              OTC
+              Sans ordonnance
             </span>
           )}
 
           {result.labelCount > 1 && (
             <span className="px-1.5 py-0.5 rounded text-xs bg-surface-secondary text-text-secondary flex-shrink-0">
-              {result.labelCount} labels
+              {result.labelCount} notices
             </span>
           )}
         </div>

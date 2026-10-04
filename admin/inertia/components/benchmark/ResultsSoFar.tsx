@@ -11,7 +11,7 @@ export default function ResultsSoFar({ partials }: { partials: BenchmarkPartialR
   return (
     <div className="bg-desert-white rounded-lg p-4 border border-desert-stone-light">
       <div className="text-xs font-semibold text-desert-stone-dark uppercase tracking-wide mb-3">
-        Results so far
+        Résultats intermédiaires
       </div>
       <div className="flex flex-wrap gap-2">
         {partials.map((p) => (
@@ -24,7 +24,7 @@ export default function ResultsSoFar({ partials }: { partials: BenchmarkPartialR
               {p.label}
             </span>
             <span className="text-sm font-bold font-mono tabular-nums text-desert-green">
-              {p.value.toLocaleString()}
+              {p.value.toLocaleString('fr-FR')}
               <span className="text-xs font-semibold text-desert-stone-dark ml-1">{p.unit}</span>
             </span>
           </div>

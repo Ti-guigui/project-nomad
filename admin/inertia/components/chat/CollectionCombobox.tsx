@@ -31,7 +31,7 @@ export default function CollectionCombobox({
   value,
   onChange,
   options,
-  placeholder = 'Uncategorized',
+  placeholder = 'Sans catégorie',
   allowUncategorized = true,
   className = '',
   disabled = false,
@@ -165,7 +165,7 @@ export default function CollectionCombobox({
               className="block w-full text-left px-2 py-1.5 text-sm text-text-secondary hover:bg-surface-secondary"
               onClick={() => commit('')}
             >
-              Uncategorized
+              Sans catégorie
             </button>
           )}
           {filtered.map((opt) => (
@@ -184,11 +184,11 @@ export default function CollectionCombobox({
               className="block w-full text-left px-2 py-1.5 text-sm text-desert-green font-medium hover:bg-surface-secondary border-t border-border-subtle"
               onClick={() => commit(query.trim().toLowerCase())}
             >
-              + Create "{query.trim().toLowerCase()}"
+              + Créer « {query.trim().toLowerCase()} »
             </button>
           )}
           {filtered.length === 0 && !showCreateOption && (
-            <div className="px-2 py-1.5 text-sm text-text-muted">No matches</div>
+            <div className="px-2 py-1.5 text-sm text-text-muted">Aucun résultat</div>
           )}
         </div>,
         document.body

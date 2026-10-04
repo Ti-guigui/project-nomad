@@ -16,22 +16,26 @@ interface NomadMdModalProps {
 const NOMAD_MD_TEMPLATE = `# NOMAD.md
 
 <!--
-This file holds custom instructions for your AI assistant. Everything here is
-sent to the assistant as a system prompt on every chat — use it to set persona,
-tone, priorities, and standing rules.
+Ce fichier contient des consignes personnalisées pour votre assistant IA. Tout ce
+qui s'y trouve est envoyé à l'assistant comme instruction système à chaque
+discussion : utilisez-le pour définir sa personnalité, son ton, ses priorités et
+ses règles permanentes.
 
-It is also stored on disk at storage/NOMAD.md, so you can edit it directly.
-Replace this template with your own instructions, then click Save.
+Il est aussi enregistré sur le disque dans storage/NOMAD.md, vous pouvez donc le
+modifier directement. Remplacez ce modèle par vos propres consignes, puis cliquez
+sur Enregistrer.
 -->
 
-## About me
+## À propos de moi
 
-- (e.g. I'm setting up an off-grid homestead in a cold climate.)
+- (ex. : je vis en Guadeloupe et je prépare mon foyer à la saison cyclonique.)
 
-## How the assistant should respond
+## Comment l'assistant doit répondre
 
-- Be concise and practical.
-- Prioritize safety and proven methods.
+- Réponds toujours en français.
+- Sois concis et pratique.
+- Privilégie la sécurité et les méthodes éprouvées.
+- Pour les urgences en France, rappelle les numéros 15 (SAMU), 18 (pompiers), 17 (police) et 112.
 `
 
 export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalProps) {
@@ -55,19 +59,19 @@ export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalP
     mutationFn: (value: string) => api.saveNomadMd(value),
     onSuccess: (result) => {
       if (!result?.success) {
-        addNotification({ type: 'error', message: 'Failed to save NOMAD.md.' })
+        addNotification({ type: 'error', message: "Impossible d'enregistrer NOMAD.md." })
         return
       }
-      addNotification({ type: 'success', message: 'NOMAD.md saved. It applies to new messages.' })
+      addNotification({ type: 'success', message: "NOMAD.md enregistré. Il s'applique aux nouveaux messages." })
       queryClient.invalidateQueries({ queryKey: ['nomad-md'] })
       onClose()
     },
     onError: (error: any) => {
-      addNotification({ type: 'error', message: error?.message || 'Failed to save NOMAD.md.' })
+      addNotification({ type: 'error', message: error?.message || "Impossible d'enregistrer NOMAD.md." })
     },
   })
 
-  const assistantName = aiAssistantName?.trim() || 'your AI assistant'
+  const assistantName = aiAssistantName?.trim() || 'votre assistant IA'
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm transition-opacity">
@@ -76,7 +80,7 @@ export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalP
           <div>
             <h2 className="text-2xl font-semibold text-text-primary">NOMAD.md</h2>
             <p className="text-sm text-text-muted mt-1">
-              Custom instructions passed to {assistantName} as a system prompt on every chat.
+              Consignes personnalisées transmises à {assistantName} comme instruction système à chaque discussion.
             </p>
           </div>
           <button
@@ -89,21 +93,21 @@ export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalP
 
         <div className="overflow-y-auto flex-1 p-6">
           {isLoading || content === null ? (
-            <div className="py-16 text-center text-text-muted">Loading…</div>
+            <div className="py-16 text-center text-text-muted">Chargement…</div>
           ) : (
             <div className="rounded-lg border border-border-subtle overflow-hidden h-[55vh]">
               <MarkdownEditor initialValue={content} onChange={setContent} className="h-full text-sm" />
             </div>
           )}
           <p className="text-xs text-text-muted mt-3">
-            Tip: this file is also stored on disk at{' '}
-            <code className="font-mono">storage/NOMAD.md</code> and can be edited directly.
+            Astuce : ce fichier est aussi enregistré sur le disque dans{' '}
+            <code className="font-mono">storage/NOMAD.md</code> et peut être modifié directement.
           </p>
         </div>
 
         <div className="flex items-center justify-end gap-3 p-6 border-t border-border-subtle shrink-0">
           <StyledButton variant="outline" onClick={onClose} disabled={saveMutation.isPending}>
-            Cancel
+            Annuler
           </StyledButton>
           <StyledButton
             variant="primary"
@@ -112,7 +116,7 @@ export default function NomadMdModal({ aiAssistantName, onClose }: NomadMdModalP
             loading={saveMutation.isPending}
             disabled={content === null}
           >
-            Save
+            Enregistrer
           </StyledButton>
         </div>
       </div>
