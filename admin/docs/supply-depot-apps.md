@@ -292,7 +292,69 @@ Lit la Bibliothèque d'information dans une autre langue. Ouvrez un article : un
 
 **Pourquoi pas l'assistant IA ?** L'assistant IA sait traduire, mais cette application est environ 1 600 fois plus rapide sur la même machine et n'a pas besoin de carte graphique : elle fonctionne sur tous les NOMAD. Elle respecte aussi mieux les noms propres : l'assistant IA traduira volontiers « Project NOMAD », celle-ci non.
 
-**Choisir les langues :** français, espagnol et allemand sont installés par défaut. Pour changer, utilisez **Gérer > Modifier** et définissez `TRANSLATE_LANGS` avec une liste de codes de langue séparés par des virgules, par exemple `fr,en,es`. Chaque langue pèse environ 74 Mo ; les nouvelles se téléchargent au prochain redémarrage de l'application. Une quarantaine de langues sont disponibles, dont l'hindi, le bengali, le tamoul, le télougou, le vietnamien et l'indonésien. **Le chinois, le japonais, le coréen, l'arabe et le thaï ne sont pas disponibles**, faute de modèle compact pour ces langues.
+**Choisir les langues :** français, espagnol et allemand sont installés par défaut. Pour ajouter ou retirer des langues :
+
+1. Dans le **Dépôt d'applications**, ouvrez le menu **Gérer** de la Bibliothèque traduite et choisissez **Modifier**.
+2. Dans **Variables d'environnement**, repérez `TRANSLATE_LANGS=fr,es,de`.
+3. Modifiez la liste des codes de langue, séparés par des virgules. Par exemple, `TRANSLATE_LANGS=fr,es,de,en` ajoute l'anglais.
+4. Cliquez sur **Enregistrer**. L'application redémarre, télécharge les nouvelles langues et ajoute un bouton pour chacune dans la barre **Traduire cette page**.
+
+Ajouter une langue demande une connexion internet, et chacune occupe entre 45 Mo et 140 Mo environ sur le disque. Les langues déjà téléchargées continuent de fonctionner hors ligne. Retirer un code de la liste ne supprime pas une langue déjà téléchargée : elle reste dans `storage/translate/models` et garde son bouton.
+
+Ces 50 langues sont disponibles. Le chinois ne l'est pas encore.
+
+| Langue | Code |
+|---|---|
+| Afrikaans | `af` |
+| Allemand | `de` |
+| Arabe | `ar` |
+| Basque | `eu` |
+| Bengali | `bn` |
+| Bosnien | `bs` |
+| Bulgare | `bg` |
+| Catalan | `ca` |
+| Coréen | `ko` |
+| Croate | `hr` |
+| Danois | `da` |
+| Espagnol | `es` |
+| Estonien | `et` |
+| Finnois | `fi` |
+| Français | `fr` |
+| Galicien | `gl` |
+| Grec | `el` |
+| Gujarati | `gu` |
+| Hébreu | `he` |
+| Hindi | `hi` |
+| Hongrois | `hu` |
+| Indonésien | `id` |
+| Islandais | `is` |
+| Italien | `it` |
+| Japonais | `ja` |
+| Kannada | `kn` |
+| Letton | `lv` |
+| Lituanien | `lt` |
+| Malais | `ms` |
+| Malayalam | `ml` |
+| Marathi | `mr` |
+| Néerlandais | `nl` |
+| Norvégien | `nb` |
+| Ourdou | `ur` |
+| Persan | `fa` |
+| Polonais | `pl` |
+| Portugais | `pt` |
+| Roumain | `ro` |
+| Russe | `ru` |
+| Serbe | `sr` |
+| Slovaque | `sk` |
+| Slovène | `sl` |
+| Suédois | `sv` |
+| Tamoul | `ta` |
+| Tchèque | `cs` |
+| Télougou | `te` |
+| Thaï | `th` |
+| Turc | `tr` |
+| Ukrainien | `uk` |
+| Vietnamien | `vi` |
 
 **Le premier démarrage demande internet.** Les modèles de langue se téléchargent au premier lancement, comme pour l'installation de n'importe quelle application. Ensuite, tout est hors ligne. Si vous l'installez sans connexion, l'application démarre et la bibliothèque fonctionne, mais sans traduction tant qu'elle n'a pas pu récupérer les modèles.
 
