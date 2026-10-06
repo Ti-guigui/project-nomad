@@ -550,7 +550,7 @@ export default class ServiceSeeder extends BaseSeeder {
       description:
         "Lire la Bibliothèque d'information dans une autre langue. Traduction automatique hors ligne, sur processeur",
       icon: 'IconWorld',
-      container_image: 'ghcr.io/crosstalk-solutions/project-nomad-translate:0.1.0',
+      container_image: 'ghcr.io/crosstalk-solutions/project-nomad-translate:0.1.1',
       source_repo: 'https://github.com/browsermt/bergamot-translator',
       container_command: null,
       container_config: JSON.stringify({
@@ -561,7 +561,7 @@ export default class ServiceSeeder extends BaseSeeder {
         },
         ExposedPorts: { '8391/tcp': {} },
         // TRANSLATE_LANGS is the language set fetched on first start, about
-        // 74 MB per language for the pair in both directions. Editable via
+        // 45-140 MB per language for the pair in both directions. Editable via
         // Manage > Edit; the container re-checks on restart and only fetches
         // what is missing.
         Env: [
@@ -584,7 +584,7 @@ export default class ServiceSeeder extends BaseSeeder {
       // has to be there first.
       depends_on: SERVICE_NAMES.KIWIX,
       // Peak RSS measured at 729 MB with three language pairs resident; models
-      // are about 74 MB per language on disk.
+      // are about 45-140 MB per language on disk.
       metadata: JSON.stringify({ minMemoryMB: 1536, minDiskMB: 1024 }),
     },
   ]
